@@ -3,17 +3,10 @@ import flask
 
 from pywps import Service
 
-from processes.invert import Invert
-from processes.viewshed import ViewShed
+from processes import processes
 
 app = flask.Flask(__name__)
 
-processes = [
-    Invert(),
-    ViewShed()
-]
-
-# For the process list on the home page
 
 # This is, how you start PyWPS instance
 service = Service(processes, ['pywps.cfg'])
@@ -44,9 +37,9 @@ def outputfile(filename):
         flask.abort(404)
 
 
-@app.route('/const/' + '<path:filename>')
+@app.route('/static/data/' + '<path:filename>')
 def staticfile(filename):
-    targetfile = os.path.join('', 'const', filename)
+    targetfile = os.path.join('', 'static/data', filename)
     if os.path.isfile(targetfile):
         with open(targetfile, mode='rb') as f:
             file_bytes = f.read()
