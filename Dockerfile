@@ -1,6 +1,9 @@
+ARG STATIC_DIR="const/"
 FROM bentheiii/pywps
 
-COPY const/ ./const
+ENV STATIC_DIR=$STATIC_DIR
+
+COPY ${STATIC_DIR} ./const
 COPY processes/ ./processes
 COPY *.py ./
 COPY *.cfg ./
