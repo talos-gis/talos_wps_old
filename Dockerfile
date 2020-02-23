@@ -6,7 +6,7 @@ COPY processes/ ./processes
 COPY *.py ./
 COPY *.cfg ./
 
-RUN python3 -m pip install gdalos, czml3
+RUN python3 -m pip install gdalos czml3
 
 RUN mkdir -p ./logs ./outputs ./workdir
 
