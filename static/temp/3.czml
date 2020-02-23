@@ -1,0 +1,26 @@
+[
+	{
+		"id": "document",
+		"version": "1.0",
+		"name": "czml"
+	},
+	{
+		"id": "rect",
+		"name": "visibility",
+		"rectangle": {
+			"coordinates": {
+				"wsenDegrees": [
+					35.787203703703699,
+					32.78938888888888,
+					35.812462962962957,
+					32.810629629629627
+				]
+			},
+			"fill": true,
+			"material": {
+				"image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADJSURBVDhPnZHRDcMgEEMZjVEYpaNklIzSEfLfD4qNnXAJSFWfhO7w2Zc0Tf9QG2rXrEzSUeZLOGm47WoH95x3Hl3jEgilvDgsOQUTqsNl68ezEwn1vae6lceSEEYvvWNT/Rxc4CXQNGadho1NXoJ+9iaqc2xi2xbt23PJCDIB6TQjOC6Bho/sDy3fBQT8PrVhibU7yBFcEPaRxOoeTwbwByCOYf9VGp1BYI1BA+EeHhmfzKbBoJEQwn1yzUZtyspIQUha85MpkNIXB7GizqDEECsAAAAASUVORK5CYII=",
+				"transparent": true
+			}
+		}
+	}
+]

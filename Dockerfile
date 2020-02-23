@@ -1,12 +1,12 @@
 ARG STATIC_DIR="const/"
 FROM bentheiii/pywps
 
-ENV STATIC_DIR=$STATIC_DIR
-
-COPY ${STATIC_DIR} ./const
+COPY static/data/ ./static/data
 COPY processes/ ./processes
 COPY *.py ./
 COPY *.cfg ./
+
+RUN python3 -m pip install gdalos, czml3
 
 RUN mkdir -p ./logs ./outputs ./workdir
 

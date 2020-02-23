@@ -1,0 +1,22 @@
+[
+	{
+		"id": "document",
+		"version": "1.0"
+	},
+	{
+		"id": "billboard",
+		"billboard": {
+			"show": true,
+			"image": "http://localhost/img.png",
+			"color": {
+				"rgba": [
+					0,
+					255,
+					127,
+					55
+				]
+			},
+			"scale": 0.7
+		}
+	}
+]
