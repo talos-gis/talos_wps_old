@@ -2,7 +2,6 @@
 <wps:Execute service="WPS" version="1.0.0" xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd">
 	<ows:Identifier>viewshed</ows:Identifier>
 	<wps:DataInputs>
-<!--            A=@xlink:href=file:./static/data/srtm_x35_y32.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1-->
                     <ows:Identifier>r</ows:Identifier>
                     <wps:Data>
 <!--                        <wps:LiteralData>static/data/srtm_x35_y32.tif</wps:LiteralData>-->

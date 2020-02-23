@@ -46,7 +46,7 @@ def get_host():
         port = int(port)
     else:
         host = parsed_url.netloc
-        port = 8080
+        port = 5000
     return host, port
 
 
