@@ -4,11 +4,13 @@ import flask
 from pywps import Service
 
 from processes.invert import Invert
+from processes.viewshed import ViewShed
 
 app = flask.Flask(__name__)
 
 processes = [
-    Invert()
+    Invert(),
+    ViewShed()
 ]
 
 # For the process list on the home page
