@@ -12,8 +12,8 @@ from pywps.response.execute import ExecuteResponse
 class ViewShed(Process):
     def __init__(self):
         inputs = [
-            ComplexInput('A', 'input_raster', supported_formats=[FORMATS.GEOTIFF]),
-            LiteralInput('b', 'band_index', data_type='positiveInteger', min_occurs=0, default=1),
+            ComplexInput('r', 'input_raster', supported_formats=[FORMATS.GEOTIFF]),
+            LiteralInput('bi', 'band_index', data_type='positiveInteger', min_occurs=0, default=1),
             LiteralInput('co', 'creation options', data_type='string', min_occurs=0, max_occurs=-1),
             LiteralInput('ndv', 'nodata_value', data_type='float', min_occurs=0, default=-1),
             LiteralInput('ox', 'observer_X', data_type='float'),
@@ -34,8 +34,8 @@ class ViewShed(Process):
             self._handler,
             identifier='viewshed',
             version='1.3.3.7',
-            title='gets a viewshed over the raster',
-            abstract='fuck you is the abstract',
+            title='viewshed raster analysis',
+            abstract='runs gdal.viewshed',
             profile='',
             metadata=[Metadata('bla'), Metadata('bla')],
             inputs=inputs,
@@ -45,10 +45,10 @@ class ViewShed(Process):
         )
 
     def _handler(self, request, response: ExecuteResponse):
-        s_path = request.inputs['A'][0].file
+        s_path = request.inputs['r'][0].file
 
         s_ds: gdal.Dataset = gdal.OpenEx(s_path)
-        s_band: gdal.Band = s_ds.GetRasterBand(request.inputs['b'][0].data)
+        s_band: gdal.Band = s_ds.GetRasterBand(request.inputs['bi'][0].data)
 
         if s_band is None:
             raise Exception('band number out of range')

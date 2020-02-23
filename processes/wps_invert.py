@@ -21,7 +21,7 @@ class Invert(Process):
             identifier='invert',
             version='1.3.3.7',
             title='invert the values of the raster',
-            abstract='fuck you is the abstract',
+            abstract='invert',
             profile='',
             metadata=[Metadata('bla'), Metadata('bla')],
             inputs=inputs,

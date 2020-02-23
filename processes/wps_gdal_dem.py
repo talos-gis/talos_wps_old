@@ -8,6 +8,7 @@
 # pywps production flask?
 # docker image
 
+import tempfile
 from pywps import FORMATS, Format
 from pywps.app import Process
 from pywps.inout import ComplexInput, LiteralInput, BoundingBoxInput, ComplexOutput
@@ -22,16 +23,16 @@ wkt_format = Format('application/wkt', extension='.wkt')
 class GdalDem(Process):
     def __init__(self):
         inputs = [
-            # ComplexInput('raster', 'input raster', supported_formats=[FORMATS.GEOTIFF]),
-            LiteralInput('raster', 'input raster', data_type='string'),
+            # ComplexInput('r', 'input raster', supported_formats=[FORMATS.GEOTIFF]),
+            LiteralInput('r', 'input raster', data_type='string'),
             ComplexInput('cutline', 'input vector cutline', supported_formats=[FORMATS.GML]),
             ComplexInput('color_palette', 'color palette', supported_formats=[FORMATS.TEXT]),
             # BoundingBoxInput('extent', 'extent BoundingBox', ['EPSG:4326', ],
             #                  metadata=[Metadata('EPSG.io', 'http://epsg.io/'), ]),
         ]
         outputs = [
-            # ComplexOutput('output', 'output', supported_formats=[FORMATS.GEOTIFF])
-            ComplexOutput('output', 'output', supported_formats=[czml_format])
+            # ComplexOutput('result', 'result', supported_formats=[FORMATS.GEOTIFF])
+            ComplexOutput('result', 'result', supported_formats=[czml_format])
         ]
 
         super().__init__(
@@ -49,7 +50,7 @@ class GdalDem(Process):
         )
 
     def _handler(self, request, response: ExecuteResponse):
-        raster = request.inputs['raster'][0].data
+        raster = request.inputs['r'][0].data
         # raster = request.inputs['raster'][0].url
         # raster = '/home/idan/maps/srtm.tif'
         cutline = request.inputs['cutline'][0].file
@@ -59,7 +60,7 @@ class GdalDem(Process):
         # extent = [*ll, *ur]
 
         output_format = czml_format
-        output_path = gdal_dem_color_cutline.get_named_temporary_filenme(suffix=output_format.extension)
+        output_path = tempfile.mktemp(suffix=output_format.extension)
 
         gdal_out_format = 'czml' if output_format.extension == '.czml' else 'GTiff'
 
@@ -67,7 +68,7 @@ class GdalDem(Process):
                                                       cutline=cutline, color_palette=color_palette,
                                                       output_format=gdal_out_format)
 
-        response.outputs['output'].output_format = output_format
-        response.outputs['output'].file = output_path
+        response.outputs['result'].output_format = output_format
+        response.outputs['result'].file = output_path
 
         return response

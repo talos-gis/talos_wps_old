@@ -53,9 +53,9 @@ nv  0 0 0 0
 		</wps:Input>
 
 		<wps:Input>
-                    <ows:Identifier>raster</ows:Identifier>
+                    <ows:Identifier>r</ows:Identifier>
                     <wps:Data>
-                        <wps:LiteralData>/home/idan/maps/srtm.tif</wps:LiteralData>
+                        <wps:LiteralData>static/data/srtm_x35_y32.tif</wps:LiteralData>
 <!--                        <wps:ComplexData>file:srtm.tif</wps:ComplexData>-->
                     </wps:Data>
 		</wps:Input>
@@ -64,7 +64,7 @@ nv  0 0 0 0
 
     <wps:ResponseForm>
         <wps:RawDataOutput>
-          <ows:Identifier>output</ows:Identifier>
+          <ows:Identifier>result</ows:Identifier>
         </wps:RawDataOutput>
     </wps:ResponseForm>
 </wps:Execute>
