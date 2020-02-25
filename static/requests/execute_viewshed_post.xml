@@ -12,8 +12,8 @@
 
         <wps:Input>
             <ows:Identifier>r</ows:Identifier>
-<!--                <wps:Reference xlink:href="file:./static/sample/srtm_x35_y32.tif"/>-->
-                <wps:Reference xlink:href="https://github.com/talos-gis/viewshed_wps/raw/master/static/data/srtm_x35_y32.tif"/>
+<!--                <wps:Reference xlink:href="file:./static/sample/srtm1_x35_y32.tif"/>-->
+                <wps:Reference xlink:href="https://github.com/talos-gis/viewshed_wps/raw/master/static/data/srtm1_x35_y32.tif"/>
         </wps:Input>
 
         <wps:Input>

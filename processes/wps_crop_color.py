@@ -17,7 +17,7 @@ from gdalos.rectangle import GeoRectangle
 
 czml_format = Format('application/czml+json', extension='.czml')
 wkt_format = Format('application/wkt', extension='.wkt')
-DEFAULT_RASTER = 'static/sample/srtm_x35_y32.tif'
+DEFAULT_RASTER = 'static/sample/srtm1_x35_y32.tif'
 
 # import pywps.inout.literaltypes
 # pywps.inout.literaltypes.LITERAL_DATA_TYPES
@@ -29,9 +29,9 @@ class GdalDem(Process):
             ComplexInput('r', 'input raster', supported_formats=[FORMATS.GEOTIFF],
                          min_occurs=0, max_occurs=1, default=None),
             LiteralInput('output_czml', 'make output as czml', data_type='boolean',
-                         min_occurs=0, max_occurs=1, default=True),
-            LiteralInput('output_tif', 'make output as tift', data_type='boolean',
                          min_occurs=0, max_occurs=1, default=False),
+            LiteralInput('output_tif', 'make output as tift', data_type='boolean',
+                         min_occurs=0, max_occurs=1, default=True),
             ComplexInput('color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
                          min_occurs=0, max_occurs=1, default=None),
             ComplexInput('cutline', 'input vector cutline',

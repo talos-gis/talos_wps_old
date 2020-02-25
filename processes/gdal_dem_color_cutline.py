@@ -158,7 +158,7 @@ if __name__ == '__main__':
     color_palette_filename = os.path.join(root_data, r'color_file.txt')
     wkt_list = get_wkt_list(shp_filename)
     color_palette = read_list(color_palette_filename)
-    raster_filename = os.path.join(root_data, r'srtm_x35_y32.tif')
+    raster_filename = os.path.join(root_data, r'srtm1_x35_y32.tif')
     gdaldem_crop_and_color(
         filename=raster_filename,
         out_filename=tempfile.mktemp(suffix='.tif'),
