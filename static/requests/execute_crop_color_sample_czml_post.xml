@@ -4,7 +4,7 @@
 
     <wps:ResponseForm>
         <wps:RawDataOutput>
-          <ows:Identifier>tif</ows:Identifier>
+          <ows:Identifier>czml</ows:Identifier>
         </wps:RawDataOutput>
     </wps:ResponseForm>
 
@@ -21,14 +21,14 @@
 		<wps:Input>
             <ows:Identifier>output_tif</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>True</wps:LiteralData>
+                <wps:LiteralData>False</wps:LiteralData>
             </wps:Data>
 		</wps:Input>
 
         <wps:Input>
             <ows:Identifier>output_czml</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>False</wps:LiteralData>
+                <wps:LiteralData>True</wps:LiteralData>
             </wps:Data>
 		</wps:Input>
 
