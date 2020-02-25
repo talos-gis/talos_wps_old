@@ -2,9 +2,9 @@ import tempfile
 import os.path
 
 import gdal
-from pywps import FORMATS
+from pywps import FORMATS, UOM
 from pywps.app import Process
-from pywps.inout import ComplexInput, ComplexOutput, LiteralInput
+from pywps.inout import LiteralInput, ComplexInput, LiteralOutput, ComplexOutput
 from pywps.app.Common import Metadata
 from pywps.response.execute import ExecuteResponse
 
@@ -15,27 +15,27 @@ class ViewShed(Process):
             ComplexInput('r', 'input_raster', supported_formats=[FORMATS.GEOTIFF]),
             LiteralInput('bi', 'band_index', data_type='positiveInteger', min_occurs=0, default=1),
             LiteralInput('co', 'creation options', data_type='string', min_occurs=0, max_occurs=-1),
-            LiteralInput('ndv', 'nodata_value', data_type='float', min_occurs=0, default=-1),
-            LiteralInput('ox', 'observer_X', data_type='float'),
-            LiteralInput('oy', 'observer_Y', data_type='float'),
-            LiteralInput('oz', 'observer_Z', data_type='float'),
-            LiteralInput('tz', 'target_z', data_type='float'),
-            LiteralInput('md', 'maximum_distance', data_type='float'),
+            LiteralInput('ndv', 'nodata_value', data_type='float', uoms=[UOM('metre')], min_occurs=0, default=-1),
+            LiteralInput('ox', 'observer_X', data_type='float', uoms=[UOM('metre')]),
+            LiteralInput('oy', 'observer_Y', data_type='float', uoms=[UOM('metre')]),
+            LiteralInput('oz', 'observer_Z', data_type='float', uoms=[UOM('metre')]),
+            LiteralInput('tz', 'target_z', data_type='float', uoms=[UOM('metre')]),
+            LiteralInput('md', 'maximum_distance', data_type='float', uoms=[UOM('metre')]),
             LiteralInput('cc', 'curve_coefficient', data_type='float', min_occurs=0, default=0),
             LiteralInput('iv', 'invisible_value', data_type='float', min_occurs=0, default=0),
             LiteralInput('ov', 'out_of_bounds_value', data_type='float', min_occurs=0, default=0),
             LiteralInput('vv', 'visible_value', data_type='float', min_occurs=0, default=255),
         ]
         outputs = [
-            ComplexOutput('result', 'result', supported_formats=[FORMATS.GEOTIFF])
-        ]
+            LiteralOutput('r', 'input raster name', data_type='string'),
+            ComplexOutput('tif', 'result as GeoTIFF', supported_formats=[FORMATS.GEOTIFF])        ]
 
         super().__init__(
             self._handler,
             identifier='viewshed',
             version='1.3.3.7',
             title='viewshed raster analysis',
-            abstract='runs gdal.viewshed',
+            abstract='runs gdal.ViewshedGenerate',
             profile='',
             metadata=[Metadata('bla'), Metadata('bla')],
             inputs=inputs,
@@ -45,9 +45,9 @@ class ViewShed(Process):
         )
 
     def _handler(self, request, response: ExecuteResponse):
-        s_path = request.inputs['r'][0].file
+        raster_filename = request.inputs['r'][0].file
 
-        s_ds: gdal.Dataset = gdal.OpenEx(s_path)
+        s_ds: gdal.Dataset = gdal.OpenEx(raster_filename)
         s_band: gdal.Band = s_ds.GetRasterBand(request.inputs['bi'][0].data)
 
         if s_band is None:
@@ -63,7 +63,7 @@ class ViewShed(Process):
                     raise Exception(f'creation option {creation_option} unsupported')
                 co.append(creation_option)
 
-        d_path = tempfile.mkstemp(dir=os.path.dirname(s_path))[1]
+        d_path = tempfile.mkstemp(dir=os.path.dirname(raster_filename))[1]
 
         dest = gdal.ViewshedGenerate(s_band, 'GTIFF', d_path, co,
                                      request.inputs['ox'][0].data, request.inputs['oy'][0].data,
@@ -81,7 +81,8 @@ class ViewShed(Process):
 
         del dest
 
-        response.outputs['result'].output_format = FORMATS.GEOTIFF
-        response.outputs['result'].file = d_path
+        response.outputs['r'].data = raster_filename
+        response.outputs['tif'].output_format = FORMATS.GEOTIFF
+        response.outputs['tif'].file = d_path
 
         return response

@@ -19,13 +19,12 @@ LOGGER = logging.getLogger('DEMO')
 def create_app(cfgfiles=None):
     """
     Creates PyWPS WSGI application.
-    Creates PyWPS WSGI application.
     """
     import sys
     pdir = os.path.abspath(os.path.curdir)
     sys.path.insert(0, pdir)
     processes = __import__('processes')
-    config_files = [os.path.join(os.path.dirname(__file__), 'default.cfg')]
+    config_files = [os.path.join(os.path.dirname(__file__), 'pywps.cfg')]
     if cfgfiles:
         config_files.extend(cfgfiles)
     if 'PYWPS_CFG' in os.environ:

@@ -34,7 +34,7 @@ def wkt_write_ogr(path, wkt_list, of='ESRI Shapefile', epsg=4326):
 #         return os.path.join(dir_name, filename)
 
 
-def gdal_crop(src_ds: gdal.Dataset, out_filename: str, output_format: str = 'MEM',
+def gdal_crop(ds: gdal.Dataset, out_filename: str, output_format: str = 'MEM',
               extent: Optional[GeoRectangle] = None,
               cutline: Optional[Union[str, List[str]]] = None,
               common_options: dict = None):
@@ -45,16 +45,16 @@ def gdal_crop(src_ds: gdal.Dataset, out_filename: str, output_format: str = 'MEM
 
     if cutline is None:
         if extent is None:
-            return src_ds
+            return ds
         # -projwin minx maxy maxx miny (ulx uly lrx lry)
         translate_options['projWin'] = extent.lurd
         # -te minx miny maxx maxy
     else:
         if extent is not None:
             warp_options['outputBounds'] = extent.ldru
+        warp_options['cropToCutline'] = extent is None
         warp_options['dstNodata'] = -32768
         # warp_options['dstAlpha'] = True
-        warp_options['cropToCutline'] = True
 
         if isinstance(cutline, str):
             cutline_filename = cutline
@@ -68,50 +68,57 @@ def gdal_crop(src_ds: gdal.Dataset, out_filename: str, output_format: str = 'MEM
 
     common_options['format'] = output_format
     if warp_options:
-        ds = gdal.Warp(str(out_filename), src_ds, **common_options, **warp_options)
+        ds = gdal.Warp(str(out_filename), ds, **common_options, **warp_options)
     else:
-        ds = gdal.Translate(str(out_filename), src_ds, **common_options, **translate_options)
+        ds = gdal.Translate(str(out_filename), ds, **common_options, **translate_options)
     if temp_filename is not None:
         os.remove(temp_filename)
     return ds
 
 
-def gdaldem_crop_and_color(filename: str, out_filename: str,
+def czml_gdaldem_crop_and_color(ds: gdal.Dataset, czml_output_filename: str, **kwargs):
+    ds = gdaldem_crop_and_color(ds=ds, **kwargs)
+    if ds is None:
+        raise Exception('fail to color')
+    if czml_output_filename is not None:
+        dst_wkt = ds.GetProjectionRef()
+        if dst_wkt.find('AUTHORITY["EPSG","4326"]') == -1:
+            raise Exception('fail, unsupported projection')
+        output_czml_doc = gdal_to_czml.gdal_to_czml(ds, name=czml_output_filename)
+        with open(czml_output_filename, 'w') as f:
+            print(output_czml_doc, file=f)
+    return ds
+
+
+def gdaldem_crop_and_color(ds: gdal.Dataset,
+                           out_filename: str, output_format: str = 'GTiff',
                            extent: Optional[GeoRectangle] = None,
                            cutline: Optional[Union[str, List[str]]] = None,
                            color_palette: Optional[Union[str, Sequence[str]]] = None,
-                           output_format: str = 'GTiff', common_options: dict = None):
-    is_czml = output_format.lower() == 'czml'
+                           common_options: dict = None):
     do_color = color_palette is not None
     do_crop = (extent or cutline) is not None
 
-    src_ds = gdal_helper.open_ds(filename)
-    if src_ds is None:
-        raise Exception('fail to open filename {}'.format(filename))
-
-    if is_czml:
-        dst_wkt = src_ds.GetProjectionRef()
-        if dst_wkt.find('AUTHORITY["EPSG","4326"]') == -1:
-            raise Exception('fail, unsupported projection')
+    if out_filename is None:
+        out_filename = ''
+        if output_format != 'MEM':
+            raise Exception('output filename is None')
 
     if do_crop:
-        of = 'MEM' if do_color else output_format
-        ds = gdal_crop(src_ds, out_filename, output_format=of, extent=extent, cutline=cutline,
+        output_format_crop = 'MEM' if do_color else output_format
+        ds = gdal_crop(ds, out_filename,
+                       output_format=output_format_crop, extent=extent, cutline=cutline,
                        common_options=common_options)
         if ds is None:
-            raise Exception('fail to crop {}'.format(filename))
-        elif ds is not src_ds:
-            del src_ds
-            src_ds = ds
+            raise Exception('fail to crop')
     if do_color:
-        of = 'MEM' if is_czml else output_format
-        temp_filename = None
+        temp_color_filename = None
         if isinstance(color_palette, str):
             color_filename = color_palette
         elif isinstance(color_palette, Sequence):
-            temp_filename = tempfile.mktemp(suffix='.txt')
-            color_filename = temp_filename
-            with open(temp_filename, 'w') as f:
+            temp_color_filename = tempfile.mktemp(suffix='.txt')
+            color_filename = temp_color_filename
+            with open(temp_color_filename, 'w') as f:
                 for item in color_palette:
                     f.write(item+'\n')
         else:
@@ -119,24 +126,15 @@ def gdaldem_crop_and_color(filename: str, out_filename: str,
 
         dem_options = {
             'addAlpha': True,
-            'format': of,
+            'format': output_format,
             'processing': 'color-relief',
             'colorFilename': color_filename}
-        ds = gdal.DEMProcessing(out_filename, src_ds, **dem_options)
-        if temp_filename is not None:
-            os.remove(temp_filename)
+        ds = gdal.DEMProcessing(out_filename, ds, **dem_options)
+        if temp_color_filename is not None:
+            os.remove(temp_color_filename)
         if ds is None:
-            raise Exception('fail to color {}'.format(filename))
-        elif ds is not src_ds:
-            del src_ds
-            src_ds = ds
-
-    if is_czml:
-        output_czml = gdal_to_czml.gdal_to_czml(src_ds, name=out_filename)
-        with open(out_filename, 'w') as f:
-            print(output_czml, file=f)
-
-    del src_ds
+            raise Exception('fail to color')
+    return ds
 
 
 def get_wkt_list(filename):
@@ -155,7 +153,7 @@ def read_list(filename):
 
 if __name__ == '__main__':
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    root_data = os.path.join(script_dir, r'../static/data')
+    root_data = os.path.join(script_dir, r'../static/sample')
     shp_filename = os.path.join(root_data, r'poly.shp')
     color_palette_filename = os.path.join(root_data, r'color_file.txt')
     wkt_list = get_wkt_list(shp_filename)

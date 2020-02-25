@@ -37,9 +37,9 @@ def outputfile(filename):
         flask.abort(404)
 
 
-@app.route('/static/data/' + '<path:filename>')
+@app.route('/static/' + '<path:filename>')
 def staticfile(filename):
-    targetfile = os.path.join('', 'static/data', filename)
+    targetfile = os.path.join('', 'static', filename)
     if os.path.isfile(targetfile):
         with open(targetfile, mode='rb') as f:
             file_bytes = f.read()

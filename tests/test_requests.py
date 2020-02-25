@@ -3,6 +3,7 @@ import os
 
 from tests.common import validate_file, URL
 
+
 class RequestsTest(unittest.TestCase):
 
     def test_valid_request(self):
@@ -10,7 +11,7 @@ class RequestsTest(unittest.TestCase):
         def valid_request(url, dirname, fname):
             fullpath = os.path.join(dirname, fname)
             if os.path.isfile(fullpath) and \
-              not fname.startswith('.'):
+                    not fname.startswith('.'):
                 valid = validate_file(fullpath, url)
                 self.assertTrue(valid, "%s requests valid" % fullpath)
 

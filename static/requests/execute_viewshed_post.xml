@@ -1,42 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <wps:Execute service="WPS" version="1.0.0" xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd">
 	<ows:Identifier>viewshed</ows:Identifier>
-	<wps:DataInputs>
-                    <ows:Identifier>r</ows:Identifier>
-                    <wps:Data>
-<!--                        <wps:LiteralData>static/data/srtm_x35_y32.tif</wps:LiteralData>-->
-                        <wps:ComplexData>file:./static/data/srtm_x35_y32.tif</wps:ComplexData>
-                    </wps:Data>
-
-                    <ows:Identifier>ox</ows:Identifier>
-                    <wps:Data>
-                        <wps:LiteralData>35.21317</wps:LiteralData>
-                    </wps:Data>
-
-                    <ows:Identifier>oy</ows:Identifier>
-                    <wps:Data>
-                        <wps:LiteralData>32.03437</wps:LiteralData>
-                    </wps:Data>
-
-                    <ows:Identifier>oz</ows:Identifier>
-                    <wps:Data>
-                        <wps:LiteralData>100</wps:LiteralData>
-                    </wps:Data>
-
-                    <ows:Identifier>tz</ows:Identifier>
-                    <wps:Data>
-                        <wps:LiteralData>0</wps:LiteralData>
-                    </wps:Data>
-
-                    <ows:Identifier>md</ows:Identifier>
-                    <wps:Data>
-                        <wps:LiteralData>1</wps:LiteralData>
-                    </wps:Data>
-	</wps:DataInputs>
 
     <wps:ResponseForm>
         <wps:RawDataOutput>
-          <ows:Identifier>result</ows:Identifier>
+          <ows:Identifier>tif</ows:Identifier>
         </wps:RawDataOutput>
     </wps:ResponseForm>
+
+	<wps:DataInputs>
+
+        <wps:Input>
+            <ows:Identifier>r</ows:Identifier>
+<!--                <wps:Reference xlink:href="file:./static/sample/srtm_x35_y32.tif"/>-->
+                <wps:Reference xlink:href="https://github.com/talos-gis/viewshed_wps/raw/master/static/data/srtm_x35_y32.tif"/>
+        </wps:Input>
+
+        <wps:Input>
+            <ows:Identifier>ox</ows:Identifier>
+            <wps:Data>
+                <wps:LiteralData>35.21317</wps:LiteralData>
+            </wps:Data>
+        </wps:Input>
+
+        <wps:Input>
+            <ows:Identifier>oy</ows:Identifier>
+            <wps:Data>
+                <wps:LiteralData>32.03437</wps:LiteralData>
+            </wps:Data>
+        </wps:Input>
+
+        <wps:Input>
+            <ows:Identifier>oz</ows:Identifier>
+            <wps:Data>
+                <wps:LiteralData>100</wps:LiteralData>
+            </wps:Data>
+        </wps:Input>
+
+        <wps:Input>
+            <ows:Identifier>tz</ows:Identifier>
+            <wps:Data>
+                <wps:LiteralData>0</wps:LiteralData>
+            </wps:Data>
+        </wps:Input>
+
+        <wps:Input>
+            <ows:Identifier>md</ows:Identifier>
+            <wps:Data>
+                <wps:LiteralData>1</wps:LiteralData>
+            </wps:Data>
+        </wps:Input>
+
+	</wps:DataInputs>
 </wps:Execute>

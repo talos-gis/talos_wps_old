@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<wps:Execute service="WPS" version="1.0.0" xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd">
+	<ows:Identifier>crop_color</ows:Identifier>
+
+    <wps:ResponseForm>
+        <wps:RawDataOutput>
+          <ows:Identifier>tif</ows:Identifier>
+        </wps:RawDataOutput>
+    </wps:ResponseForm>
+
+    <wps:DataInputs>
+
+        <wps:Input>
+        <ows:Identifier>r</ows:Identifier>
+                <wps:Reference xlink:href="file:./static/data/SRTM1_hgt.x[33.0,62.0]_y[23.0,39.0].tif"/>
+<!--                <wps:Reference xlink:href="file:./static/sample/srtm_x35_y32.tif"/>-->
+<!--                <wps:Reference xlink:href="https://github.com/talos-gis/viewshed_wps/raw/master/static/data/srtm_x35_y32.tif"/>-->
+        </wps:Input>
+
+		<wps:Input>
+            <ows:Identifier>output_tif</ows:Identifier>
+            <wps:Data>
+                <wps:LiteralData>True</wps:LiteralData>
+            </wps:Data>
+		</wps:Input>
+
+        <wps:Input>
+            <ows:Identifier>output_czml</ows:Identifier>
+            <wps:Data>
+                <wps:LiteralData>True</wps:LiteralData>
+            </wps:Data>
+		</wps:Input>
+
+		<wps:Input>
+            <ows:Identifier>extent</ows:Identifier>
+            <wps:Data>
+                <wps:BoundingBoxData crs="EPSG:4326" dimenstions="2">
+                    <ows:LowerCorner>33.2 50.0</ows:LowerCorner>
+                    <ows:UpperCorner>33.3 50.2</ows:UpperCorner>
+                </wps:BoundingBoxData>
+            </wps:Data>
+		</wps:Input>
+
+<!--		<wps:Input>-->
+<!--            <ows:Identifier>extent</ows:Identifier>-->
+<!--            <wps:Data>-->
+<!--                <wps:BoundingBoxData crs="EPSG:4326" dimenstions="2">-->
+<!--                    <ows:LowerCorner>35.2 32.6</ows:LowerCorner>-->
+<!--                    <ows:UpperCorner>35.3 32.7</ows:UpperCorner>-->
+<!--&lt;!&ndash;                    <ows:LowerCorner>-180.0 -90.0</ows:LowerCorner>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <ows:UpperCorner>180.0 90.0</ows:UpperCorner>&ndash;&gt;-->
+<!--                </wps:BoundingBoxData>-->
+<!--            </wps:Data>-->
+<!--		</wps:Input>-->
+
+<!--        <wps:Input>-->
+<!--            <ows:Identifier>cutline</ows:Identifier>-->
+<!--            <wps:Data>-->
+<!--                <wps:ComplexData>-->
+
+<!--                    <ogr:FeatureCollection-->
+<!--                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+<!--                         xsi:schemaLocation="http://ogr.maptools.org/ poly.xsd"-->
+<!--                         xmlns:ogr="http://ogr.maptools.org/"-->
+<!--                         xmlns:gml="http://www.opengis.net/gml">-->
+<!--                      <gml:boundedBy>-->
+<!--                        <gml:Box>-->
+<!--                          <gml:coord><gml:X>35.15711864406779</gml:X><gml:Y>32.52847457627119</gml:Y></gml:coord>-->
+<!--                          <gml:coord><gml:X>35.45135593220338</gml:X><gml:Y>32.78237288135593</gml:Y></gml:coord>-->
+<!--                        </gml:Box>-->
+<!--                      </gml:boundedBy>-->
+
+<!--                      <gml:featureMember>-->
+<!--                        <ogr:poly fid="poly.0">-->
+<!--                          <ogr:geometryProperty><gml:Polygon srsName="EPSG:4326"><gml:outerBoundaryIs><gml:LinearRing><gml:coordinates>35.1571186440678,32.6708474576271 35.2864406779661,32.7823728813559 35.4513559322034,32.6471186440678 35.3338983050847,32.6115254237288 35.1571186440678,32.6708474576271</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs></gml:Polygon></ogr:geometryProperty>-->
+<!--                          <ogr:id xsi:nil="true"/>-->
+<!--                        </ogr:poly>-->
+<!--                      </gml:featureMember>-->
+<!--                      <gml:featureMember>-->
+<!--                        <ogr:poly fid="poly.1">-->
+<!--                          <ogr:geometryProperty><gml:Polygon srsName="EPSG:4326"><gml:outerBoundaryIs><gml:LinearRing><gml:coordinates>35.1666101694915,32.5913559322034 35.2733898305085,32.606779661017 35.2710169491525,32.536779661017 35.185593220339,32.5284745762712 35.1666101694915,32.5913559322034</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs></gml:Polygon></ogr:geometryProperty>-->
+<!--                          <ogr:id xsi:nil="true"/>-->
+<!--                        </ogr:poly>-->
+<!--                      </gml:featureMember>-->
+<!--                    </ogr:FeatureCollection>-->
+
+<!--                </wps:ComplexData>-->
+<!--            </wps:Data>-->
+<!--		</wps:Input>-->
+
+		<wps:Input>
+            <ows:Identifier>color_palette</ows:Identifier>
+            <wps:Data>
+                <wps:ComplexData>
+                    500 255 255 255 &#xA;
+                    450 235 220 175 &#xA;
+                    300 190 185 135 &#xA;
+                    150 240 250 150 &#xA;
+                    76  50  180  50 &#xA;
+                    75  200 230 255 &#xA;
+                    nv  0 0 0 0
+                </wps:ComplexData>
+            </wps:Data>
+		</wps:Input>
+
+	</wps:DataInputs>
+</wps:Execute>
