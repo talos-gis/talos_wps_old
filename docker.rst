@@ -1,4 +1,4 @@
-docker build -t talosgis/talos_wps:1.0 -t talosgis/talos_wps:latest .
+docker build -t talosgis/talos_wps:1.0.0 -t talosgis/talos_wps:latest .
 
 docker run \
   -d \
