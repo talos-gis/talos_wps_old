@@ -77,17 +77,40 @@ def gdal_crop(ds: gdal.Dataset, out_filename: str, output_format: str = 'MEM',
 
 
 def czml_gdaldem_crop_and_color(ds: gdal.Dataset, czml_output_filename: str, **kwargs):
-    ds = gdaldem_crop_and_color(ds=ds, **kwargs)
+    ds, stats = gdaldem_crop_and_color(ds=ds, **kwargs)
     if ds is None:
         raise Exception('fail to color')
     if czml_output_filename is not None:
         dst_wkt = ds.GetProjectionRef()
         if dst_wkt.find('AUTHORITY["EPSG","4326"]') == -1:
             raise Exception('fail, unsupported projection')
-        output_czml_doc = gdal_to_czml.gdal_to_czml(ds, name=czml_output_filename)
+        if stats is not None:
+            description = ' '.join(['{:.2f}'.format(x) for x in stats])
+        output_czml_doc = gdal_to_czml.gdal_to_czml(ds, name=czml_output_filename, description=description)
         with open(czml_output_filename, 'w') as f:
             print(output_czml_doc, file=f)
     return ds
+
+
+def color_palette_stats(color_filename, min_val, max_val):
+    stats = []
+    try:
+        with open(color_filename) as fp:
+            for line in fp:
+                num_str = line.strip().split(' ')[0].strip()
+                is_percent = num_str.endswith('%')
+                if is_percent:
+                    num_str = num_str.rstrip('%')
+                try:
+                    num = float(num_str)
+                    if is_percent:
+                        num = (max_val-min_val)*num*0.01+min_val
+                    stats.append(num)
+                except ValueError:
+                    pass
+    except IOError:
+        stats = None
+    return stats
 
 
 def gdaldem_crop_and_color(ds: gdal.Dataset,
@@ -99,6 +122,10 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
     do_color = color_palette is not None
     do_crop = (extent or cutline) is not None
 
+    bnd = ds.GetRasterBand(1)
+    bnd.ComputeStatistics(0)
+    min_val = bnd.GetMinimum()
+    max_val = bnd.GetMaximum()
     if out_filename is None:
         out_filename = ''
         if output_format != 'MEM':
@@ -123,7 +150,7 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
                     f.write(item+'\n')
         else:
             raise Exception('Unknown color palette type {}'.format(color_palette))
-
+        stats = color_palette_stats(color_filename, min_val, max_val)
         dem_options = {
             'addAlpha': True,
             'format': output_format,
@@ -134,7 +161,9 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
             os.remove(temp_color_filename)
         if ds is None:
             raise Exception('fail to color')
-    return ds
+    else:
+        stats = [min_val, max_val]
+    return ds, stats
 
 
 def get_wkt_list(filename):

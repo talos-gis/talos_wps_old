@@ -27,10 +27,10 @@ class GdalDem(Process):
     def __init__(self):
         inputs = [
             ComplexInput('r', 'input raster', supported_formats=[FORMATS.GEOTIFF],
-                         min_occurs=0, max_occurs=1, default=None),
+                         min_occurs=1, max_occurs=1, default=None),
             LiteralInput('output_czml', 'make output as czml', data_type='boolean',
                          min_occurs=0, max_occurs=1, default=False),
-            LiteralInput('output_tif', 'make output as tift', data_type='boolean',
+            LiteralInput('output_tif', 'make output as tif', data_type='boolean',
                          min_occurs=0, max_occurs=1, default=True),
             ComplexInput('color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
                          min_occurs=0, max_occurs=1, default=None),
@@ -61,7 +61,6 @@ class GdalDem(Process):
             # store_supported=True,
             # status_supported=True
         )
-
 
     def _handler(self, request, response: ExecuteResponse):
         raster_filename = request.inputs['r'][0].file

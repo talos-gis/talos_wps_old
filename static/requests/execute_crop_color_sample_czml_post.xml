@@ -13,8 +13,8 @@
         <wps:Input>
         <ows:Identifier>r</ows:Identifier>
 <!--                <wps:Reference xlink:href="file:./static/data/srtm1_x33-62_y23-39.tif"/>-->
-                <wps:Reference xlink:href="file:./static/data/srtm1_x35_y32.tif"/>
-<!--                <wps:Reference xlink:href="file:./static/sample/srtm1_x35_y32.tif"/>-->
+<!--                <wps:Reference xlink:href="file:./static/data/srtm1_x35_y32.tif"/>-->
+                <wps:Reference xlink:href="file:./static/sample/srtm1_x35_y32.tif"/>
 <!--                <wps:Reference xlink:href="https://github.com/talos-gis/viewshed_wps/raw/master/static/data/srtm1_x35_y32.tif"/>-->
         </wps:Input>
 
@@ -94,14 +94,21 @@
             <ows:Identifier>color_palette</ows:Identifier>
             <wps:Data>
                 <wps:ComplexData>
-                    500 255 255 255 &#xA;
-                    450 235 220 175 &#xA;
-                    300 190 185 135 &#xA;
-                    150 240 250 150 &#xA;
-                    76  50  180  50 &#xA;
-                    75  200 230 255 &#xA;
+                    100% 255 255 255 &#xA;
+                    75% 235 220 175 &#xA;
+                    20% 190 185 135 &#xA;
+                    0% 240 250 150 &#xA;
                     nv  0 0 0 0
                 </wps:ComplexData>
+<!--                <wps:ComplexData>-->
+<!--                    500 255 255 255 &#xA;-->
+<!--                    450 235 220 175 &#xA;-->
+<!--                    300 190 185 135 &#xA;-->
+<!--                    150 240 250 150 &#xA;-->
+<!--                    76  50  180  50 &#xA;-->
+<!--                    75  200 230 255 &#xA;-->
+<!--                    nv  0 0 0 0-->
+<!--                </wps:ComplexData>-->
             </wps:Data>
 		</wps:Input>
 

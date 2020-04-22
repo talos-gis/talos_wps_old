@@ -10,7 +10,7 @@ from osgeo import gdal
 import base64
 
 
-def gdal_to_czml(ds, name=None):
+def gdal_to_czml(ds, name=None, description=None):
 
     # calculate the extent
     ulx, xres, xskew, uly, yskew, yres = ds.GetGeoTransform()
@@ -44,6 +44,7 @@ def gdal_to_czml(ds, name=None):
             Packet(
                 id="rect",
                 name=name,
+                description=description,
                 rectangle=Rectangle(
                     coordinates=RectangleCoordinates(wsenDegrees=wsen),
                     fill=True,

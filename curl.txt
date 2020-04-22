@@ -6,7 +6,7 @@ curl "http://localhost:5000/wps?service=WPS&request=execute&version=1.0.0&Identi
 # viewshed with sampled data
 curl "http://localhost:5000/wps?service=WPS&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./static/sample/srtm1_x35_y32.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1"
 
-# crop_color with mapped volume data
+# viewshed with mapped volume data
 curl "http://localhost:5000/wps?service=WPS&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./static/data/srtm1_x33-62_y23-39.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1"
 
 curl "http://localhost:5000/wps?service=WPS&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./static/data/srtm1_x35_y32.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1" # -o ./outputs/viewshed.tif && cat ./outputs/viewshed.tif
