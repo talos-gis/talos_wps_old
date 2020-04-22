@@ -13,9 +13,9 @@ curl "http://localhost:5000/wps?service=WPS&request=execute&version=1.0.0&Identi
 
 
 ## POST
-curl -H "Content-type: xml" -X POST -d@./static/requests/execute_crop_color_sample_post.xml http://localhost:5000/wps # -o ./outputs/dem.czml && cat ./outputs/dem.czml
-curl -H "Content-type: xml" -X POST -d@./static/requests/execute_crop_color_sample_post.xml http://localhost:5000/wps -o outputs/crop_color_sample.tif
-curl -H "Content-type: xml" -X POST -d@./static/requests/execute_crop_color_post.xml http://localhost/wps -o outputs/crop_color.tif
+curl -H "Content-type: xml" -X POST -d@./static/requests/crop_color_sample_czml_post.xml http://localhost:5000/wps # -o ./outputs/crop_color_sample_czml_post.czml && cat ./outputs/crop_color_sample_czml_post.czml
+curl -H "Content-type: xml" -X POST -d@./static/requests/crop_color_sample_post.xml http://localhost:5000/wps -o outputs/crop_color_sample.tif
+curl -H "Content-type: xml" -X POST -d@./static/requests/crop_color_post.xml http://localhost/wps -o outputs/crop_color.tif
 
 
-curl -H "Content-type: xml" -X POST -d@./static/requests/execute_viewshed_post.xml http://localhost:5000/wps
+curl -H "Content-type: xml" -X POST -d@./static/requests/viewshed_post.xml http://localhost:5000/wps
