@@ -3,7 +3,7 @@ docker build -t talosgis/talos_wps:release-1.0.0 -t talosgis/talos_wps:latest .
 docker run \
   -d \
   -it \
-  -p 80:5000 \
+  -p 5000:5000 \
   --name talos_wps_test \
   --env WORKDIR=/app \
   --mount type=bind,source=/home/idan/maps,target=/app/static/data,readonly \
