@@ -1,4 +1,4 @@
-sudo docker build -t talosgis/talos_wps:release-1.0.0 -t talosgis/talos_wps:latest .
+sudo docker build -t talosgis/talos_wps:release-1.0.2 -t talosgis/talos_wps:latest .
 
 sudo docker run \
   -d \

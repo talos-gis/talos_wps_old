@@ -13,6 +13,8 @@ COPY processes/ ./processes
 COPY *.py ./
 COPY *.cfg ./
 
+COPY ./patch/core.py /usr/local/lib/python3.6/dist-packages/czml3/
+
 RUN mkdir -p ./logs ./outputs ./workdir ./static/data
 
 #CMD ls
