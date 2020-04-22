@@ -2,12 +2,12 @@
     {
         "id": "document",
         "version": "1.0",
-        "name": "czml"
+        "name": "czml",
+        "description": "1246.00 841.25 -49.20 -373.00"
     },
     {
         "id": "rect",
-        "name": "/tmp/tmper51nn55.czml",
-        "description": "1246.00 841.25 -49.20 -373.00",
+        "name": "/tmp/tmp8jqolq7i.czml",
         "rectangle": {
             "coordinates": {
                 "wsenDegrees": [

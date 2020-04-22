@@ -40,11 +40,11 @@ def gdal_to_czml(ds, name=None, description=None):
         [
             Preamble(
                 name="czml",
+                description=description,
             ),
             Packet(
                 id="rect",
                 name=name,
-                description=description,
                 rectangle=Rectangle(
                     coordinates=RectangleCoordinates(wsenDegrees=wsen),
                     fill=True,
