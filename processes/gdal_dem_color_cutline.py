@@ -122,10 +122,6 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
     do_color = color_palette is not None
     do_crop = (extent or cutline) is not None
 
-    bnd = ds.GetRasterBand(1)
-    bnd.ComputeStatistics(0)
-    min_val = bnd.GetMinimum()
-    max_val = bnd.GetMaximum()
     if out_filename is None:
         out_filename = ''
         if output_format != 'MEM':
@@ -138,6 +134,12 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
                        common_options=common_options)
         if ds is None:
             raise Exception('fail to crop')
+
+    bnd = ds.GetRasterBand(1)
+    bnd.ComputeStatistics(0)
+    min_val = bnd.GetMinimum()
+    max_val = bnd.GetMaximum()
+
     if do_color:
         temp_color_filename = None
         if isinstance(color_palette, str):

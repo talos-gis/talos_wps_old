@@ -3,6 +3,9 @@
 # say hello
 curl "http://localhost:5000/wps?service=WPS&request=execute&version=1.0.0&Identifier=say_hello&storeExecuteResponse=true&DataInputs=name=Idan"
 
+curl "http://localhost:5000/wps?service=WPS&request=execute&version=1.0.0&Identifier=ls&storeExecuteResponse=true&DataInputs=dir=./static/data&DataInputs=pattern=*.tif&RawDataOutput=output"
+
+
 # viewshed with sampled data
 curl "http://localhost:5000/wps?service=WPS&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./static/sample/srtm1_x35_y32.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1"
 
@@ -19,3 +22,7 @@ curl -H "Content-type: xml" -X POST -d@./static/requests/crop_color_post.xml htt
 
 
 curl -H "Content-type: xml" -X POST -d@./static/requests/viewshed_post.xml http://localhost:5000/wps
+
+
+clear request cache
+rm ./logs/pywps-logs.sqlite3

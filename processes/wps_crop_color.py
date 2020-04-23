@@ -104,5 +104,5 @@ class GdalDem(Process):
                 response.outputs['czml'].file = czml_output_filename
 
         response.outputs['r'].data = raster_filename
-        # response.outputs['response'].uom = UOM('unity')
+        # response.outputs['output'].uom = UOM('unity')
         return response
