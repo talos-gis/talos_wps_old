@@ -1,4 +1,4 @@
-sudo docker build -t talosgis/talos_wps:release-1.0.2 -t talosgis/talos_wps:latest .
+sudo docker build -t talos_wps:latest -t talos_wps:latest .
 
 sudo docker run \
   -d \
@@ -7,8 +7,12 @@ sudo docker run \
   --name talos_wps_test \
   --env WORKDIR=/app \
   --mount type=bind,source=/home/idan/maps,target=/app/static/data,readonly \
-  talosgis/talos_wps:latest
-    
+  --mount type=bind,source=/home/idan/dev/talos_wps/static/process_defaults.yaml,target=/app/static/process_defaults.yaml,readonly \
+  talos_wps:latest
+
+
+sudo docker restart talos_wps_test
+
 sudo docker exec -it talos_wps_test bash
 
 sudo docker ps -all

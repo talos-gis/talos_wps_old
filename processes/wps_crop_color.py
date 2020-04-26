@@ -14,6 +14,7 @@ from pywps.response.execute import ExecuteResponse
 from processes import gdal_dem_color_cutline
 from gdalos import gdal_helper
 from gdalos.rectangle import GeoRectangle
+from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, BoundingBoxInputD
 
 czml_format = Format('application/czml+json', extension='.czml')
 wkt_format = Format('application/wkt', extension='.wkt')
@@ -25,20 +26,22 @@ DEFAULT_RASTER = 'static/sample/srtm1_x35_y32.tif'
 
 class GdalDem(Process):
     def __init__(self):
+        process_id = 'say_hello'
+        defaults = process_defaults(process_id)
         inputs = [
-            ComplexInput('r', 'input raster', supported_formats=[FORMATS.GEOTIFF],
+            ComplexInputD(defaults, 'r', 'input raster', supported_formats=[FORMATS.GEOTIFF],
                          min_occurs=1, max_occurs=1, default=None),
-            LiteralInput('output_czml', 'make output as czml', data_type='boolean',
+            LiteralInputD(defaults, 'output_czml', 'make output as czml', data_type='boolean',
                          min_occurs=0, max_occurs=1, default=False),
-            LiteralInput('output_tif', 'make output as tif', data_type='boolean',
+            LiteralInputD(defaults, 'output_tif', 'make output as tif', data_type='boolean',
                          min_occurs=0, max_occurs=1, default=True),
-            ComplexInput('color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
+            ComplexInputD(defaults, 'color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
                          min_occurs=0, max_occurs=1, default=None),
-            ComplexInput('cutline', 'input vector cutline',
+            ComplexInputD(defaults, 'cutline', 'input vector cutline',
                          supported_formats=[FORMATS.GML],
                          # crss=['EPSG:4326', ], metadata=[Metadata('EPSG.io', 'http://epsg.io/'), ],
                          min_occurs=0, max_occurs=1, default=None),
-            BoundingBoxInput('extent', 'extent BoundingBox',
+            BoundingBoxInputD(defaults, 'extent', 'extent BoundingBox',
                              crss=['EPSG:4326', ], metadata=[Metadata('EPSG.io', 'http://epsg.io/'), ],
                              min_occurs=0, max_occurs=1, default=None)
         ]

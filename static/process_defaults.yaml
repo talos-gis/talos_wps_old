@@ -1,0 +1,10 @@
+say_hello:
+  name: "Universe"
+
+ls:
+  dir: "./static/data"
+  pattern: "*.tif"
+
+crop_color:
+  output_czml: True
+  output_tif: False

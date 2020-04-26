@@ -3,7 +3,6 @@ import tempfile
 from typing import Optional, Sequence, List, Union
 from osgeo import gdal, ogr, osr
 from gdalos.rectangle import GeoRectangle
-from gdalos import gdal_helper
 from processes import gdal_to_czml
 
 

@@ -1,16 +1,18 @@
 
 from pywps import Process, LiteralInput, LiteralOutput, UOM
+from .process_defaults import process_defaults, LiteralInputD
 
 
 class SayHello(Process):
     def __init__(self):
-        inputs = [LiteralInput('name', 'Input name', data_type='string')]
-        outputs = [LiteralOutput('output',
-                                 'Output response', data_type='string')]
+        process_id = 'say_hello'
+        defaults = process_defaults(process_id)
+        inputs = [LiteralInputD(defaults, 'name', 'Input name', data_type='string', default='World')]
+        outputs = [LiteralOutput('output', 'Output response', data_type='string')]
 
         super(SayHello, self).__init__(
             self._handler,
-            identifier='say_hello',
+            identifier=process_id,
             title='Process Say Hello',
             abstract='Returns a literal string output\
              with Hello plus the inputed name',

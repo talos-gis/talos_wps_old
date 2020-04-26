@@ -5,10 +5,12 @@ ENV WORKDIR=/app
 # ENV DATA_DIR "/data"
 
 RUN apt-get install -y --no-install-recommends python3-distutils python3-pip python3-setuptools python3-wheel
-RUN python3 -m pip install flask gunicorn pywps gdalos czml3
+COPY requirements.txt ./
+RUN python3 -m pip install -r requirements.txt
 
 WORKDIR ${WORKDIR}
-COPY static/ ./static
+COPY static/sample/ ./static/sample
+COPY static/requests/ ./static/requests
 COPY processes/ ./processes
 COPY *.py ./
 COPY *.cfg ./
