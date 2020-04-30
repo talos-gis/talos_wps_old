@@ -12,9 +12,9 @@
 
         <wps:Input>
         <ows:Identifier>r</ows:Identifier>
-                <wps:Reference xlink:href="file:./static/data/srtm1_x33-62_y23-39.cog.tif"/>
+                <wps:Reference xlink:href="file:./static/maps/srtm1_x33-62_y23-39.cog.tif"/>
 <!--                <wps:Reference xlink:href="file:./static/sample/srtm1_x35_y32.tif"/>-->
-<!--                <wps:Reference xlink:href="https://github.com/talos-gis/viewshed_wps/raw/master/static/data/srtm1_x35_y32.tif"/>-->
+<!--                <wps:Reference xlink:href="https://github.com/talos-gis/viewshed_wps/raw/master/sample/srtm1_x35_y32.tif"/>-->
         </wps:Input>
 
 		<wps:Input>

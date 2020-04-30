@@ -9,7 +9,7 @@
   <wps:DataInputs>
     <wps:Input>
       <ows:Identifier>r</ows:Identifier>
-      <wps:Reference xlink:href="file:./static/data/SRTM1_hgt_20802040.tif"/>
+      <wps:Reference xlink:href="file:./static/maps/SRTM1_hgt_20802040.tif"/>
     </wps:Input>
     <wps:Input>
       <ows:Identifier>output_tif</ows:Identifier>

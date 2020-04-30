@@ -12,7 +12,7 @@
 
         <wps:Input>
         <ows:Identifier>r</ows:Identifier>
-                <wps:Reference xlink:href="file:./static/data/BlueMarble_200408.jpg.cog.tif"/>
+                <wps:Reference xlink:href="file:./static/maps/BlueMarble_200408.jpg.cog.tif"/>
         </wps:Input>
 
 		<wps:Input>

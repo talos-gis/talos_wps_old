@@ -1,10 +1,11 @@
 say_hello:
-  name: "Idan"
+  name: "Universe"
 
 ls:
-  dir: "./static/data"
+  dir: "./static/maps"
   pattern: "*.tif"
 
 crop_color:
+  r: './static/sample/srtm1_x35_y32.tif'
   output_czml: True
   output_tif: False

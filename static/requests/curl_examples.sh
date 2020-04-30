@@ -3,14 +3,14 @@ server=http://localhost:5000/wps
 ## GET
 # say hello
 curl "$server?service=WPS&request=execute&version=1.0.0&Identifier=say_hello&storeExecuteResponse=true&DataInputs=name=Idan&RawDataOutput=output"
-curl "$server?service=WPS&request=execute&version=1.0.0&Identifier=ls&storeExecuteResponse=true&DataInputs=dir=./static/data&DataInputs=pattern=*.tif&RawDataOutput=output"
+curl "$server?service=WPS&request=execute&version=1.0.0&Identifier=ls&storeExecuteResponse=true&DataInputs=dir=./static/maps&DataInputs=pattern=*.tif&RawDataOutput=output"
 
 # viewshed with sampled data
 curl "$server?service=WPS&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./static/sample/srtm1_x35_y32.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1"
 
 # viewshed with mapped volume data
-curl "$server?service=WPS&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./static/data/srtm1_x33-62_y23-39.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1"
-curl "$server?service=WPS&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./static/data/srtm1_x35_y32.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1" # -o ./outputs/viewshed.tif && cat ./outputs/viewshed.tif
+curl "$server?service=WPS&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./static/maps/srtm1_x33-62_y23-39.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1"
+curl "$server?service=WPS&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./static/maps/srtm1_x35_y32.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1" # -o ./outputs/viewshed.tif && cat ./outputs/viewshed.tif
 
 
 ## POST
