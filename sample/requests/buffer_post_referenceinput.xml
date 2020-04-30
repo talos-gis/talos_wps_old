@@ -4,7 +4,7 @@
 	<wps:DataInputs>
 		<wps:Input>
 			<ows:Identifier>poly_in</ows:Identifier>
-                        <wps:Reference xlink:href="http://localhost:5000/static/sample/point.gml" />
+                        <wps:Reference xlink:href="http://localhost:5000/sample/shp/point.gml" />
 		</wps:Input>
 		<wps:Input>
 			<ows:Identifier>buffer</ows:Identifier>

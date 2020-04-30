@@ -22,9 +22,12 @@ def hello():
     return 'hello to the WPS server root'
 
 
-@app.route('/outputs/' + '<path:filename>')
-def outputfile(filename):
-    targetfile = os.path.join('', 'outputs', filename)
+@app.route('/test')
+def test():
+    return 'hello test!'
+
+
+def flask_response(targetfile):
     if os.path.isfile(targetfile):
         file_ext = os.path.splitext(targetfile)[1]
         with open(targetfile, mode='rb') as f:
@@ -37,13 +40,19 @@ def outputfile(filename):
         flask.abort(404)
 
 
+@app.route('/outputs/' + '<path:filename>')
+def outputfile(filename):
+    targetfile = os.path.join('', 'outputs', filename)
+    flask_response(targetfile)
+
+
 @app.route('/static/' + '<path:filename>')
 def staticfile(filename):
     targetfile = os.path.join('', 'static', filename)
-    if os.path.isfile(targetfile):
-        with open(targetfile, mode='rb') as f:
-            file_bytes = f.read()
-        mime_type = None
-        return flask.Response(file_bytes, content_type=mime_type)
-    else:
-        flask.abort(404)
+    flask_response(targetfile)
+
+
+@app.route('/sample/' + '<path:filename>')
+def samplefile(filename):
+    targetfile = os.path.join('', 'sample', filename)
+    flask_response(targetfile)

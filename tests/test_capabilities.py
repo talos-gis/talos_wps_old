@@ -5,6 +5,7 @@ import subprocess
 
 from tests.common import validate, URL
 
+
 class CapabilitiesTest(unittest.TestCase):
 
     def setUp(self):
@@ -14,6 +15,7 @@ class CapabilitiesTest(unittest.TestCase):
 
     def test_valid(self):
         assert validate(self.url, self.schema_url)
+
 
 def load_tests(loader=None, tests=None, pattern=None):
     if not loader:

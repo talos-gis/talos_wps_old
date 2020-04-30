@@ -183,12 +183,12 @@ def read_list(filename):
 
 if __name__ == '__main__':
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    root_data = os.path.join(script_dir, r'../static/sample')
-    shp_filename = os.path.join(root_data, r'poly.shp')
-    color_palette_filename = os.path.join(root_data, r'color_file.txt')
+    root_data = os.path.join(script_dir, r'../sample')
+    shp_filename = os.path.join(root_data, r'shp/poly.shp')
+    color_palette_filename = os.path.join(root_data, r'color_files/color_file.txt')
     wkt_list = get_wkt_list(shp_filename)
     color_palette = read_list(color_palette_filename)
-    raster_filename = os.path.join(root_data, r'srtm1_x35_y32.tif')
+    raster_filename = os.path.join(root_data, r'maps/srtm1_x35_y32.tif')
     gdaldem_crop_and_color(
         filename=raster_filename,
         out_filename=tempfile.mktemp(suffix='.tif'),

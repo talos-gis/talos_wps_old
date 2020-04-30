@@ -18,10 +18,6 @@ from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, Bo
 
 czml_format = Format('application/czml+json', extension='.czml')
 wkt_format = Format('application/wkt', extension='.wkt')
-DEFAULT_RASTER = 'static/sample/srtm1_x35_y32.tif'
-
-# import pywps.inout.literaltypes
-# pywps.inout.literaltypes.LITERAL_DATA_TYPES
 
 
 class GdalDem(Process):

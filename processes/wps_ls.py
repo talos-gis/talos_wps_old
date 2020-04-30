@@ -9,7 +9,7 @@ class ls(Process):
         process_id = 'ls'
         defaults = process_defaults(process_id)
         inputs = [
-            LiteralInputD(defaults, 'dir', 'argument', data_type='string', min_occurs=0, default='./static/sample'),
+            LiteralInputD(defaults, 'dir', 'argument', data_type='string', min_occurs=0, default='./sample/maps'),
             LiteralInputD(defaults, 'pattern', 'argument', data_type='string', min_occurs=0, default='*.tif'),
             LiteralInputD(defaults, 'r', 'recursive', data_type='boolean', min_occurs=0, max_occurs=1, default=False),
             ]

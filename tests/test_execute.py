@@ -8,26 +8,26 @@ from tests.common import validate, URL, get_response
 
 from tests.common import NAMESPACES
 
+
 class SayHello(unittest.TestCase):
     """Test sayhello process
     """
 
     def setUp(self):
-
         self.schema_url = 'http://schemas.opengis.net/wps/1.0.0/wpsExecute_response.xsd'
 
-
     def test_valid(self):
-        "GET Execute request"
+        """GET Execute request"""
 
         url = URL + '?service=wps&request=execute&identifier=say_hello&version=1.0.0&datainputs=name=ahoj'
         assert validate(url, self.schema_url)
 
     def test_valid_lineage(self):
-        "GET Execute request, lineage=true"
+        """GET Execute request, lineage=true"""
 
         url = URL + '?service=wps&request=execute&identifier=say_hello&version=1.0.0&datainputs=name=ahoj&lineage=true'
         assert validate(url, self.schema_url)
+
 
 class Buffer(unittest.TestCase):
     """Test buffer process
@@ -37,14 +37,13 @@ class Buffer(unittest.TestCase):
 
         self.schema_url = 'http://schemas.opengis.net/wps/1.0.0/wpsExecute_response.xsd'
         self.url = URL
-        resp = get_response('http://localhost:5000/static/requests/execute_buffer_post.xml')
+        resp = get_response('http://localhost:5000/sample/requests/execute_buffer_post.xml')
         self.request_data = resp.read()
 
     def test_valid(self):
         "POST Execute request"
 
         validate(self.url, self.schema_url, self.request_data)
-
 
 
     #def test_valid_lineage(self):
@@ -70,9 +69,8 @@ class SyncAndAsync(unittest.TestCase):
 
         return response_doc
 
-
     def test_sync(self):
-        request = self._get_request('http://localhost:5000/static/requests/execute_buffer_post.xml')
+        request = self._get_request('http://localhost:5000/sample/requests/execute_buffer_post.xml')
         response = self._get_response(request)
 
         self.assertEqual(
@@ -101,7 +99,7 @@ class SyncAndAsync(unittest.TestCase):
             namespaces=NAMESPACES))
 
     def test_async(self):
-        request = self._get_request('http://localhost:5000/static/requests/execute_buffer_async.xml')
+        request = self._get_request('http://localhost:5000/sample/requests/execute_buffer_async.xml')
         response = self._get_response(request)
 
         self.assertEqual(
@@ -131,7 +129,7 @@ class SyncAndAsync(unittest.TestCase):
             namespaces=NAMESPACES))
 
     def test_async_reference(self):
-        request = self._get_request('http://localhost:5000/static/requests/execute_buffer_async_reference.xml')
+        request = self._get_request('http://localhost:5000/sample/requests/execute_buffer_async_reference.xml')
         response = self._get_response(request)
 
         self.assertTrue(response.xpath(
@@ -171,6 +169,7 @@ class SyncAndAsync(unittest.TestCase):
 
         self.assertTrue(data_doc.xpath('//ogr:FeatureCollection',
             namespaces=NAMESPACES))
+
 
 def load_tests(loader=None, tests=None, pattern=None):
     if not loader:

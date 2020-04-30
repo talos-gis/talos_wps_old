@@ -1,8 +1,8 @@
 import unittest
 import sqlite3
 
-class LoggingTest(unittest.TestCase):
 
+class LoggingTest(unittest.TestCase):
     def test_db_log(self):
 
         conn = sqlite3.connect('logs/pywps-logs.sqlite3')
@@ -12,6 +12,7 @@ class LoggingTest(unittest.TestCase):
         all_lines = cur.fetchall()
 
         self.assertEqual(len(all_lines)%5, 0)
+
 
 def load_tests(loader=None, tests=None, pattern=None):
     if not loader:
