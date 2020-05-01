@@ -1,5 +1,5 @@
 say_hello:
-  name: "Idan"
+  name: "default-config"
 
 ls:
   dir: "./static/maps"
