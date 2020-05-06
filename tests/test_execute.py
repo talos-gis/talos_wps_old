@@ -37,7 +37,7 @@ class Buffer(unittest.TestCase):
 
         self.schema_url = 'http://schemas.opengis.net/wps/1.0.0/wpsExecute_response.xsd'
         self.url = URL
-        resp = get_response('http://localhost:5000/sample/requests/execute_buffer_post.xml')
+        resp = get_response('http://localhost:5000/data/requests/execute_buffer.xml')
         self.request_data = resp.read()
 
     def test_valid(self):
@@ -70,7 +70,7 @@ class SyncAndAsync(unittest.TestCase):
         return response_doc
 
     def test_sync(self):
-        request = self._get_request('http://localhost:5000/sample/requests/execute_buffer_post.xml')
+        request = self._get_request('http://localhost:5000/data/requests/execute_buffer.xml')
         response = self._get_response(request)
 
         self.assertEqual(
@@ -99,7 +99,7 @@ class SyncAndAsync(unittest.TestCase):
             namespaces=NAMESPACES))
 
     def test_async(self):
-        request = self._get_request('http://localhost:5000/sample/requests/execute_buffer_async.xml')
+        request = self._get_request('http://localhost:5000/data/requests/execute_buffer_async.xml')
         response = self._get_response(request)
 
         self.assertEqual(
@@ -129,7 +129,7 @@ class SyncAndAsync(unittest.TestCase):
             namespaces=NAMESPACES))
 
     def test_async_reference(self):
-        request = self._get_request('http://localhost:5000/sample/requests/execute_buffer_async_reference.xml')
+        request = self._get_request('http://localhost:5000/data/requests/execute_buffer_async_reference.xml')
         response = self._get_response(request)
 
         self.assertTrue(response.xpath(

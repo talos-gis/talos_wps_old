@@ -12,9 +12,8 @@
 
         <wps:Input>
         <ows:Identifier>r</ows:Identifier>
-                <wps:Reference xlink:href="file:./static/maps/srtm1_x33-62_y23-39.cog.tif"/>
-<!--                <wps:Reference xlink:href="file:./sample/maps/srtm1_x35_y32.tif"/>-->
-<!--                <wps:Reference xlink:href="https://github.com/talos-gis/viewshed_wps/raw/master/sample/maps/srtm1_x35_y32.tif"/>-->
+                <wps:Reference xlink:href="file:./data/static/maps/srtm1_x33-62_y23-39.cog.tif"/>
+<!--                <wps:Reference xlink:href="https://github.com/talos-gis/talos_wps/raw/master/data/sample/maps/srtm1_x35_y32.tif"/>-->
         </wps:Input>
 
 		<wps:Input>

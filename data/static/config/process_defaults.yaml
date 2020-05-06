@@ -1,0 +1,15 @@
+say_hello:
+  name: "default-config"
+
+ls:
+  dir: './data/static/maps'
+  pattern: "*.tif"
+
+ras_val:
+  r: './data/sample/maps/srtm1_x35_y32.tif'
+
+crop_color:
+  r: './data/sample/maps/srtm1_x35_y32.tif'
+  color_palette: '/data/sample/color_files/color_file_1.txt'
+  output_czml: True
+  output_tif: False

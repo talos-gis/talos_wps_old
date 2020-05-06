@@ -8,13 +8,14 @@ import tempfile
 from pywps import FORMATS, Format
 from pywps.app import Process
 from pywps.app.Common import Metadata
-from pywps.inout import ComplexInput, LiteralInput, BoundingBoxInput, ComplexOutput, LiteralOutput
+from pywps.inout import ComplexOutput, LiteralOutput
 from pywps.response.execute import ExecuteResponse
 
-from processes import gdal_dem_color_cutline
+from backend import gdal_dem_color_cutline
 from gdalos import gdal_helper
 from gdalos.rectangle import GeoRectangle
 from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, BoundingBoxInputD
+from processes import process_helper
 
 czml_format = Format('application/czml+json', extension='.czml')
 wkt_format = Format('application/wkt', extension='.wkt')
@@ -22,7 +23,7 @@ wkt_format = Format('application/wkt', extension='.wkt')
 
 class GdalDem(Process):
     def __init__(self):
-        process_id = 'say_hello'
+        process_id = 'crop_color'
         defaults = process_defaults(process_id)
         inputs = [
             ComplexInputD(defaults, 'r', 'input raster', supported_formats=[FORMATS.GEOTIFF],
@@ -37,6 +38,8 @@ class GdalDem(Process):
                          supported_formats=[FORMATS.GML],
                          # crss=['EPSG:4326', ], metadata=[Metadata('EPSG.io', 'http://epsg.io/'), ],
                          min_occurs=0, max_occurs=1, default=None),
+            LiteralInputD(defaults, 'process_palette', 'put palette in czml description', data_type='integer',
+                         min_occurs=1, max_occurs=1, default=2),
             BoundingBoxInputD(defaults, 'extent', 'extent BoundingBox',
                              crss=['EPSG:4326', ], metadata=[Metadata('EPSG.io', 'http://epsg.io/'), ],
                              min_occurs=0, max_occurs=1, default=None)
@@ -49,24 +52,30 @@ class GdalDem(Process):
 
         super().__init__(
             self._handler,
-            identifier='crop_color',
-            version='0.1',
+            identifier=process_id,
+            version='1.0.0',
             title='crops to an extent and/or to a cutline polygon[s] and/or makes a color relief',
             abstract='returns a color relief of the input raster inside the given extent or cutline polygon[s]',
             inputs=inputs,
             outputs=outputs,
-            # metadata=[Metadata('bla'), Metadata('bla')],
+            metadata=[Metadata('raster')],
             # profile='',
             # store_supported=True,
             # status_supported=True
         )
 
     def _handler(self, request, response: ExecuteResponse):
-        raster_filename = request.inputs['r'][0].file
-
         output_czml = request.inputs['output_czml'][0].data
         output_tif = request.inputs['output_tif'][0].data
         if output_czml or output_tif:
+            if not output_czml:
+                process_palette = None
+            else:
+                process_palette = request.inputs['process_palette'][0].data
+                if not process_palette:
+                    process_palette = None
+                elif process_palette == 2:
+                    process_palette = ...
             cutline = request.inputs['cutline'][0].file if 'cutline' in request.inputs else None
             color_palette = request.inputs['color_palette'][0].file if 'color_palette' in request.inputs else None
             extent = request.inputs['extent'][0].data if 'extent' in request.inputs else None
@@ -82,9 +91,7 @@ class GdalDem(Process):
             # gdal_out_format = 'MEM' if is_czml else output_format
             gdal_out_format = 'GTiff' if output_tif else 'MEM'
 
-            src_ds = gdal_helper.open_ds(raster_filename)
-            if src_ds is None:
-                raise Exception('cannot open file {}'.format(raster_filename))
+            raster_filename, src_ds = process_helper.open_ds_from_wps_input(request.inputs['r'][0])
 
             ds = gdal_dem_color_cutline.czml_gdaldem_crop_and_color(
                 ds=src_ds,
@@ -92,6 +99,7 @@ class GdalDem(Process):
                 out_filename=tif_output_filename,
                 extent=extent, cutline=cutline,
                 color_palette=color_palette,
+                process_palette=process_palette,
                 output_format=gdal_out_format)
             del ds
             del src_ds

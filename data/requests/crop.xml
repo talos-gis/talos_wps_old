@@ -4,7 +4,7 @@
 
     <wps:ResponseForm>
         <wps:RawDataOutput>
-          <ows:Identifier>czml</ows:Identifier>
+          <ows:Identifier>tif</ows:Identifier>
         </wps:RawDataOutput>
     </wps:ResponseForm>
 
@@ -12,33 +12,29 @@
 
         <wps:Input>
         <ows:Identifier>r</ows:Identifier>
-<!--                <wps:Reference xlink:href="file:./static/maps/srtm1_x33-62_y23-39.tif"/>-->
-<!--                <wps:Reference xlink:href="file:./static/maps/srtm1_x35_y32.tif"/>-->
-                <wps:Reference xlink:href="file:./sample/maps/srtm1_x35_y32.tif"/>
-<!--                <wps:Reference xlink:href="https://github.com/talos-gis/viewshed_wps/raw/master/sample/maps/srtm1_x35_y32.tif"/>-->
+                <wps:Reference xlink:href="file:./data/static/maps/BlueMarble_200408.jpg.cog.tif"/>
         </wps:Input>
 
 		<wps:Input>
             <ows:Identifier>output_tif</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>False</wps:LiteralData>
+                <wps:LiteralData>True</wps:LiteralData>
             </wps:Data>
 		</wps:Input>
 
         <wps:Input>
             <ows:Identifier>output_czml</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>True</wps:LiteralData>
+                <wps:LiteralData>False</wps:LiteralData>
             </wps:Data>
 		</wps:Input>
-
 
 <!--		<wps:Input>-->
 <!--            <ows:Identifier>extent</ows:Identifier>-->
 <!--            <wps:Data>-->
 <!--                <wps:BoundingBoxData crs="EPSG:4326" dimenstions="2">-->
-<!--                    <ows:LowerCorner>35.0 31.5</ows:LowerCorner>-->
-<!--                    <ows:UpperCorner>35.1 31.6</ows:UpperCorner>-->
+<!--                    <ows:LowerCorner>33.2 50.0</ows:LowerCorner>-->
+<!--                    <ows:UpperCorner>33.3 50.2</ows:UpperCorner>-->
 <!--                </wps:BoundingBoxData>-->
 <!--            </wps:Data>-->
 <!--		</wps:Input>-->
@@ -90,16 +86,9 @@
             </wps:Data>
 		</wps:Input>
 
-		<wps:Input>
-            <ows:Identifier>color_palette</ows:Identifier>
-            <wps:Data>
-                <wps:ComplexData>
-                    100% 255 255 255 &#xA;
-                    75% 235 220 175 &#xA;
-                    20% 190 185 135 &#xA;
-                    0% 240 250 150 &#xA;
-                    nv  0 0 0 0
-                </wps:ComplexData>
+<!--		<wps:Input>-->
+<!--            <ows:Identifier>color_palette</ows:Identifier>-->
+<!--            <wps:Data>-->
 <!--                <wps:ComplexData>-->
 <!--                    500 255 255 255 &#xA;-->
 <!--                    450 235 220 175 &#xA;-->
@@ -109,8 +98,8 @@
 <!--                    75  200 230 255 &#xA;-->
 <!--                    nv  0 0 0 0-->
 <!--                </wps:ComplexData>-->
-            </wps:Data>
-		</wps:Input>
+<!--            </wps:Data>-->
+<!--		</wps:Input>-->
 
 	</wps:DataInputs>
 </wps:Execute>

@@ -16,7 +16,7 @@ class Sleep(Process):
             identifier=process_id,
             title='Process Sleep',
             abstract='Returns how many seconds it really slept',
-            version='0.0.1',
+            version='1.0.0',
             inputs=inputs,
             outputs=outputs,
             store_supported=True,

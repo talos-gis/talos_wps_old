@@ -9,7 +9,7 @@
   <wps:DataInputs>
     <wps:Input>
       <ows:Identifier>r</ows:Identifier>
-      <wps:Reference xlink:href="file:./static/maps/SRTM1_hgt_20802040.tif"/>
+      <wps:Reference xlink:href="file:./data/static/maps/SRTM1_hgt_20802040.tif"/>
     </wps:Input>
     <wps:Input>
       <ows:Identifier>output_tif</ows:Identifier>
@@ -48,7 +48,7 @@
 &#xD;
                     10%  200 230 255
 &#xD;
-                    0  0 0 0 0&#xD;
+                    nv  0 0 0 0&#xD;
                 </wps:ComplexData>
       </wps:Data>
     </wps:Input>

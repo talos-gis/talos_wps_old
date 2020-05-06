@@ -46,13 +46,7 @@ def outputfile(filename):
     flask_response(targetfile)
 
 
-@app.route('/static/' + '<path:filename>')
-def staticfile(filename):
-    targetfile = os.path.join('', 'static', filename)
-    flask_response(targetfile)
-
-
-@app.route('/sample/' + '<path:filename>')
-def samplefile(filename):
-    targetfile = os.path.join('', 'sample', filename)
+@app.route('/data/' + '<path:filename>')
+def datafile(filename):
+    targetfile = os.path.join('', 'data', filename)
     flask_response(targetfile)

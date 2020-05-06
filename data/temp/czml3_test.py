@@ -4,8 +4,8 @@
 import gdal
 from wps.processes import gdal_to_czml
 
-input_filename = r'd:\dev\czml\1.tif'
-ds = gdal.Open(input_filename)
+raster_filename = r'd:\dev\czml\1.tif'
+ds = gdal.Open(raster_filename, gdal.GA_ReadOnly)
 output = gdal_to_czml.gdal_to_czml(ds, name="")
 del ds
 

@@ -15,7 +15,7 @@ class Buffer(Process):
                   mode=MODE.STRICT),
                   LiteralInput('buffer', 'Buffer size', data_type='float',
                   allowed_values=(0, 1, 10, (10, 10, 100), (100, 100, 1000)))]
-        outputs = [ComplexOutput('buff_out', 'Buffered file',
+        outputs = [ComplexOutput('output', 'Buffered file',
                                  supported_formats=[
                                             Format('application/gml+xml')
                                             ]
@@ -24,7 +24,7 @@ class Buffer(Process):
         super(Buffer, self).__init__(
             self._handler,
             identifier='buffer',
-            version='0.1',
+            version='1.0',
             title="GDAL Buffer process",
             abstract="""The process returns buffers around the input features,
              using the GDAL library""",
@@ -74,7 +74,7 @@ class Buffer(Process):
 
         outSource.Destroy()
 
-        response.outputs['buff_out'].output_format = FORMATS.GML
-        response.outputs['buff_out'].file = out
+        response.outputs['output'].output_format = FORMATS.GML
+        response.outputs['output'].file = out
 
         return response

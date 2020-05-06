@@ -6,8 +6,8 @@ sudo docker run \
   -p 5000:5000 \
   --name talos_wps_test \
   --env WORKDIR=/app \
-  --mount type=bind,source=/home/idan/maps,target=/app/static/maps,readonly \
-  --mount type=bind,source=/home/idan/dev/talos_wps/static/config,target=/app/static/config,readonly \
+  --mount type=bind,source=/home/idan/maps,target=/app/data/static/maps,readonly \
+  --mount type=bind,source=/home/idan/dev/talos_wps/data/static/config,target=/app/data/static/config,readonly \
   talos_wps:latest
 
 

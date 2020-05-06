@@ -55,7 +55,7 @@ def _run(application, bind_host=None, daemon=False):
     host, port = get_host()
     bind_host = bind_host or host
     # need to serve the wps outputs
-    static_files = {
+    output_files = {
         '/outputs': configuration.get_config_value('server', 'outputpath')
     }
     run_simple(
@@ -65,7 +65,7 @@ def _run(application, bind_host=None, daemon=False):
         use_debugger=True,
         use_reloader=True,
         use_evalex=not daemon,
-        static_files=static_files)
+        static_files=output_files)
 
 
 def main():

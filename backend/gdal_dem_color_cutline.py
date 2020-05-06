@@ -3,7 +3,8 @@ import tempfile
 from typing import Optional, Sequence, List, Union
 from osgeo import gdal, ogr, osr
 from gdalos.rectangle import GeoRectangle
-from processes import gdal_to_czml
+from backend import gdal_to_czml
+import re
 
 
 def wkt_write_ogr(path, wkt_list, of='ESRI Shapefile', epsg=4326):
@@ -75,41 +76,75 @@ def gdal_crop(ds: gdal.Dataset, out_filename: str, output_format: str = 'MEM',
     return ds
 
 
+def make_czml_description(stats, colors):
+    if stats:
+        if colors:
+            return ' '.join(['{:.2f}:#{:06X}'.format(x, c) for x, c in zip(stats, colors)])
+        else:
+            return ' '.join(['{:.2f}'.format(x) for x in stats])
+    else:
+        return None
+
+
 def czml_gdaldem_crop_and_color(ds: gdal.Dataset, czml_output_filename: str, **kwargs):
-    ds, stats = gdaldem_crop_and_color(ds=ds, **kwargs)
+    ds, stats, colors = gdaldem_crop_and_color(ds=ds, **kwargs)
     if ds is None:
         raise Exception('fail to color')
     if czml_output_filename is not None:
         dst_wkt = ds.GetProjectionRef()
         if dst_wkt.find('AUTHORITY["EPSG","4326"]') == -1:
             raise Exception('fail, unsupported projection')
-        if stats is not None:
-            description = ' '.join(['{:.2f}'.format(x) for x in stats])
+        description = make_czml_description(stats, colors)
         output_czml_doc = gdal_to_czml.gdal_to_czml(ds, name=czml_output_filename, description=description)
         with open(czml_output_filename, 'w') as f:
             print(output_czml_doc, file=f)
     return ds
 
 
-def color_palette_stats(color_filename, min_val, max_val):
-    stats = []
+def pal_color_to_rgb(color):
+    # r g b a -> argb
+    # todo: support color names or just find the gdal implementation of this function...
+    color = re.findall(r'\d+', color)
     try:
-        with open(color_filename) as fp:
-            for line in fp:
-                num_str = line.strip().split(' ')[0].strip()
-                is_percent = num_str.endswith('%')
-                if is_percent:
-                    num_str = num_str.rstrip('%')
-                try:
-                    num = float(num_str)
+        if len(color) == 1:
+            return int(color[0])
+        elif len(color) == 3:
+            return (int(color[0]) * 255 + int(color[1])) * 255 + int(color[2])
+        elif len(color) == 4:
+            return ((int(color[3]) * 255 + int(color[0])) * 255 + int(color[1])) * 255 + int(color[2])
+        else:
+            return 0
+    except:
+        return 0
+
+
+def color_palette_stats(color_filename, min_val, max_val, process_palette):
+    stats = []
+    colors = []
+    if process_palette:
+        process_colors = process_palette is ...
+        try:
+            with open(color_filename) as fp:
+                for line in fp:
+                    split_line = line.strip().split(' ', maxsplit=1)
+                    num_str = split_line[0].strip()
+                    if process_colors:
+                        color = pal_color_to_rgb(split_line[1])
+                    is_percent = num_str.endswith('%')
                     if is_percent:
-                        num = (max_val-min_val)*num*0.01+min_val
-                    stats.append(num)
-                except ValueError:
-                    pass
-    except IOError:
-        stats = None
-    return stats
+                        num_str = num_str.rstrip('%')
+                    try:
+                        num = float(num_str)
+                        if is_percent:
+                            num = (max_val-min_val)*num*0.01+min_val
+                        stats.append(num)
+                        if process_colors:
+                            colors.append(color)
+                    except ValueError:
+                        pass
+        except IOError:
+            stats = None
+    return stats, colors
 
 
 def gdaldem_crop_and_color(ds: gdal.Dataset,
@@ -117,6 +152,7 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
                            extent: Optional[GeoRectangle] = None,
                            cutline: Optional[Union[str, List[str]]] = None,
                            color_palette: Optional[Union[str, Sequence[str]]] = None,
+                           process_palette=...,
                            common_options: dict = None):
     do_color = color_palette is not None
     do_crop = (extent or cutline) is not None
@@ -151,7 +187,7 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
                     f.write(item+'\n')
         else:
             raise Exception('Unknown color palette type {}'.format(color_palette))
-        stats = color_palette_stats(color_filename, min_val, max_val)
+        stats, colors = color_palette_stats(color_filename, min_val, max_val, process_palette)
         dem_options = {
             'addAlpha': True,
             'format': output_format,
@@ -164,7 +200,7 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
             raise Exception('fail to color')
     else:
         stats = [min_val, max_val]
-    return ds, stats
+    return ds, stats, colors
 
 
 def get_wkt_list(filename):
@@ -183,7 +219,7 @@ def read_list(filename):
 
 if __name__ == '__main__':
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    root_data = os.path.join(script_dir, r'../sample')
+    root_data = os.path.join(script_dir, r'../data/sample')
     shp_filename = os.path.join(root_data, r'shp/poly.shp')
     color_palette_filename = os.path.join(root_data, r'color_files/color_file.txt')
     wkt_list = get_wkt_list(shp_filename)

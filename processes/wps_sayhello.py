@@ -16,7 +16,7 @@ class SayHello(Process):
             title='Process Say Hello',
             abstract='Returns a literal string output\
              with Hello plus the inputed name',
-            version='1.3.2',
+            version='1.0.0',
             inputs=inputs,
             outputs=outputs,
             store_supported=True,

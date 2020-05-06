@@ -16,7 +16,7 @@ class RequestsTest(unittest.TestCase):
                 self.assertTrue(valid, "%s requests valid" % fullpath)
 
         url = 'http://schemas.opengis.net/wps/1.0.0/wpsAll.xsd'
-        for (dirpath, dirnames, filenames) in os.walk(os.path.join('sample', 'requests')):
+        for (dirpath, dirnames, filenames) in os.walk(os.path.join('data', 'sample', 'requests')):
             for filename in filenames:
                 valid_request(url, dirpath, filename)
 

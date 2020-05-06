@@ -2,7 +2,7 @@ import yaml
 from pywps import LiteralInput, ComplexInput, BoundingBoxInput
 
 
-def process_defaults(id, filename="./static/config/process_defaults.yaml"):
+def process_defaults(id, filename="./data/static/config/process_defaults.yaml"):
     if 'd' not in process_defaults.__dict__:
         try:
             stream = open(filename, 'r')
