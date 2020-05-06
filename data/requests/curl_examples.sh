@@ -1,3 +1,4 @@
+shopt -s expand_aliases
 server=http://localhost:5000/wps
 
 ## GET

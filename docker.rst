@@ -1,3 +1,5 @@
+sudo docker container stop $(sudo docker container ls -aq) && sudo docker container rm $(sudo docker container ls -aq)
+
 sudo docker build -t talos_wps:latest -t talos_wps:latest .
 
 sudo docker run \
@@ -11,6 +13,7 @@ sudo docker run \
   talos_wps:latest
 
 
+sudo docker start talos_wps_test
 sudo docker restart talos_wps_test
 
 sudo docker exec -it talos_wps_test bash
@@ -24,6 +27,3 @@ $ sudo docker container stop $(sudo docker container ls -aq)
 
 Once all containers are stopped, you can remove them using the docker container rm command followed by the containers ID list.
 $ sudo docker container rm $(sudo docker container ls -aq)
-
-sudo docker container stop $(sudo docker container ls -aq) && sudo docker container rm $(sudo docker container ls -aq)
-

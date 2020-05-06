@@ -3,13 +3,17 @@ import flask
 
 from pywps import Service
 
-from processes import processes
+import set_project_root_dir
+set_project_root_dir.set_project_root_dir()  # call this before import processes
+
+import processes
+
 
 app = flask.Flask(__name__)
 
-
 # This is, how you start PyWPS instance
-service = Service(processes, ['pywps.cfg'])
+config_files = ['./data/static/config/pywps.cfg']
+service = Service(processes=processes.processes, cfgfiles=config_files)
 
 
 @app.route('/wps', methods=['GET', 'POST'])

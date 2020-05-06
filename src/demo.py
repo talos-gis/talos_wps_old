@@ -12,6 +12,12 @@ from pywps import configuration
 from pywps._compat import urlparse
 
 import logging
+
+import set_project_root_dir
+set_project_root_dir.set_project_root_dir()  # call this before import processes
+
+import processes
+
 logging.basicConfig(format='%(message)s', level=logging.INFO)
 LOGGER = logging.getLogger('DEMO')
 
@@ -20,11 +26,8 @@ def create_app(cfgfiles=None):
     """
     Creates PyWPS WSGI application.
     """
-    import sys
-    pdir = os.path.abspath(os.path.curdir)
-    sys.path.insert(0, pdir)
-    processes = __import__('processes')
-    config_files = [os.path.join(os.path.dirname(__file__), 'pywps.cfg')]
+
+    config_files = ['./data/static/config/pywps.cfg']
     if cfgfiles:
         config_files.extend(cfgfiles)
     if 'PYWPS_CFG' in os.environ:
@@ -94,7 +97,7 @@ def main():
         cfgfiles.append(args.config)
         LOGGER.warn('using pywps configuration: %s', args.config)
     if args.debug:
-        cfgfiles.append(os.path.join(os.path.dirname(__file__), 'debug.cfg'))
+        cfgfiles.append('debug.cfg')
     if args.all_addresses:
         bind_host = '0.0.0.0'
     else:

@@ -219,7 +219,7 @@ def read_list(filename):
 
 if __name__ == '__main__':
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    root_data = os.path.join(script_dir, r'../data/sample')
+    root_data = os.path.join(script_dir, r'./data/sample')
     shp_filename = os.path.join(root_data, r'shp/poly.shp')
     color_palette_filename = os.path.join(root_data, r'color_files/color_file.txt')
     wkt_list = get_wkt_list(shp_filename)

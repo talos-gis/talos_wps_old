@@ -8,6 +8,7 @@ def process_defaults(id, filename="./data/static/config/process_defaults.yaml"):
             stream = open(filename, 'r')
             process_defaults.d = yaml.safe_load(stream)
         except:
+            print('process defaults not found')
             process_defaults.d = dict()
     return process_defaults.d.get(id, dict())
 

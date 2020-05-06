@@ -124,7 +124,7 @@ def get_pixel_from_raster_multi(ds, points, points_srs=..., ct=None):
 
 
 if __name__ == "__main__":
-    raster_filename = r'../data/sample/maps/srtm1_x35_y32.tif'
+    raster_filename = r'./data/sample/maps/srtm1_x35_y32.tif'
     lon = (35.1, 35.2, 35.3)
     lat = (32.1, 32.2, 32.3)
     points = np.dstack((lon, lat))[0]

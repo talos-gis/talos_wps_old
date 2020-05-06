@@ -4,8 +4,8 @@ import os.path
 import gdal
 from pywps import FORMATS, UOM
 from pywps.app import Process
-from pywps.inout import LiteralInput, ComplexInput, LiteralOutput, ComplexOutput
-from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, BoundingBoxInputD
+from pywps.inout import LiteralOutput, ComplexOutput
+from .process_defaults import process_defaults, LiteralInputD, ComplexInputD
 from pywps.app.Common import Metadata
 from pywps.response.execute import ExecuteResponse
 from processes import process_helper

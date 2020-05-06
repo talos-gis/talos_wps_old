@@ -12,7 +12,6 @@ from pywps.inout import ComplexOutput, LiteralOutput
 from pywps.response.execute import ExecuteResponse
 
 from backend import gdal_dem_color_cutline
-from gdalos import gdal_helper
 from gdalos.rectangle import GeoRectangle
 from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, BoundingBoxInputD
 from processes import process_helper

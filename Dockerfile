@@ -8,15 +8,12 @@ COPY requirements.txt ./
 RUN python3 -m pip install -r requirements.txt
 
 WORKDIR ${WORKDIR}
-COPY data/data/sample ./data/sample
-COPY data/data/static/config ./static/config
-COPY processes/ ./processes
-COPY *.py ./
-COPY *.cfg ./
+COPY ./src ./src
+COPY ./data/sample ./data/sample
+COPY ./data/static/config ./static/config
 
-COPY ./patch/core.py /usr/local/lib/python3.8/dist-packages/czml3/
+COPY src/patch/core.py /usr/local/lib/python3.8/dist-packages/czml3/
 
 RUN mkdir -p ./logs ./outputs ./workdir ./data/static/maps
 
-#CMD ls
-CMD ["gunicorn" ,"--bind", "0.0.0.0:5000", "main:app"]
+CMD gunicorn --bind 0.0.0.0:5000 --chdir ${WORKDIR}/src main:app

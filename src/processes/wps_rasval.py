@@ -1,11 +1,8 @@
-import tempfile
-import os.path
-
 import gdal
 from pywps import FORMATS, UOM
 from pywps.app import Process
-from pywps.inout import LiteralInput, ComplexInput, LiteralOutput, ComplexOutput
-from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, BoundingBoxInputD
+from pywps.inout import LiteralOutput
+from .process_defaults import process_defaults, LiteralInputD, ComplexInputD
 from pywps.app.Common import Metadata
 from pywps.response.execute import ExecuteResponse
 from backend import get_pixel_from_raster
@@ -28,8 +25,8 @@ class RasterValue(Process):
             LiteralInputD(defaults, 'c', 'coordinate kind: ll/xy/pl', data_type='string', min_occurs=1, max_occurs=1, default='ll'),
             LiteralInputD(defaults, 'interpolate', 'interpolate ', data_type='boolean', min_occurs=1, max_occurs=1, default=True),
         ]
-        outputs = [LiteralOutput('output', 'raster value at the requested coordinate', data_type='float'),
-                   LiteralOutput('str', 'raster value at the requested coordinate (as string)', data_type='string')]
+        outputs = [LiteralOutput('v', 'raster value at the requested coordinate as float', data_type='float'),
+                   LiteralOutput('output', 'raster value at the requested coordinate (as string)', data_type='string')]
 
         super().__init__(
             self._handler,
@@ -47,8 +44,8 @@ class RasterValue(Process):
 
     def _handler(self, request, response: ExecuteResponse):
         raster_filename, ds = process_helper.open_ds_from_wps_input(request.inputs['r'][0])
-        band: gdal.Band = ds.GetRasterBand(request.inputs['bi'][0].data)
 
+        band: gdal.Band = ds.GetRasterBand(request.inputs['bi'][0].data)
         if band is None:
             raise Exception('band number out of range')
 
@@ -73,18 +70,18 @@ class RasterValue(Process):
 
         if len(x) == 1:
             value = get_pixel_from_raster.get_pixel_from_raster(ds, x[0], y[0], srs)
+            response.outputs['v'].output_format = FORMATS.TEXT
+            response.outputs['v'].data = value
             response.outputs['output'].output_format = FORMATS.TEXT
-            response.outputs['output'].data = value
-            response.outputs['str'].output_format = FORMATS.TEXT
-            response.outputs['str'].data = str(value)
+            response.outputs['output'].data = str(value)
         elif len(x) > 1:
             points = np.dstack((x, y))[0]
             values = get_pixel_from_raster.get_pixel_from_raster_multi(ds, points, srs)
             if values:
+                response.outputs['v'].output_format = FORMATS.TEXT
+                response.outputs['v'].data = values
                 response.outputs['output'].output_format = FORMATS.TEXT
-                response.outputs['output'].data = values
-                response.outputs['str'].output_format = FORMATS.TEXT
-                response.outputs['str'].data = str(values)
+                response.outputs['output'].data = str(values)
         del ds
 
         return response
