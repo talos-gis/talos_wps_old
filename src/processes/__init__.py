@@ -1,3 +1,4 @@
+from .wps_info import GetInfo
 from .wps_sayhello import SayHello
 from .wps_sleep import Sleep
 from .wps_ls import ls
@@ -12,6 +13,7 @@ from .buffer import Buffer
 
 # For the process list on the home page
 processes = [
+    GetInfo(),
     SayHello(),
     Sleep(),
     ls(),

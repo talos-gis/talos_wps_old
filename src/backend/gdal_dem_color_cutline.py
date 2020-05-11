@@ -101,52 +101,6 @@ def czml_gdaldem_crop_and_color(ds: gdal.Dataset, czml_output_filename: str, **k
     return ds
 
 
-def pal_color_to_rgb(color):
-    # r g b a -> argb
-    # todo: support color names or just find the gdal implementation of this function...
-    color = re.findall(r'\d+', color)
-    try:
-        if len(color) == 1:
-            return int(color[0])
-        elif len(color) == 3:
-            return (int(color[0]) * 255 + int(color[1])) * 255 + int(color[2])
-        elif len(color) == 4:
-            return ((int(color[3]) * 255 + int(color[0])) * 255 + int(color[1])) * 255 + int(color[2])
-        else:
-            return 0
-    except:
-        return 0
-
-
-def color_palette_stats(color_filename, min_val, max_val, process_palette):
-    stats = []
-    colors = []
-    if process_palette:
-        process_colors = process_palette is ...
-        try:
-            with open(color_filename) as fp:
-                for line in fp:
-                    split_line = line.strip().split(' ', maxsplit=1)
-                    num_str = split_line[0].strip()
-                    if process_colors:
-                        color = pal_color_to_rgb(split_line[1])
-                    is_percent = num_str.endswith('%')
-                    if is_percent:
-                        num_str = num_str.rstrip('%')
-                    try:
-                        num = float(num_str)
-                        if is_percent:
-                            num = (max_val-min_val)*num*0.01+min_val
-                        stats.append(num)
-                        if process_colors:
-                            colors.append(color)
-                    except ValueError:
-                        pass
-        except IOError:
-            stats = None
-    return stats, colors
-
-
 def gdaldem_crop_and_color(ds: gdal.Dataset,
                            out_filename: str, output_format: str = 'GTiff',
                            extent: Optional[GeoRectangle] = None,

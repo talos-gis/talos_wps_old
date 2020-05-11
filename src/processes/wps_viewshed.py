@@ -28,7 +28,7 @@ class ViewShed(Process):
             LiteralInputD(defaults, 'cc', 'curve_coefficient', data_type='float', min_occurs=0, default=0),
             LiteralInputD(defaults, 'iv', 'invisible_value', data_type='float', min_occurs=0, default=0),
             LiteralInputD(defaults, 'ov', 'out_of_bounds_value', data_type='float', min_occurs=0, default=0),
-            LiteralInputD(defaults, 'vv', 'visible_value', data_type='float', min_occurs=0, default=255),
+            LiteralInputD(defaults, 'vv', 'visible_value', data_type='float', min_occurs=0, default=1),
         ]
         outputs = [
             LiteralOutput('r', 'input raster name', data_type='string'),

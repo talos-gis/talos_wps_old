@@ -1,4 +1,5 @@
-FROM osgeo/gdal:latest
+#FROM osgeo/gdal:latest
+FROM osgeo/gdal:ubuntu-small-latest
 
 # ENV WORKDIR=/usr/src/app
 ENV WORKDIR=/app

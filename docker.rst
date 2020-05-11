@@ -4,6 +4,7 @@ sudo docker build -t talos_wps:latest -t talos_wps:latest .
 
 sudo docker run \
   -d \
+  --rm \
   -it \
   -p 5000:5000 \
   --name talos_wps_test \
