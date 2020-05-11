@@ -4,7 +4,8 @@ from typing import Optional, Sequence, List, Union
 from osgeo import gdal, ogr, osr
 from gdalos.rectangle import GeoRectangle
 from backend import gdal_to_czml
-import re
+from gdalos_calc.gdalos_color import ColorPalette
+from gdalos import gdal_helper
 
 
 def wkt_write_ogr(path, wkt_list, of='ESRI Shapefile', epsg=4326):
@@ -76,25 +77,25 @@ def gdal_crop(ds: gdal.Dataset, out_filename: str, output_format: str = 'MEM',
     return ds
 
 
-def make_czml_description(stats, colors):
-    if stats:
-        if colors:
-            return ' '.join(['{:.2f}:#{:06X}'.format(x, c) for x, c in zip(stats, colors)])
+def make_czml_description(pal:ColorPalette, process_palette):
+    if pal:
+        if process_palette >= 2:
+            return ' '.join(['{:.2f}:#{:06X}'.format(x, c) for x, c in pal.pal.items()])
         else:
-            return ' '.join(['{:.2f}'.format(x) for x in stats])
+            return ' '.join(['{:.2f}'.format(x) for x in pal.pal.keys()])
     else:
         return None
 
 
-def czml_gdaldem_crop_and_color(ds: gdal.Dataset, czml_output_filename: str, **kwargs):
-    ds, stats, colors = gdaldem_crop_and_color(ds=ds, **kwargs)
+def czml_gdaldem_crop_and_color(ds: gdal.Dataset, process_palette, czml_output_filename: str, **kwargs):
+    ds, pal = gdaldem_crop_and_color(ds=ds, process_palette=process_palette, **kwargs)
     if ds is None:
         raise Exception('fail to color')
     if czml_output_filename is not None:
         dst_wkt = ds.GetProjectionRef()
         if dst_wkt.find('AUTHORITY["EPSG","4326"]') == -1:
             raise Exception('fail, unsupported projection')
-        description = make_czml_description(stats, colors)
+        description = make_czml_description(pal, process_palette)
         output_czml_doc = gdal_to_czml.gdal_to_czml(ds, name=czml_output_filename, description=description)
         with open(czml_output_filename, 'w') as f:
             print(output_czml_doc, file=f)
@@ -106,7 +107,7 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
                            extent: Optional[GeoRectangle] = None,
                            cutline: Optional[Union[str, List[str]]] = None,
                            color_palette: Optional[Union[str, Sequence[str]]] = None,
-                           process_palette=...,
+                           process_palette=2,
                            common_options: dict = None):
     do_color = color_palette is not None
     do_crop = (extent or cutline) is not None
@@ -124,10 +125,12 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
         if ds is None:
             raise Exception('fail to crop')
 
-    bnd = ds.GetRasterBand(1)
-    bnd.ComputeStatistics(0)
-    min_val = bnd.GetMinimum()
-    max_val = bnd.GetMaximum()
+    pal = None
+    if process_palette:
+        bnd = ds.GetRasterBand(1)
+        bnd.ComputeStatistics(0)
+        min_val = bnd.GetMinimum()
+        max_val = bnd.GetMaximum()
 
     if do_color:
         temp_color_filename = None
@@ -141,7 +144,13 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
                     f.write(item+'\n')
         else:
             raise Exception('Unknown color palette type {}'.format(color_palette))
-        stats, colors = color_palette_stats(color_filename, min_val, max_val, process_palette)
+        if not process_palette:
+            pal = None
+        else:
+            pal = ColorPalette()
+            pal.read_color_file(color_filename)
+            pal.apply_percent(min_val, max_val)
+            # color_palette_stats(color_filename, min_val, max_val, process_palette)
         dem_options = {
             'addAlpha': True,
             'format': output_format,
@@ -152,9 +161,9 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
             os.remove(temp_color_filename)
         if ds is None:
             raise Exception('fail to color')
-    else:
-        stats = [min_val, max_val]
-    return ds, stats, colors
+    # else:
+    #     stats = [min_val, max_val]
+    return ds, pal
 
 
 def get_wkt_list(filename):
@@ -173,15 +182,19 @@ def read_list(filename):
 
 if __name__ == '__main__':
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    root_data = os.path.join(script_dir, r'./data/sample')
+    root_data = os.path.join(script_dir, r'../../data/sample')
     shp_filename = os.path.join(root_data, r'shp/poly.shp')
-    color_palette_filename = os.path.join(root_data, r'color_files/color_file.txt')
+    color_palette_filename = os.path.join(root_data, r'color_files/color_file_per.txt')
     wkt_list = get_wkt_list(shp_filename)
     color_palette = read_list(color_palette_filename)
     raster_filename = os.path.join(root_data, r'maps/srtm1_x35_y32.tif')
-    gdaldem_crop_and_color(
-        filename=raster_filename,
-        out_filename=tempfile.mktemp(suffix='.tif'),
+    ds = gdal_helper.open_ds(raster_filename)
+    out_filename = tempfile.mktemp(suffix='.tif')
+    ds, pal = gdaldem_crop_and_color(
+        ds=ds,
+        out_filename=out_filename,
         cutline=wkt_list,
         color_palette=color_palette,
         output_format='GTiff')
+    print(out_filename)
+    print(pal)

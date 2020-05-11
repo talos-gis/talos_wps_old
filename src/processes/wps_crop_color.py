@@ -67,14 +67,7 @@ class GdalDem(Process):
         output_czml = request.inputs['output_czml'][0].data
         output_tif = request.inputs['output_tif'][0].data
         if output_czml or output_tif:
-            if not output_czml:
-                process_palette = None
-            else:
-                process_palette = request.inputs['process_palette'][0].data
-                if not process_palette:
-                    process_palette = None
-                elif process_palette == 2:
-                    process_palette = ...
+            process_palette = request.inputs['process_palette'][0].data if output_czml else 0
             cutline = request.inputs['cutline'][0].file if 'cutline' in request.inputs else None
             color_palette = request.inputs['color_palette'][0].file if 'color_palette' in request.inputs else None
             extent = request.inputs['extent'][0].data if 'extent' in request.inputs else None
