@@ -4,8 +4,8 @@ from typing import Optional, Sequence, List, Union
 from osgeo import gdal, ogr, osr
 from gdalos.rectangle import GeoRectangle
 from backend import gdal_to_czml
-from gdalos_calc.gdalos_color import ColorPalette
-from gdalos import gdal_helper
+from gdalos.gdalos_color import ColorPalette
+from gdalos import gdalos_util
 
 
 def wkt_write_ogr(path, wkt_list, of='ESRI Shapefile', epsg=4326):
@@ -188,7 +188,7 @@ if __name__ == '__main__':
     wkt_list = get_wkt_list(shp_filename)
     color_palette = read_list(color_palette_filename)
     raster_filename = os.path.join(root_data, r'maps/srtm1_x35_y32.tif')
-    ds = gdal_helper.open_ds(raster_filename)
+    ds = gdalos_util.open_ds(raster_filename)
     out_filename = tempfile.mktemp(suffix='.tif')
     ds, pal = gdaldem_crop_and_color(
         ds=ds,
