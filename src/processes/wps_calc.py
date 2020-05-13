@@ -24,7 +24,7 @@ class Calc(Process):
         defaults = process_defaults(process_id)
         inputs = [
             ComplexInputD(defaults, 'r', 'input rasters', supported_formats=[FORMATS.GEOTIFF],
-                         min_occurs=1, default=None),
+                         min_occurs=1, max_occurs=23, default=None),
             LiteralInputD(defaults, 'a', 'alpha pattern', data_type='string',
                          min_occurs=1, max_occurs=1, default='1*({}>3)'),
             LiteralInputD(defaults, 'o', 'operator', data_type='string',

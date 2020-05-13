@@ -10,11 +10,6 @@
 
     <wps:DataInputs>
 
-        <wps:Input>
-        <ows:Identifier>r</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/viewshed/-1_-1.tif"/>
-        </wps:Input>
-
 		<wps:Input>
             <ows:Identifier>output_tif</ows:Identifier>
             <wps:Data>
@@ -28,6 +23,43 @@
                 <wps:LiteralData>False</wps:LiteralData>
             </wps:Data>
 		</wps:Input>
+
+        <wps:Input>
+        <ows:Identifier>r</ows:Identifier>
+                <wps:Reference xlink:href="file:./data/sample/viewshed/-1_-1.tif"/>
+        </wps:Input>
+        <wps:Input>
+        <ows:Identifier>r</ows:Identifier>
+                <wps:Reference xlink:href="file:./data/sample/viewshed/-1_0.tif"/>
+        </wps:Input>
+        <wps:Input>
+        <ows:Identifier>r</ows:Identifier>
+                <wps:Reference xlink:href="file:./data/sample/viewshed/-1_1.tif"/>
+        </wps:Input>
+        <wps:Input>
+        <ows:Identifier>r</ows:Identifier>
+                <wps:Reference xlink:href="file:./data/sample/viewshed/0_-1.tif"/>
+        </wps:Input>
+        <wps:Input>
+        <ows:Identifier>r</ows:Identifier>
+                <wps:Reference xlink:href="file:./data/sample/viewshed/0_0.tif"/>
+        </wps:Input>
+        <wps:Input>
+        <ows:Identifier>r</ows:Identifier>
+                <wps:Reference xlink:href="file:./data/sample/viewshed/0_1.tif"/>
+        </wps:Input>
+        <wps:Input>
+        <ows:Identifier>r</ows:Identifier>
+                <wps:Reference xlink:href="file:./data/sample/viewshed/1_-1.tif"/>
+        </wps:Input>
+        <wps:Input>
+        <ows:Identifier>r</ows:Identifier>
+                <wps:Reference xlink:href="file:./data/sample/viewshed/1_0.tif"/>
+        </wps:Input>
+        <wps:Input>
+        <ows:Identifier>r</ows:Identifier>
+                <wps:Reference xlink:href="file:./data/sample/viewshed/1_1.tif"/>
+        </wps:Input>
 
         <wps:Input>
         <ows:Identifier>m</ows:Identifier>
