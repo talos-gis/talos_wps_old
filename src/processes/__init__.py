@@ -8,6 +8,7 @@ from .wps_crop_color import GdalDem
 from .wps_rasval import RasterValue
 from .wps_invert import Invert
 from .wps_viewshed import ViewShed
+from .wps_calc import Calc
 
 from .buffer import Buffer
 
@@ -23,6 +24,7 @@ processes = [
     RasterValue(),
     Invert(),
     ViewShed(),
+    Calc(),
 
     Buffer(),
 ]

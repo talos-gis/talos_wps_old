@@ -4,7 +4,7 @@ from typing import Optional, Sequence, List, Union
 from osgeo import gdal, ogr, osr
 from gdalos.rectangle import GeoRectangle
 from backend import gdal_to_czml
-from gdalos.gdalos_color import ColorPalette
+from gdalos import gdalos_color
 from gdalos import gdalos_util
 
 
@@ -77,7 +77,7 @@ def gdal_crop(ds: gdal.Dataset, out_filename: str, output_format: str = 'MEM',
     return ds
 
 
-def make_czml_description(pal:ColorPalette, process_palette):
+def make_czml_description(pal:gdalos_color.ColorPalette, process_palette):
     if pal:
         if process_palette >= 2:
             return ' '.join(['{:.2f}:#{:06X}'.format(x, c) for x, c in pal.pal.items()])
@@ -133,22 +133,12 @@ def gdaldem_crop_and_color(ds: gdal.Dataset,
         max_val = bnd.GetMaximum()
 
     if do_color:
-        temp_color_filename = None
-        if isinstance(color_palette, str):
-            color_filename = color_palette
-        elif isinstance(color_palette, Sequence):
-            temp_color_filename = tempfile.mktemp(suffix='.txt')
-            color_filename = temp_color_filename
-            with open(temp_color_filename, 'w') as f:
-                for item in color_palette:
-                    f.write(item+'\n')
-        else:
-            raise Exception('Unknown color palette type {}'.format(color_palette))
+        color_filename, temp_color_filename = gdalos_color.save_palette(color_palette)
         if not process_palette:
             pal = None
         else:
-            pal = ColorPalette()
-            pal.read_color_file(color_filename)
+            pal = gdalos_color.ColorPalette()
+            pal.read(color_filename)
             pal.apply_percent(min_val, max_val)
             # color_palette_stats(color_filename, min_val, max_val, process_palette)
         dem_options = {
@@ -184,7 +174,7 @@ if __name__ == '__main__':
     script_dir = os.path.dirname(os.path.realpath(__file__))
     root_data = os.path.join(script_dir, r'../../data/sample')
     shp_filename = os.path.join(root_data, r'shp/poly.shp')
-    color_palette_filename = os.path.join(root_data, r'color_files/color_file_per.txt')
+    color_palette_filename = os.path.join(root_data, r'color_files/percents.txt')
     wkt_list = get_wkt_list(shp_filename)
     color_palette = read_list(color_palette_filename)
     raster_filename = os.path.join(root_data, r'maps/srtm1_x35_y32.tif')

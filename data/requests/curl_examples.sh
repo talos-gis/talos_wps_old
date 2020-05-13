@@ -31,6 +31,10 @@ curl "$server?service=wps&request=execute&version=1.0.0&Identifier=viewshed&stor
 curl -H "Content-type: xml" -X POST -d@./data/requests/viewshed.xml $server
 
 
+# calc
+curl -H "Content-type: xml" -X POST -d@./data/requests/calc_combine.xml $server -o outputs/calc_combine.tif
+
+
 
 for VARIABLE in 1 2 3 4 5 .. N
 do
