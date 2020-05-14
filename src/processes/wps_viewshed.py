@@ -14,6 +14,7 @@ from backend.formats import czml_format
 from gdalos import GeoRectangle
 from gdalos.calc import gdal_calc
 from backend import gdal_to_czml
+from gdalos import projdef
 
 
 class ViewShed(Process):
@@ -53,6 +54,7 @@ class ViewShed(Process):
                           min_occurs=1, max_occurs=1, default=None),
             LiteralInputD(defaults, 'm', 'extent combine mode', data_type='integer',
                           min_occurs=1, max_occurs=1, default=2),
+            LiteralInputD(defaults, 'crs', 'input crs', data_type='string', min_occurs=0, max_occurs=1),
 
             ComplexInputD(defaults, 'fr', 'fake input rasters', supported_formats=[FORMATS.GEOTIFF],
                           min_occurs=0, max_occurs=23, default=None),
@@ -139,19 +141,35 @@ class ViewShed(Process):
                 arrays_dict = process_helper.make_dicts_list_from_lists_dict(arrays_dict, new_keys)
 
                 if not operation:
-                    arrays_dict = arrays_dict[0:0]
+                    arrays_dict = arrays_dict[0:1]
 
-                gdal_out_format = 'GTiff' if output_tif and not operation else 'MEM'
+                use_temp_tif = True  # todo: why dosn't it work without it?
+                gdal_out_format = 'GTiff' if use_temp_tif or (output_tif and not operation) else 'MEM'
+
+                src_srs = request.inputs['crs'][0].data if 'crs' in request.inputs else None
+                if src_srs is not None:
+                    src_srs, _ = projdef.parse_proj4_string_and_zone(src_srs)
+                    tgt_srs = projdef.get_srs_pj_from_ds(input_ds)
+                    transform = projdef.get_transform(src_srs, tgt_srs)
+                else:
+                    transform = None
 
                 for vp in arrays_dict:
-                    # d_path = tempfile.mkstemp(dir=os.path.dirname(raster_filename))[1]
-                    d_path = tif_output_filename if gdal_out_format != 'MEM' else ''
+                    if use_temp_tif:
+                        d_path = tempfile.mktemp(suffix='.tif')
+                    else:
+                        d_path = tif_output_filename if gdal_out_format != 'MEM' else ''
+                    if transform:
+                        vp['observerX'], vp['observerY'], _ = transform.TransformPoint(vp['observerX'], vp['observerY'])
                     src_ds = gdal.ViewshedGenerate(input_band, gdal_out_format, d_path, co, **vp)
                     if src_ds is None:
                         raise Exception('error occurred')
                     src_ds.GetRasterBand(1).SetNoDataValue(vp['noDataVal'])
                     if operation:
-                        files.append(src_ds)
+                        if use_temp_tif:
+                            files.append(d_path)
+                        else:
+                            files.append(src_ds)
                     else:
                         dst_ds = src_ds
 
