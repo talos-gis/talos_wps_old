@@ -10,11 +10,6 @@
 
     <wps:DataInputs>
 
-        <wps:Input>
-        <ows:Identifier>r</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/static/maps/BlueMarble_200408.jpg.cog.tif"/>
-        </wps:Input>
-
 		<wps:Input>
             <ows:Identifier>output_tif</ows:Identifier>
             <wps:Data>
@@ -28,6 +23,11 @@
                 <wps:LiteralData>False</wps:LiteralData>
             </wps:Data>
 		</wps:Input>
+
+        <wps:Input>
+        <ows:Identifier>r</ows:Identifier>
+                <wps:Reference xlink:href="file:./data/static/maps/BlueMarble_200408.jpg.cog.tif"/>
+        </wps:Input>
 
 <!--		<wps:Input>-->
 <!--            <ows:Identifier>extent</ows:Identifier>-->

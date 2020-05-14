@@ -7,10 +7,15 @@ from czml3.properties import (
 )
 
 from osgeo import gdal
+from gdalos import gdalos_trans, projdef
 import base64
 
 
 def gdal_to_czml(ds, name=None, description=None):
+    pjstr_src_srs = projdef.get_srs_pj_from_ds(ds)
+    pjstr_tgt_srs = projdef.get_srs_pj_from_epsg()
+    if not projdef.proj_is_equivalent(pjstr_src_srs, pjstr_tgt_srs):
+        ds = gdalos_trans(ds, warp_CRS=pjstr_tgt_srs, of='MEM', ovr_type=None)
 
     # calculate the extent
     ulx, xres, xskew, uly, yskew, yres = ds.GetGeoTransform()
@@ -60,4 +65,5 @@ def gdal_to_czml(ds, name=None, description=None):
             ),
         ]
     )
+    ds = None  # close the ds in case it was transformed
     return czml_doc

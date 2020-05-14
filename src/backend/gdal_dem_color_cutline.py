@@ -92,9 +92,6 @@ def czml_gdaldem_crop_and_color(ds: gdal.Dataset, process_palette, czml_output_f
     if ds is None:
         raise Exception('fail to color')
     if czml_output_filename is not None:
-        dst_wkt = ds.GetProjectionRef()
-        if dst_wkt.find('AUTHORITY["EPSG","4326"]') == -1:
-            raise Exception('fail, unsupported projection')
         description = make_czml_description(pal, process_palette)
         output_czml_doc = gdal_to_czml.gdal_to_czml(ds, name=czml_output_filename, description=description)
         with open(czml_output_filename, 'w') as f:

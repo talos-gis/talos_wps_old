@@ -12,12 +12,10 @@ from pywps.inout import ComplexOutput, LiteralOutput
 from pywps.response.execute import ExecuteResponse
 
 from backend import gdal_dem_color_cutline
+from backend.formats import czml_format
 from gdalos.rectangle import GeoRectangle
 from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, BoundingBoxInputD
 from processes import process_helper
-
-czml_format = Format('application/czml+json', extension='.czml')
-wkt_format = Format('application/wkt', extension='.wkt')
 
 
 class GdalDem(Process):

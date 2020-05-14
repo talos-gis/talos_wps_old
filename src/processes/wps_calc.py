@@ -1,3 +1,4 @@
+import os
 import tempfile
 from pywps import FORMATS, Format
 from pywps.app import Process
@@ -5,17 +6,14 @@ from pywps.app.Common import Metadata
 from pywps.inout import ComplexOutput, LiteralOutput
 from pywps.response.execute import ExecuteResponse
 
-from backend import gdal_dem_color_cutline
-from gdalos.rectangle import GeoRectangle
 from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, BoundingBoxInputD
 from processes import process_helper
-from pathlib import Path
+
+from gdalos.rectangle import GeoRectangle
 from gdalos import gdalos_color
 from gdalos.calc import gdal_calc
-import os
-
-czml_format = Format('application/czml+json', extension='.czml')
-wkt_format = Format('application/wkt', extension='.wkt')
+from backend import gdal_to_czml
+from backend.formats import czml_format
 
 
 class Calc(Process):
@@ -87,7 +85,7 @@ class Calc(Process):
                 extent = request.inputs['m'][0].data
             operand = request.inputs['o'][0].data if 'o' in request.inputs else None
             alpha_pattern = request.inputs['a'][0].data if 'a' in request.inputs else None
-            hideNodata = request.inputs['h'][0].data if 'h' in request.inputs else None
+            hide_nodata = request.inputs['h'][0].data if 'h' in request.inputs else None
             calc = request.inputs['c'][0].data if 'c' in request.inputs else None
 
             czml_output_filename = tempfile.mktemp(suffix=czml_format.extension) if output_czml else None
@@ -111,8 +109,17 @@ class Calc(Process):
             if calc is None:
                 calc, kwargs = gdal_calc.make_calc(files, alpha_pattern, operand, **kwargs)
 
-            gdal_calc.Calc(calc, outfile=tif_output_filename, extent=extent,
-                           color_table=color_table, hideNodata=hideNodata, **kwargs)
+            ds = gdal_calc.Calc(
+                calc, outfile=tif_output_filename, extent=extent, format=gdal_out_format,
+                color_table=color_table, hideNodata=hide_nodata, return_ds=gdal_out_format == 'MEM', **kwargs)
+
+            if czml_output_filename is not None and ds is not None:
+                description = None
+                output_czml_doc = gdal_to_czml.gdal_to_czml(ds, name=czml_output_filename, description=description)
+                with open(czml_output_filename, 'w') as f:
+                    print(output_czml_doc, file=f)
+
+            ds = None  # close ds
 
             if output_tif:
                 response.outputs['tif'].output_format = FORMATS.GEOTIFF
