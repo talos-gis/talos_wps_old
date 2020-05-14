@@ -20,8 +20,10 @@ class RasterValue(Process):
         inputs = [
             ComplexInputD(defaults, 'r', 'input_raster', supported_formats=[FORMATS.GEOTIFF]),
             LiteralInputD(defaults, 'bi', 'band_index', data_type='positiveInteger', min_occurs=0, max_occurs=1, default=1),
+
             LiteralInputD(defaults, 'x', 'x or longitude or pixel', data_type='float', min_occurs=1, uoms=[UOM('metre')]),
             LiteralInputD(defaults, 'y', 'y or latitude or line', data_type='float', min_occurs=1, uoms=[UOM('metre')]),
+
             LiteralInputD(defaults, 'c', 'coordinate kind: ll/xy/pl', data_type='string', min_occurs=1, max_occurs=1, default='ll'),
             LiteralInputD(defaults, 'interpolate', 'interpolate ', data_type='boolean', min_occurs=1, max_occurs=1, default=True),
         ]

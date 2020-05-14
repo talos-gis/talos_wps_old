@@ -14,21 +14,25 @@ from processes import process_helper
 class ViewShed(Process):
     def __init__(self):
         process_id = 'viewshed'
+
         defaults = process_defaults(process_id)
+        mm = dict(min_occurs=1, max_occurs=100)
         inputs = [
-            ComplexInputD(defaults, 'r', 'input_raster', supported_formats=[FORMATS.GEOTIFF]),
-            LiteralInputD(defaults, 'bi', 'band_index', data_type='positiveInteger', min_occurs=0, default=1),
-            LiteralInputD(defaults, 'co', 'creation options', data_type='string', min_occurs=0, max_occurs=-1),
-            LiteralInputD(defaults, 'ndv', 'nodata_value', data_type='float', uoms=[UOM('metre')], min_occurs=0, default=-1),
-            LiteralInputD(defaults, 'ox', 'observer_X', data_type='float', uoms=[UOM('metre')]),
-            LiteralInputD(defaults, 'oy', 'observer_Y', data_type='float', uoms=[UOM('metre')]),
-            LiteralInputD(defaults, 'oz', 'observer_Z', data_type='float', uoms=[UOM('metre')]),
-            LiteralInputD(defaults, 'tz', 'target_z', data_type='float', uoms=[UOM('metre')]),
-            LiteralInputD(defaults, 'md', 'maximum_distance', data_type='float', uoms=[UOM('metre')]),
-            LiteralInputD(defaults, 'cc', 'curve_coefficient', data_type='float', min_occurs=0, default=0),
-            LiteralInputD(defaults, 'iv', 'invisible_value', data_type='float', min_occurs=0, default=0),
-            LiteralInputD(defaults, 'ov', 'out_of_bounds_value', data_type='float', min_occurs=0, default=0),
-            LiteralInputD(defaults, 'vv', 'visible_value', data_type='float', min_occurs=0, default=1),
+            ComplexInputD(defaults, 'r', 'input_raster', supported_formats=[FORMATS.GEOTIFF], min_occurs=1, max_occurs=1),
+
+            LiteralInputD(defaults, 'bi', 'band_index', data_type='positiveInteger', default=1, min_occurs=0, max_occurs=1),
+            LiteralInputD(defaults, 'co', 'creation options', data_type='string', min_occurs=0, max_occurs=1),
+
+            LiteralInputD(defaults, 'ox', 'observer_X', data_type='float', uoms=[UOM('metre')], **mm),
+            LiteralInputD(defaults, 'oy', 'observer_Y', data_type='float', uoms=[UOM('metre')], **mm),
+            LiteralInputD(defaults, 'oz', 'observer_Z', data_type='float', uoms=[UOM('metre')], **mm),
+            LiteralInputD(defaults, 'tz', 'target_z', data_type='float', uoms=[UOM('metre')], **mm),
+            LiteralInputD(defaults, 'md', 'maximum_distance', data_type='float', uoms=[UOM('metre')], **mm),
+            LiteralInputD(defaults, 'cc', 'curve_coefficient', data_type='float', default=0, **mm),
+            LiteralInputD(defaults, 'iv', 'invisible_value', data_type='float', default=0, **mm),
+            LiteralInputD(defaults, 'ov', 'out_of_bounds_value', data_type='float', default=0, **mm),
+            LiteralInputD(defaults, 'vv', 'visible_value', data_type='float', default=1, **mm),
+            LiteralInputD(defaults, 'ndv', 'nodata_value', data_type='float', uoms=[UOM('metre')], default=0, **mm),
         ]
         outputs = [
             LiteralOutput('r', 'input raster name', data_type='string'),
@@ -65,26 +69,28 @@ class ViewShed(Process):
                     raise Exception(f'creation option {creation_option} unsupported')
                 co.append(creation_option)
 
-        d_path = tempfile.mkstemp(dir=os.path.dirname(raster_filename))[1]
+        params = 'ox', 'oy', 'oz', 'tz', 'vv', 'iv', 'ov', 'ndv', 'cc', 'md'
+        new_keys = \
+            'observerX', 'observerY', 'observerHeight', 'targetHeight', \
+            'visibleVal', 'invisibleVal', 'outOfRangeVal', 'noDataVal', \
+            'dfCurvCoeff', 'mode', 'maxDistance'
 
-        dest = gdal.ViewshedGenerate(band, 'GTIFF', d_path, co,
-                                     request.inputs['ox'][0].data, request.inputs['oy'][0].data,
-                                     request.inputs['oz'][0].data, request.inputs['tz'][0].data,
+        arrays_dict = {k: process_helper.get_input_data_array(request.inputs[k]) for k in params}
+        arrays_dict = process_helper.make_dicts_list_from_lists_dict(arrays_dict, new_keys)
 
-                                     request.inputs['vv'][0].data, request.inputs['iv'][0].data,
-                                     request.inputs['ov'][0].data, request.inputs['ndv'][0].data,
-
-                                     request.inputs['cc'][0].data,
-                                     mode=2,
-                                     maxDistance=request.inputs['md'][0].data)
-
-        if dest is None:
-            raise Exception('error occurred')
-
-        del dest
+        of = 'GTiff'
+        dest_list = []
+        # for ox, oy, oz, tz, vv, iv, ov, ndv, cc, md in zip(arrays_dict.values()):
+        for vp in arrays_dict:
+            d_path = tempfile.mkstemp(dir=os.path.dirname(raster_filename))[1]
+            dest = gdal.ViewshedGenerate(band, of, d_path, co, **vp)
+            if dest is None:
+                raise Exception('error occurred')
+            del dest
+            dest_list.append(d_path)
 
         response.outputs['r'].data = raster_filename
         response.outputs['tif'].output_format = FORMATS.GEOTIFF
-        response.outputs['tif'].file = d_path
+        response.outputs['tif'].file = d_path[0]
 
         return response

@@ -30,18 +30,9 @@ curl "$server?service=wps&request=execute&version=1.0.0&Identifier=viewshed&stor
 curl "$server?service=wps&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./data/static/maps/srtm1_x35_y32.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1" # -o ./outputs/viewshed.tif && cat ./outputs/viewshed.tif
 curl -H "Content-type: xml" -X POST -d@./data/requests/viewshed.xml $server
 
-
 # calc
 curl -H "Content-type: xml" -X POST -d@./data/requests/calc_combine.xml $server -o outputs/calc_combine.tif
 
-
-
-for VARIABLE in 1 2 3 4 5 .. N
-do
-	command1
-	command2
-	commandN
-done
 
 ## clear request cache
 rm ./logs/pywps-logs.sqlite3
