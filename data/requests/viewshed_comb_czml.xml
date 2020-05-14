@@ -29,6 +29,25 @@
                 <wps:Reference xlink:href="file:./data/sample/maps/srtm1_w84u36.tif"/>
         </wps:Input>
 
+<!--        <wps:Input>-->
+<!--            <ows:Identifier>crs</ows:Identifier>-->
+<!--            <wps:Data>-->
+<!--                <wps:LiteralData>0</wps:LiteralData>-->
+<!--            </wps:Data>-->
+<!--        </wps:Input>-->
+<!--        <wps:Input>-->
+<!--            <ows:Identifier>ox</ows:Identifier>-->
+<!--            <wps:Data>-->
+<!--                <wps:LiteralData>35</wps:LiteralData>-->
+<!--            </wps:Data>-->
+<!--        </wps:Input>-->
+<!--        <wps:Input>-->
+<!--            <ows:Identifier>oy</ows:Identifier>-->
+<!--            <wps:Data>-->
+<!--                <wps:LiteralData>32</wps:LiteralData>-->
+<!--            </wps:Data>-->
+<!--        </wps:Input>-->
+
 
         <wps:Input>
             <ows:Identifier>ox</ows:Identifier>
@@ -97,16 +116,41 @@
         <wps:Input>
             <ows:Identifier>oy</ows:Identifier>
             <wps:Data>
+                <wps:LiteralData>3550_000</wps:LiteralData>
+            </wps:Data>
+        </wps:Input>
+        <wps:Input>
+            <ows:Identifier>oy</ows:Identifier>
+            <wps:Data>
+                <wps:LiteralData>3551_000</wps:LiteralData>
+            </wps:Data>
+        </wps:Input>
+
+        <wps:Input>
+            <ows:Identifier>oy</ows:Identifier>
+            <wps:Data>
                 <wps:LiteralData>3549_000</wps:LiteralData>
             </wps:Data>
         </wps:Input>
         <wps:Input>
             <ows:Identifier>oy</ows:Identifier>
             <wps:Data>
+                <wps:LiteralData>3550_000</wps:LiteralData>
+            </wps:Data>
+        </wps:Input>
+        <wps:Input>
+            <ows:Identifier>oy</ows:Identifier>
+            <wps:Data>
+                <wps:LiteralData>3551_000</wps:LiteralData>
+            </wps:Data>
+        </wps:Input>
+
+        <wps:Input>
+            <ows:Identifier>oy</ows:Identifier>
+            <wps:Data>
                 <wps:LiteralData>3549_000</wps:LiteralData>
             </wps:Data>
         </wps:Input>
-
         <wps:Input>
             <ows:Identifier>oy</ows:Identifier>
             <wps:Data>
@@ -116,35 +160,9 @@
         <wps:Input>
             <ows:Identifier>oy</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>3550_000</wps:LiteralData>
-            </wps:Data>
-        </wps:Input>
-        <wps:Input>
-            <ows:Identifier>oy</ows:Identifier>
-            <wps:Data>
-                <wps:LiteralData>3550_000</wps:LiteralData>
-            </wps:Data>
-        </wps:Input>
-
-        <wps:Input>
-            <ows:Identifier>oy</ows:Identifier>
-            <wps:Data>
                 <wps:LiteralData>3551_000</wps:LiteralData>
             </wps:Data>
         </wps:Input>
-        <wps:Input>
-            <ows:Identifier>oy</ows:Identifier>
-            <wps:Data>
-                <wps:LiteralData>3551_000</wps:LiteralData>
-            </wps:Data>
-        </wps:Input>
-        <wps:Input>
-            <ows:Identifier>oy</ows:Identifier>
-            <wps:Data>
-                <wps:LiteralData>3551_000</wps:LiteralData>
-            </wps:Data>
-        </wps:Input>
-
 
         <wps:Input>
             <ows:Identifier>oz</ows:Identifier>
@@ -189,6 +207,15 @@
 
 <!--        <wps:Input>-->
 <!--        <ows:Identifier>fr</ows:Identifier>-->
+<!--                <wps:Reference xlink:href="file:./data/sample/viewshed/v0_0.tif"/>-->
+<!--        </wps:Input>-->
+<!--        <wps:Input>-->
+<!--        <ows:Identifier>fr</ows:Identifier>-->
+<!--                <wps:Reference xlink:href="file:./data/sample/viewshed/v1_0.tif"/>-->
+<!--        </wps:Input>-->
+
+<!--        <wps:Input>-->
+<!--        <ows:Identifier>fr</ows:Identifier>-->
 <!--                <wps:Reference xlink:href="file:./data/sample/viewshed/-1_-1.tif"/>-->
 <!--        </wps:Input>-->
 <!--        <wps:Input>-->
@@ -222,7 +249,7 @@
 <!--        <wps:Input>-->
 <!--        <ows:Identifier>fr</ows:Identifier>-->
 <!--                <wps:Reference xlink:href="file:./data/sample/viewshed/1_1.tif"/>-->
-<!--        </wps:Input>        -->
+<!--        </wps:Input>-->
 
 	</wps:DataInputs>
 </wps:Execute>
