@@ -55,7 +55,7 @@ class ViewShed(Process):
                           min_occurs=1, max_occurs=1, default=2),
 
             ComplexInputD(defaults, 'fr', 'fake input rasters', supported_formats=[FORMATS.GEOTIFF],
-                          **mm, default=None),
+                          min_occurs=0, max_occurs=23, default=None),
 
             BoundingBoxInputD(defaults, 'extent', 'extent BoundingBox',
                               crss=['EPSG:4326', ], metadata=[Metadata('EPSG.io', 'http://epsg.io/'), ],
@@ -102,8 +102,12 @@ class ViewShed(Process):
             files = []
             if 'fr' in request.inputs:
                 for fr in request.inputs['fr']:
-                    _, src_ds = process_helper.open_ds_from_wps_input(fr)
-                    files.append(src_ds)
+                    fr_filename, src_ds = process_helper.open_ds_from_wps_input(fr)
+                    if operation:
+                        files.append(src_ds)
+                    else:
+                        tif_output_filename = fr_filename
+                        dst_ds = src_ds
             else:
                 raster_filename, input_ds = process_helper.open_ds_from_wps_input(request.inputs['r'][0])
                 response.outputs['r'].data = raster_filename
@@ -137,7 +141,7 @@ class ViewShed(Process):
                 if not operation:
                     arrays_dict = arrays_dict[0:0]
 
-                gdal_out_format = 'GTiff' if output_tif and operation else 'MEM'
+                gdal_out_format = 'GTiff' if output_tif and not operation else 'MEM'
 
                 for vp in arrays_dict:
                     # d_path = tempfile.mkstemp(dir=os.path.dirname(raster_filename))[1]
@@ -149,17 +153,18 @@ class ViewShed(Process):
                     if operation:
                         files.append(src_ds)
                     else:
-                        del src_ds
+                        dst_ds = src_ds
 
-            alpha_pattern = '1*({}>3)'
-            operand = '+'
-            hide_nodata = True
-            calc, kwargs = gdal_calc.make_calc(files, alpha_pattern, operand)
-            color_table = process_helper.get_color_table(request.inputs, 'color_palette')
-            gdal_out_format = 'GTiff' if output_tif else 'MEM'
-            dst_ds = gdal_calc.Calc(
-                calc, outfile=tif_output_filename, extent=extent, format=gdal_out_format,
-                color_table=color_table, hideNodata=hide_nodata, return_ds=gdal_out_format == 'MEM', **kwargs)
+            if operation:
+                alpha_pattern = '1*({}>3)'
+                operand = '+'
+                hide_nodata = True
+                calc, kwargs = gdal_calc.make_calc(files, alpha_pattern, operand)
+                color_table = process_helper.get_color_table(request.inputs, 'color_palette')
+                gdal_out_format = 'GTiff' if output_tif else 'MEM'
+                dst_ds = gdal_calc.Calc(
+                    calc, outfile=tif_output_filename, extent=extent, format=gdal_out_format,
+                    color_table=color_table, hideNodata=hide_nodata, return_ds=gdal_out_format == 'MEM', **kwargs)
 
             if czml_output_filename is not None and dst_ds is not None:
                 gdal_to_czml.gdal_to_czml(dst_ds, name=czml_output_filename, out_filename=czml_output_filename)

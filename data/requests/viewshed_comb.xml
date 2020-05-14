@@ -41,12 +41,12 @@
                 <wps:LiteralData>701_000</wps:LiteralData>
             </wps:Data>
         </wps:Input>
-        <wps:Input>
-            <ows:Identifier>ox</ows:Identifier>
-            <wps:Data>
-                <wps:LiteralData>699_000</wps:LiteralData>
-            </wps:Data>
-        </wps:Input>
+<!--        <wps:Input>-->
+<!--            <ows:Identifier>ox</ows:Identifier>-->
+<!--            <wps:Data>-->
+<!--                <wps:LiteralData>699_000</wps:LiteralData>-->
+<!--            </wps:Data>-->
+<!--        </wps:Input>-->
 
         <wps:Input>
             <ows:Identifier>oy</ows:Identifier>
@@ -97,42 +97,42 @@
                 <wps:Reference xlink:href="file:./data/sample/color_files/comb.txt"/>
 		</wps:Input>
 
-        <wps:Input>
-        <ows:Identifier>fr</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/viewshed/-1_-1.tif"/>
-        </wps:Input>
-        <wps:Input>
-        <ows:Identifier>fr</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/viewshed/-1_0.tif"/>
-        </wps:Input>
-        <wps:Input>
-        <ows:Identifier>fr</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/viewshed/-1_1.tif"/>
-        </wps:Input>
-        <wps:Input>
-        <ows:Identifier>fr</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/viewshed/0_-1.tif"/>
-        </wps:Input>
-        <wps:Input>
-        <ows:Identifier>fr</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/viewshed/0_0.tif"/>
-        </wps:Input>
-        <wps:Input>
-        <ows:Identifier>fr</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/viewshed/0_1.tif"/>
-        </wps:Input>
-        <wps:Input>
-        <ows:Identifier>fr</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/viewshed/1_-1.tif"/>
-        </wps:Input>
-        <wps:Input>
-        <ows:Identifier>fr</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/viewshed/1_0.tif"/>
-        </wps:Input>
-        <wps:Input>
-        <ows:Identifier>fr</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/viewshed/1_1.tif"/>
-        </wps:Input>
+<!--        <wps:Input>-->
+<!--        <ows:Identifier>fr</ows:Identifier>-->
+<!--                <wps:Reference xlink:href="file:./data/sample/viewshed/-1_-1.tif"/>-->
+<!--        </wps:Input>-->
+<!--        <wps:Input>-->
+<!--        <ows:Identifier>fr</ows:Identifier>-->
+<!--                <wps:Reference xlink:href="file:./data/sample/viewshed/-1_0.tif"/>-->
+<!--        </wps:Input>-->
+<!--        <wps:Input>-->
+<!--        <ows:Identifier>fr</ows:Identifier>-->
+<!--                <wps:Reference xlink:href="file:./data/sample/viewshed/-1_1.tif"/>-->
+<!--        </wps:Input>-->
+<!--        <wps:Input>-->
+<!--        <ows:Identifier>fr</ows:Identifier>-->
+<!--                <wps:Reference xlink:href="file:./data/sample/viewshed/0_-1.tif"/>-->
+<!--        </wps:Input>-->
+<!--        <wps:Input>-->
+<!--        <ows:Identifier>fr</ows:Identifier>-->
+<!--                <wps:Reference xlink:href="file:./data/sample/viewshed/0_0.tif"/>-->
+<!--        </wps:Input>-->
+<!--        <wps:Input>-->
+<!--        <ows:Identifier>fr</ows:Identifier>-->
+<!--                <wps:Reference xlink:href="file:./data/sample/viewshed/0_1.tif"/>-->
+<!--        </wps:Input>-->
+<!--        <wps:Input>-->
+<!--        <ows:Identifier>fr</ows:Identifier>-->
+<!--                <wps:Reference xlink:href="file:./data/sample/viewshed/1_-1.tif"/>-->
+<!--        </wps:Input>-->
+<!--        <wps:Input>-->
+<!--        <ows:Identifier>fr</ows:Identifier>-->
+<!--                <wps:Reference xlink:href="file:./data/sample/viewshed/1_0.tif"/>-->
+<!--        </wps:Input>-->
+<!--        <wps:Input>-->
+<!--        <ows:Identifier>fr</ows:Identifier>-->
+<!--                <wps:Reference xlink:href="file:./data/sample/viewshed/1_1.tif"/>-->
+<!--        </wps:Input>-->
 
 	</wps:DataInputs>
 </wps:Execute>
