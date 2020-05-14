@@ -12,7 +12,7 @@
 
         <wps:Input>
             <ows:Identifier>r</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/maps/srtm1_u36.tif"/>
+                <wps:Reference xlink:href="file:./data/sample/maps/srtm1_w84u36.tif"/>
         </wps:Input>
 
         <wps:Input>
@@ -39,7 +39,7 @@
         <wps:Input>
             <ows:Identifier>tz</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>100</wps:LiteralData>
+                <wps:LiteralData>10</wps:LiteralData>
             </wps:Data>
         </wps:Input>
 

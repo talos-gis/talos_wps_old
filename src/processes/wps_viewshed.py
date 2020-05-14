@@ -9,6 +9,7 @@ from .process_defaults import process_defaults, LiteralInputD, ComplexInputD
 from pywps.app.Common import Metadata
 from pywps.response.execute import ExecuteResponse
 from processes import process_helper
+from backend import viewshed_consts
 
 
 class ViewShed(Process):
@@ -27,12 +28,15 @@ class ViewShed(Process):
             LiteralInputD(defaults, 'oy', 'observer_Y', data_type='float', uoms=[UOM('metre')], **mm),
             LiteralInputD(defaults, 'oz', 'observer_Z', data_type='float', uoms=[UOM('metre')], **mm),
             LiteralInputD(defaults, 'tz', 'target_z', data_type='float', uoms=[UOM('metre')], **mm),
+
+            LiteralInputD(defaults, 'vv', 'visible_value', data_type='float', default=viewshed_consts.st_seen, **mm),
+            LiteralInputD(defaults, 'iv', 'invisible_value', data_type='float', default=viewshed_consts.st_hidden, **mm),
+            LiteralInputD(defaults, 'ov', 'out_of_bounds_value', data_type='float', default=viewshed_consts.st_nodata, **mm),
+            LiteralInputD(defaults, 'ndv', 'nodata_value', data_type='float', uoms=[UOM('metre')], default=viewshed_consts.st_nodtm, **mm),
+
+            LiteralInputD(defaults, 'cc', 'curve_coefficient', data_type='float', default=viewshed_consts.cc_atmospheric_refraction, **mm),
+            LiteralInputD(defaults, 'mode', 'calc mode', data_type='integer', default=2, **mm),
             LiteralInputD(defaults, 'md', 'maximum_distance', data_type='float', uoms=[UOM('metre')], **mm),
-            LiteralInputD(defaults, 'cc', 'curve_coefficient', data_type='float', default=0, **mm),
-            LiteralInputD(defaults, 'iv', 'invisible_value', data_type='float', default=0, **mm),
-            LiteralInputD(defaults, 'ov', 'out_of_bounds_value', data_type='float', default=0, **mm),
-            LiteralInputD(defaults, 'vv', 'visible_value', data_type='float', default=1, **mm),
-            LiteralInputD(defaults, 'ndv', 'nodata_value', data_type='float', uoms=[UOM('metre')], default=0, **mm),
         ]
         outputs = [
             LiteralOutput('r', 'input raster name', data_type='string'),
@@ -69,7 +73,9 @@ class ViewShed(Process):
                     raise Exception(f'creation option {creation_option} unsupported')
                 co.append(creation_option)
 
-        params = 'ox', 'oy', 'oz', 'tz', 'vv', 'iv', 'ov', 'ndv', 'cc', 'md'
+        params = 'ox', 'oy', 'oz', 'tz', \
+                 'vv', 'iv', 'ov', 'ndv', \
+                 'cc', 'mode', 'md'
         new_keys = \
             'observerX', 'observerY', 'observerHeight', 'targetHeight', \
             'visibleVal', 'invisibleVal', 'outOfRangeVal', 'noDataVal', \
@@ -80,17 +86,17 @@ class ViewShed(Process):
 
         of = 'GTiff'
         dest_list = []
-        # for ox, oy, oz, tz, vv, iv, ov, ndv, cc, md in zip(arrays_dict.values()):
         for vp in arrays_dict:
             d_path = tempfile.mkstemp(dir=os.path.dirname(raster_filename))[1]
-            dest = gdal.ViewshedGenerate(band, of, d_path, co, **vp)
-            if dest is None:
+            dst_ds = gdal.ViewshedGenerate(band, of, d_path, co, **vp)
+            if dst_ds is None:
                 raise Exception('error occurred')
-            del dest
+            dst_ds.GetRasterBand(1).SetNoDataValue(vp['noDataVal'])
+            del dst_ds
             dest_list.append(d_path)
 
         response.outputs['r'].data = raster_filename
         response.outputs['tif'].output_format = FORMATS.GEOTIFF
-        response.outputs['tif'].file = d_path[0]
+        response.outputs['tif'].file = dest_list[0]
 
         return response

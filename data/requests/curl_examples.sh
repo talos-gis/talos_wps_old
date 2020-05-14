@@ -28,7 +28,7 @@ curl -H "Content-type: xml" -X POST -d@./data/requests/crop_color.xml http://loc
 curl "$server?service=wps&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=ox=35.21317;oy=32.03437;oz=100;tz=0;md=1&RawDataOutput=tif"
 curl "$server?service=wps&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./data/static/maps/srtm1_x33-62_y23-39.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1"
 curl "$server?service=wps&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./data/static/maps/srtm1_x35_y32.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1" # -o ./outputs/viewshed.tif && cat ./outputs/viewshed.tif
-curl -H "Content-type: xml" -X POST -d@./data/requests/viewshed.xml $server
+curl -H "Content-type: xml" -X POST -d@./data/requests/viewshed.xml $server -o outputs/viewshed.tif
 
 # calc
 curl -H "Content-type: xml" -X POST -d@./data/requests/calc_combine.xml $server -o outputs/calc_combine.tif
