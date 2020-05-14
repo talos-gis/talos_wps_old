@@ -23,12 +23,12 @@ class GdalDem(Process):
         process_id = 'crop_color'
         defaults = process_defaults(process_id)
         inputs = [
-            ComplexInputD(defaults, 'r', 'input raster', supported_formats=[FORMATS.GEOTIFF],
-                         min_occurs=1, max_occurs=1, default=None),
             LiteralInputD(defaults, 'output_czml', 'make output as czml', data_type='boolean',
                          min_occurs=0, max_occurs=1, default=False),
             LiteralInputD(defaults, 'output_tif', 'make output as tif', data_type='boolean',
                          min_occurs=0, max_occurs=1, default=True),
+            ComplexInputD(defaults, 'r', 'input raster', supported_formats=[FORMATS.GEOTIFF],
+                         min_occurs=1, max_occurs=1, default=None),
             ComplexInputD(defaults, 'color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
                          min_occurs=0, max_occurs=1, default=None),
             ComplexInputD(defaults, 'cutline', 'input vector cutline',

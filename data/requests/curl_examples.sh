@@ -24,14 +24,16 @@ curl -H "Content-type: xml" -X POST -d@./data/requests/crop_color_sample_czml.xm
 curl -H "Content-type: xml" -X POST -d@./data/requests/crop_color_sample.xml $server -o outputs/crop_color_sample.tif
 curl -H "Content-type: xml" -X POST -d@./data/requests/crop_color.xml http://localhost/wps -o outputs/crop_color.tif
 
+# calc
+curl -H "Content-type: xml" -X POST -d@./data/requests/calc_comb.xml $server -o outputs/calc_comb.tif
+
 # viewshed with sampled data
 curl "$server?service=wps&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=ox=35.21317;oy=32.03437;oz=100;tz=0;md=1&RawDataOutput=tif"
 curl "$server?service=wps&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./data/static/maps/srtm1_x33-62_y23-39.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1"
 curl "$server?service=wps&request=execute&version=1.0.0&Identifier=viewshed&storeExecuteResponse=true&DataInputs=r=@xlink:href=file:./data/static/maps/srtm1_x35_y32.tif;ox=35.21317;oy=32.03437;oz=100;tz=0;md=1" # -o ./outputs/viewshed.tif && cat ./outputs/viewshed.tif
 curl -H "Content-type: xml" -X POST -d@./data/requests/viewshed.xml $server -o outputs/viewshed.tif
-
-# calc
-curl -H "Content-type: xml" -X POST -d@./data/requests/calc_combine.xml $server -o outputs/calc_combine.tif
+curl -H "Content-type: xml" -X POST -d@./data/requests/viewshed_comb.xml $server -o outputs/viewshed_comb.tif
+curl -H "Content-type: xml" -X POST -d@./data/requests/viewshed_comb_czml.xml $server -o outputs/viewshed_comb.czml
 
 
 ## clear request cache

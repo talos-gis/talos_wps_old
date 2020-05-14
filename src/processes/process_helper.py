@@ -1,4 +1,6 @@
+import os
 from gdalos import gdalos_util
+from gdalos import gdalos_color
 
 
 def get_input_data_array(request_input):
@@ -56,3 +58,14 @@ def make_dicts_list_from_lists_dict(d: dict, new_keys):
                 new_d[k] = v[i]
         result.append(new_d)
     return result
+
+
+def get_color_table(request_inputs, name: str = 'color_palette'):
+    color_palette = request_inputs[name][0].file if name in request_inputs else None
+    color_filename, temp_color_filename = gdalos_color.save_palette(color_palette)
+    pal = gdalos_color.ColorPalette()
+    pal.read(color_filename)
+    color_table = pal.get_color_table()
+    if temp_color_filename:
+        os.remove(temp_color_filename)
+    return color_table

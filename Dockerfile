@@ -9,6 +9,8 @@ COPY requirements.txt ./
 RUN python3 -m pip install -r requirements.txt
 RUN python3 -m pip install --index-url https://test.pypi.org/simple/ --upgrade gdalos
 
+RUN echo 4
+
 WORKDIR ${WORKDIR}
 COPY ./src ./src
 COPY ./data/sample ./data/sample

@@ -11,7 +11,7 @@ from gdalos import gdalos_trans, projdef
 import base64
 
 
-def gdal_to_czml(ds, name=None, description=None):
+def gdal_to_czml(ds, name=None, out_filename=None, description=None):
     pjstr_src_srs = projdef.get_srs_pj_from_ds(ds)
     pjstr_tgt_srs = projdef.get_srs_pj_from_epsg()
     if not projdef.proj_is_equivalent(pjstr_src_srs, pjstr_tgt_srs):
@@ -66,4 +66,7 @@ def gdal_to_czml(ds, name=None, description=None):
         ]
     )
     ds = None  # close the ds in case it was transformed
+    if out_filename:
+        with open(out_filename, 'w') as f:
+            print(czml_doc, file=f)
     return czml_doc

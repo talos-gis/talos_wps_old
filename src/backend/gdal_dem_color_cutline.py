@@ -93,9 +93,7 @@ def czml_gdaldem_crop_and_color(ds: gdal.Dataset, process_palette, czml_output_f
         raise Exception('fail to color')
     if czml_output_filename is not None:
         description = make_czml_description(pal, process_palette)
-        output_czml_doc = gdal_to_czml.gdal_to_czml(ds, name=czml_output_filename, description=description)
-        with open(czml_output_filename, 'w') as f:
-            print(output_czml_doc, file=f)
+        gdal_to_czml.gdal_to_czml(ds, name=czml_output_filename, out_filename=czml_output_filename, description=description)
     return ds
 
 

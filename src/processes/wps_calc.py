@@ -21,6 +21,11 @@ class Calc(Process):
         process_id = 'calc'
         defaults = process_defaults(process_id)
         inputs = [
+            LiteralInputD(defaults, 'output_czml', 'make output as czml', data_type='boolean',
+                         min_occurs=0, max_occurs=1, default=False),
+            LiteralInputD(defaults, 'output_tif', 'make output as tif', data_type='boolean',
+                         min_occurs=0, max_occurs=1, default=True),
+
             ComplexInputD(defaults, 'r', 'input rasters', supported_formats=[FORMATS.GEOTIFF],
                          min_occurs=1, max_occurs=23, default=None),
             LiteralInputD(defaults, 'a', 'alpha pattern', data_type='string',
@@ -33,19 +38,14 @@ class Calc(Process):
                           min_occurs=0, max_occurs=1, default=True),
             LiteralInputD(defaults, 'c', 'custom calc', data_type='string',
                           min_occurs=0, max_occurs=1, default=None),
-
-            LiteralInputD(defaults, 'output_czml', 'make output as czml', data_type='boolean',
-                         min_occurs=0, max_occurs=1, default=False),
-            LiteralInputD(defaults, 'output_tif', 'make output as tif', data_type='boolean',
-                         min_occurs=0, max_occurs=1, default=True),
             ComplexInputD(defaults, 'color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
                          min_occurs=0, max_occurs=1, default=None),
             # ComplexInputD(defaults, 'cutline', 'input vector cutline',
             #              supported_formats=[FORMATS.GML],
             #              # crss=['EPSG:4326', ], metadata=[Metadata('EPSG.io', 'http://epsg.io/'), ],
             #              min_occurs=0, max_occurs=1, default=None),
-            LiteralInputD(defaults, 'process_palette', 'put palette in czml description', data_type='integer',
-                         min_occurs=1, max_occurs=1, default=2),
+            # LiteralInputD(defaults, 'process_palette', 'put palette in czml description', data_type='integer',
+            #              min_occurs=1, max_occurs=1, default=2),
             BoundingBoxInputD(defaults, 'extent', 'extent BoundingBox',
                              crss=['EPSG:4326', ], metadata=[Metadata('EPSG.io', 'http://epsg.io/'), ],
                              min_occurs=0, max_occurs=1, default=None)
@@ -73,9 +73,8 @@ class Calc(Process):
         output_czml = request.inputs['output_czml'][0].data
         output_tif = request.inputs['output_tif'][0].data
         if output_czml or output_tif:
-            process_palette = request.inputs['process_palette'][0].data if output_czml else 0
-            cutline = request.inputs['cutline'][0].file if 'cutline' in request.inputs else None
-            color_palette = request.inputs['color_palette'][0].file if 'color_palette' in request.inputs else None
+            # process_palette = request.inputs['process_palette'][0].data if output_czml else 0
+            # cutline = request.inputs['cutline'][0].file if 'cutline' in request.inputs else None
             extent = request.inputs['extent'][0].data if 'extent' in request.inputs else None
             if extent is not None:
                 # I'm not sure why the extent is in format miny, minx, maxy, maxx
@@ -95,31 +94,23 @@ class Calc(Process):
 
             files = []
             for r in request.inputs['r']:
-                raster_filename, src_ds = process_helper.open_ds_from_wps_input(r)
+                _, src_ds = process_helper.open_ds_from_wps_input(r)
                 files.append(src_ds)
-
-            color_filename, temp_color_filename = gdalos_color.save_palette(color_palette)
-            pal = gdalos_color.ColorPalette()
-            pal.read(color_filename)
-            color_table = pal.get_color_table()
-            if temp_color_filename:
-                os.remove(temp_color_filename)
 
             kwargs = dict()
             if calc is None:
                 calc, kwargs = gdal_calc.make_calc(files, alpha_pattern, operand, **kwargs)
-
-            ds = gdal_calc.Calc(
+            color_table = process_helper.get_color_table(request.inputs, 'color_palette')
+            dst_ds = gdal_calc.Calc(
                 calc, outfile=tif_output_filename, extent=extent, format=gdal_out_format,
                 color_table=color_table, hideNodata=hide_nodata, return_ds=gdal_out_format == 'MEM', **kwargs)
 
-            if czml_output_filename is not None and ds is not None:
-                description = None
-                output_czml_doc = gdal_to_czml.gdal_to_czml(ds, name=czml_output_filename, description=description)
-                with open(czml_output_filename, 'w') as f:
-                    print(output_czml_doc, file=f)
+            if czml_output_filename is not None and dst_ds is not None:
+                gdal_to_czml.gdal_to_czml(dst_ds, name=czml_output_filename, out_filename=czml_output_filename)
 
-            ds = None  # close ds
+            dst_ds = None  # close ds
+            for i in range(len(files)):
+                files[i] = None
 
             if output_tif:
                 response.outputs['tif'].output_format = FORMATS.GEOTIFF
