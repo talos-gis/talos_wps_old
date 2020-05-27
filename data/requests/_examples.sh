@@ -5,6 +5,9 @@ server=http://localhost:5000/wps
 # Get Capabilities
 curl "$server?service=wps&request=getcapabilities"
 
+# describeprocess
+curl "$server?service=wps&version=1.0.0&request=describeprocess&identifier=viewshed"
+
 # Get Info
 curl "$server?service=wps&request=execute&version=1.0.0&Identifier=info&storeExecuteResponse=trueRawDataOutput=output&RawDataOutput=output"
 
@@ -38,3 +41,6 @@ curl -H "Content-type: xml" -X POST -d@./data/requests/viewshed_comb_czml.xml $s
 
 ## clear request cache
 rm ./logs/pywps-logs.sqlite3
+
+# Sand Castle
+#https://sandcastle.cesium.com/?src=CZML%20Polyline.html&label=CZML

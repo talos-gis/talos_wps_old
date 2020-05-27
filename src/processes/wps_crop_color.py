@@ -5,13 +5,13 @@
 
 # import owslib.wps
 import tempfile
-from pywps import FORMATS, Format
+from pywps import FORMATS
 from pywps.app import Process
 from pywps.app.Common import Metadata
 from pywps.inout import ComplexOutput, LiteralOutput
 from pywps.response.execute import ExecuteResponse
 
-from backend import gdal_dem_color_cutline
+from gdalos.calc import gdal_dem_color_cutline
 from backend.formats import czml_format
 from gdalos.rectangle import GeoRectangle
 from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, BoundingBoxInputD

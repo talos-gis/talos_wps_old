@@ -5,7 +5,7 @@ from pywps.inout import LiteralOutput
 from .process_defaults import process_defaults, LiteralInputD, ComplexInputD
 from pywps.app.Common import Metadata
 from pywps.response.execute import ExecuteResponse
-from backend import get_pixel_from_raster
+from gdalos.calc import get_pixel_from_raster
 from processes import process_helper
 
 import numpy as np

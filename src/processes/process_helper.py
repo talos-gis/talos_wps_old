@@ -3,6 +3,13 @@ from gdalos import gdalos_util
 from gdalos import gdalos_color
 
 
+def get_request_data(request_input, name, index=0):
+    result = request_input[name][index].data if name in request_input else None
+    if result == 'None':
+        result = None  # todo: is this a bug?
+    return result
+
+
 def get_input_data_array(request_input):
     return [x.data for x in request_input]
 

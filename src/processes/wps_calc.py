@@ -1,18 +1,15 @@
-import os
 import tempfile
-from pywps import FORMATS, Format
+from pywps import FORMATS
 from pywps.app import Process
 from pywps.app.Common import Metadata
-from pywps.inout import ComplexOutput, LiteralOutput
+from pywps.inout import ComplexOutput
 from pywps.response.execute import ExecuteResponse
 
 from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, BoundingBoxInputD
 from processes import process_helper
 
 from gdalos.rectangle import GeoRectangle
-from gdalos import gdalos_color
-from gdalos.calc import gdal_calc
-from backend import gdal_to_czml
+from gdalos.calc import gdal_calc, gdal_to_czml
 from backend.formats import czml_format
 
 
