@@ -2,25 +2,18 @@
 <wps:Execute service="WPS" version="1.0.0" xmlns:wps="http://www.opengis.net/wps/1.0.0" xmlns:ows="http://www.opengis.net/ows/1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd">
 	<ows:Identifier>viewshed</ows:Identifier>
 
-    <wps:ResponseForm>
+   <wps:ResponseForm>
         <wps:RawDataOutput>
-          <ows:Identifier>czml</ows:Identifier>
+          <ows:Identifier>output</ows:Identifier>
         </wps:RawDataOutput>
     </wps:ResponseForm>
 
 	<wps:DataInputs>
 
 		<wps:Input>
-            <ows:Identifier>output_tif</ows:Identifier>
+            <ows:Identifier>of</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>False</wps:LiteralData>
-            </wps:Data>
-		</wps:Input>
-
-        <wps:Input>
-            <ows:Identifier>output_czml</ows:Identifier>
-            <wps:Data>
-                <wps:LiteralData>True</wps:LiteralData>
+                <wps:LiteralData>czml</wps:LiteralData>
             </wps:Data>
 		</wps:Input>
 
@@ -32,26 +25,26 @@
         <wps:Input>
             <ows:Identifier>ox</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>35</wps:LiteralData>
+                <wps:LiteralData>35.11</wps:LiteralData>
             </wps:Data>
         </wps:Input>
         <wps:Input>
             <ows:Identifier>oy</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>32</wps:LiteralData>
+                <wps:LiteralData>32.06</wps:LiteralData>
             </wps:Data>
         </wps:Input>
 
         <wps:Input>
             <ows:Identifier>ox</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>35.01</wps:LiteralData>
+                <wps:LiteralData>35.111</wps:LiteralData>
             </wps:Data>
         </wps:Input>
         <wps:Input>
             <ows:Identifier>oy</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>32.01</wps:LiteralData>
+                <wps:LiteralData>32.061</wps:LiteralData>
             </wps:Data>
         </wps:Input>
 
@@ -95,6 +88,35 @@
 		<wps:Input>
             <ows:Identifier>color_palette</ows:Identifier>
                 <wps:Reference xlink:href="file:./data/sample/color_files/comb.txt"/>
+		</wps:Input>
+
+        <wps:Input>
+            <ows:Identifier>cutline</ows:Identifier>
+            <wps:Data>
+                <wps:ComplexData>
+
+                    <ogr:FeatureCollection
+                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                         xsi:schemaLocation="http://ogr.maptools.org/ comb_poly.xsd"
+                         xmlns:ogr="http://ogr.maptools.org/"
+                         xmlns:gml="http://www.opengis.net/gml">
+                      <gml:boundedBy>
+                        <gml:Box>
+                          <gml:coord><gml:X>35.09942551535836</gml:X><gml:Y>32.04549480546075</gml:Y></gml:coord>
+                          <gml:coord><gml:X>35.13428943344709</gml:X><gml:Y>32.08511289419796</gml:Y></gml:coord>
+                        </gml:Box>
+                      </gml:boundedBy>
+
+                      <gml:featureMember>
+                        <ogr:comb_poly fid="comb_poly.0">
+                          <ogr:geometryProperty><gml:Polygon srsName="EPSG:4326"><gml:outerBoundaryIs><gml:LinearRing><gml:coordinates>35.0994255153584,32.0752600477816 35.1185110989761,32.085112894198 35.1342894334471,32.0604463276451 35.1003901296928,32.0454948054607 35.0994255153584,32.0752600477816</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs></gml:Polygon></ogr:geometryProperty>
+                        </ogr:comb_poly>
+                      </gml:featureMember>
+                    </ogr:FeatureCollection>
+
+
+                </wps:ComplexData>
+            </wps:Data>
 		</wps:Input>
 
 	</wps:DataInputs>

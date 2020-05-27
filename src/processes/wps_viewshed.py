@@ -105,7 +105,7 @@ class ViewShed(Process):
         else:
             extent = request.inputs['m'][0].data
 
-        cutline = process_helper.get_request_data(request.inputs, 'cutline')
+        cutline = process_helper.get_request_data(request.inputs, 'cutline', True)
         operation = process_helper.get_request_data(request.inputs, 'o')
         color_palette = process_helper.get_request_data(request.inputs, 'color_palette', True)
 
