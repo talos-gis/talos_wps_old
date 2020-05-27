@@ -121,7 +121,7 @@ class ViewShed(Process):
                         files.append(ds)
                     else:
                         tif_output_filename = fr_filename
-                        ds1 = ds
+
             else:
                 raster_filename, input_ds = process_helper.open_ds_from_wps_input(request.inputs['r'][0])
                 response.outputs['r'].data = raster_filename
@@ -177,7 +177,7 @@ class ViewShed(Process):
 
                 use_temp_tif = True  # todo: why dosn't it work without it?
                 # gdal_out_format = 'GTiff' if use_temp_tif or (output_tif and not operation) else 'MEM'
-                gdal_out_format = 'GTiff' if steps == 1 else 'MEM'
+                # gdal_out_format = 'GTiff' if steps == 1 else 'MEM'
 
                 co = None
                 if 'co' in request.inputs:
@@ -191,12 +191,13 @@ class ViewShed(Process):
 
                 color_table = process_helper.get_color_table(request.inputs, 'color_palette')
 
+                gdal_out_format = 'GTiff' if steps == 1 or use_temp_tif else 'MEM'
                 for vp in arrays_dict:
                     if transform_coords_to_raster:
                         vp['observerX'], vp['observerY'], _ = transform_coords_to_raster.TransformPoint(vp['observerX'], vp['observerY'])
                     d_path = tempfile.mktemp(suffix='.tif') if use_temp_tif else tif_output_filename if gdal_out_format != 'MEM' else ''
-                    gdal_out_format = 'GTiff' if steps == 1 or use_temp_tif else 'MEM'
                     ds = gdal.ViewshedGenerate(input_band, gdal_out_format, d_path, co, **vp)
+
                     if ds is None:
                         raise Exception('error occurred')
 
@@ -225,15 +226,17 @@ class ViewShed(Process):
                 hide_nodata = True
                 calc, kwargs = gdal_calc.make_calc(files, alpha_pattern, operand)
 
-                d_path = tempfile.mktemp(
-                    suffix='.tif') if use_temp_tif else tif_output_filename if gdal_out_format != 'MEM' else ''
-                gdal_out_format = 'GTiff' if steps == 1 or use_temp_tif else 'MEM'
+                # gdal_out_format = 'GTiff' if steps == 1 or use_temp_tif else 'MEM'
+                # d_path = tempfile.mktemp(
+                #     suffix='.tif') if use_temp_tif else tif_output_filename if gdal_out_format != 'MEM' else ''
+                gdal_out_format = 'GTiff' if output_tif else 'MEM'
+                d_path = tif_output_filename
 
                 ds = gdal_calc.Calc(
                     calc, outfile=d_path, extent=extent, cutline=cutline, format=gdal_out_format,
-                    color_table=color_table, hideNodata=hide_nodata, return_ds=True, **kwargs)
-                if ds is None:
-                    raise Exception('error occurred')
+                    color_table=color_table, hideNodata=hide_nodata, return_ds=gdal_out_format == 'MEM', **kwargs)
+                # if ds is None:
+                #     raise Exception('error occurred')
                 for i in range(len(files)):
                     files[i] = None  # close calc input ds(s)
                 steps -= 1
