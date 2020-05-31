@@ -23,14 +23,9 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/wps",
-							"protocol": "http",
+							"raw": "{{talos_wps}}",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"wps"
+								"{{talos_wps}}"
 							]
 						}
 					},
@@ -51,14 +46,9 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/wps",
-							"protocol": "http",
+							"raw": "{{talos_wps}}",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"wps"
+								"{{talos_wps}}"
 							]
 						}
 					},
@@ -79,14 +69,9 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/wps",
-							"protocol": "http",
+							"raw": "{{talos_wps}}",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"wps"
+								"{{talos_wps}}"
 							]
 						}
 					},
@@ -107,14 +92,9 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/wps",
-							"protocol": "http",
+							"raw": "{{talos_wps}}",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"wps"
+								"{{talos_wps}}"
 							]
 						}
 					},
@@ -132,14 +112,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/wps?service=wps&version=1.0.0&request=execute&Identifier=say_hello&storeExecuteResponse=true&DataInputs=name=Idan&RawDataOutput=output",
-							"protocol": "http",
+							"raw": "{{talos_wps}}?service=wps&version=1.0.0&request=execute&Identifier=say_hello&storeExecuteResponse=true&DataInputs=name=Idan&RawDataOutput=output",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"wps"
+								"{{talos_wps}}"
 							],
 							"query": [
 								{
@@ -190,14 +165,9 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/wps",
-							"protocol": "http",
+							"raw": "{{talos_wps}}",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"wps"
+								"{{talos_wps}}"
 							]
 						}
 					},
@@ -224,14 +194,9 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:5000/wps",
-							"protocol": "http",
+							"raw": "{{talos_wps}}",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"wps"
+								"{{talos_wps}}"
 							]
 						}
 					},
