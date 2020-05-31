@@ -22,7 +22,7 @@ class ViewShed(Process):
         mm = dict(min_occurs=1, max_occurs=23)  # 23 latin letters for gdal calc
         inputs = [
             LiteralInputD(defaults, 'of', 'output format (czml, gtiff)', data_type='string',
-                          min_occurs=0, max_occurs=1, default=False),
+                          min_occurs=0, max_occurs=1, default='gtiff'),
 
             LiteralInputD(defaults, 'out_crs', 'output raster crs', data_type='string', default=None, min_occurs=0, max_occurs=1),
 
@@ -93,7 +93,7 @@ class ViewShed(Process):
         )
 
     def _handler(self, request, response: ExecuteResponse):
-        of: str = request.inputs['of'][0].data
+        of: str = process_helper.get_request_data(request.inputs, 'of')
         ext = gdalos_util.get_ext_by_of(of)
         is_czml = ext == '.czml'
 

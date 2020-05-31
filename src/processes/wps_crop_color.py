@@ -13,6 +13,7 @@ from pywps.response.execute import ExecuteResponse
 
 from gdalos.calc import gdal_dem_color_cutline
 from backend.formats import czml_format
+from gdalos import gdalos_util
 from gdalos.rectangle import GeoRectangle
 from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, BoundingBoxInputD
 from processes import process_helper
@@ -23,10 +24,13 @@ class GdalDem(Process):
         process_id = 'crop_color'
         defaults = process_defaults(process_id)
         inputs = [
+            LiteralInputD(defaults, 'of', 'output format (czml, gtiff)', data_type='string',
+                          min_occurs=0, max_occurs=1, default='gtiff'),
             LiteralInputD(defaults, 'output_czml', 'make output as czml', data_type='boolean',
-                         min_occurs=0, max_occurs=1, default=False),
+                         min_occurs=0, max_occurs=1, default=None),
             LiteralInputD(defaults, 'output_tif', 'make output as tif', data_type='boolean',
-                         min_occurs=0, max_occurs=1, default=True),
+                         min_occurs=0, max_occurs=1, default=None),
+
             ComplexInputD(defaults, 'r', 'input raster', supported_formats=[FORMATS.GEOTIFF],
                          min_occurs=1, max_occurs=1, default=None),
             ComplexInputD(defaults, 'color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
@@ -43,8 +47,9 @@ class GdalDem(Process):
         ]
         outputs = [
             LiteralOutput('r', 'input raster name', data_type='string'),
-            ComplexOutput('tif', 'result as GeoTIFF', supported_formats=[FORMATS.GEOTIFF]),
-            ComplexOutput('czml', 'result as CZML', supported_formats=[czml_format])
+            ComplexOutput('output', 'result raster', supported_formats=[FORMATS.GEOTIFF, czml_format]),
+            ComplexOutput('tif', 'result as GeoTIFF', supported_formats=[FORMATS.GEOTIFF]),  # backwards compatibility
+            ComplexOutput('czml', 'result as CZML', supported_formats=[czml_format])  # backwards compatibility
         ]
 
         super().__init__(
@@ -62,8 +67,16 @@ class GdalDem(Process):
         )
 
     def _handler(self, request, response: ExecuteResponse):
-        output_czml = request.inputs['output_czml'][0].data
-        output_tif = request.inputs['output_tif'][0].data
+        output_czml = process_helper.get_request_data(request.inputs, 'output_czml')
+        output_tif = process_helper.get_request_data(request.inputs, 'output_tif')
+        of: str = process_helper.get_request_data(request.inputs, 'of')
+        if output_czml:
+            of = 'czml'
+        ext = gdalos_util.get_ext_by_of(of)
+        is_czml = ext == '.czml'
+        output_czml = is_czml
+        output_tif = not is_czml
+
         if output_czml or output_tif:
             process_palette = request.inputs['process_palette'][0].data if output_czml else 0
             cutline = request.inputs['cutline'][0].file if 'cutline' in request.inputs else None
@@ -76,6 +89,7 @@ class GdalDem(Process):
 
             czml_output_filename = tempfile.mktemp(suffix=czml_format.extension) if output_czml else None
             tif_output_filename = tempfile.mktemp(suffix=FORMATS.GEOTIFF.extension) if output_tif else None
+            output_filename = tif_output_filename or czml_output_filename
 
             # gdal_out_format = 'czml' if output_format.extension == '.czml' else 'GTiff'
             # gdal_out_format = 'MEM' if is_czml else output_format
@@ -93,6 +107,10 @@ class GdalDem(Process):
                 output_format=gdal_out_format)
             del ds
             del src_ds
+
+            response.outputs['output'].output_format = czml_format if is_czml else FORMATS.GEOTIFF
+            response.outputs['output'].file = output_filename
+
             if output_tif:
                 response.outputs['tif'].output_format = FORMATS.GEOTIFF
                 response.outputs['tif'].file = tif_output_filename

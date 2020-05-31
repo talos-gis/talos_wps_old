@@ -7,6 +7,7 @@ ENV WORKDIR=/app
 RUN apt-get install -y --no-install-recommends python3-distutils python3-pip python3-setuptools python3-wheel
 COPY requirements.txt ./
 RUN python3 -m pip install -r requirements.txt
+RUN echo 2020.31.05
 RUN python3 -m pip install --index-url https://test.pypi.org/simple/ --upgrade gdalos
 
 WORKDIR ${WORKDIR}
