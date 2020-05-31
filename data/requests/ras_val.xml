@@ -10,11 +10,6 @@
 
     <wps:DataInputs>
 
-<!--        <wps:Input>-->
-<!--        <ows:Identifier>r</ows:Identifier>-->
-<!--                <wps:Reference xlink:href="file:./data/sample/maps/srtm1_x35_y32.tif"/>-->
-<!--        </wps:Input>-->
-
 		<wps:Input>
 			<ows:Identifier>x</ows:Identifier>
                         <wps:Data>

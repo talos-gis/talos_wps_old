@@ -19,9 +19,12 @@ def get_input_data_array(request_input):
 
 
 def open_ds_from_wps_input(request_input):
-    raster_filename = request_input.file
     # ds: gdal.Dataset
-    ds = gdalos_util.open_ds(raster_filename)
+    raster_filename = request_input.file
+    try:
+        ds = gdalos_util.open_ds(raster_filename)
+    except:
+        ds = None
     if ds is None:
         raster_filename = request_input.data
         ds = gdalos_util.open_ds(raster_filename)

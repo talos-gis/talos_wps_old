@@ -16,6 +16,6 @@ crop_color:
   output_tif: False
 
 viewshed:
-  r: './data/sample/maps/srtm1_x35_y32.tif'
+  r: './data/sample/maps/srtm1_w84u36.tif'
   in_crs: '0'
   out_crs: '0'
