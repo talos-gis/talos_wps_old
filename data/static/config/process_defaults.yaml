@@ -16,6 +16,8 @@ crop_color:
   output_tif: False
 
 viewshed:
-  r: './data/sample/maps/srtm1_w84u36.tif'
+  of: 'czml'
+#  r: './data/sample/maps/srtm1_w84u36.tif'
+  r: './data/static/maps/srtm1_il_w84u36.tif'
   in_crs: '0'
   out_crs: '0'

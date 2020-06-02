@@ -7,7 +7,7 @@ from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, Bo
 from pywps.app.Common import Metadata
 from pywps.response.execute import ExecuteResponse
 from processes import process_helper
-from gdalos.viewshed import viewshed_consts
+from gdalos.viewshed.viewshed_consts import viewshed_defaults, cc_atmospheric_refraction
 from backend.formats import czml_format
 from gdalos import GeoRectangle
 from gdalos import gdalos_util
@@ -19,7 +19,8 @@ class ViewShed(Process):
         process_id = 'viewshed'
 
         defaults = process_defaults(process_id)
-        mm = dict(min_occurs=1, max_occurs=23)  # 23 latin letters for gdal calc
+        mm = dict(min_occurs=1, max_occurs=1000)
+        # 254 is the max possible values for unique function. for sum it's not really limited
         inputs = [
             LiteralInputD(defaults, 'of', 'output format (czml, gtiff)', data_type='string',
                           min_occurs=0, max_occurs=1, default='gtiff'),
@@ -42,13 +43,13 @@ class ViewShed(Process):
             LiteralInputD(defaults, 'tz', 'target altitude relative to terrain', data_type='float', uoms=[UOM('metre')], **mm),
 
             # optional values
-            LiteralInputD(defaults, 'vv', 'visible_value', data_type='float', default=viewshed_consts.st_seen, **mm),
-            LiteralInputD(defaults, 'iv', 'invisible_value', data_type='float', default=viewshed_consts.st_hidden, **mm),
-            LiteralInputD(defaults, 'ov', 'out_of_bounds_value', data_type='float', default=viewshed_consts.st_nodata, **mm),
-            LiteralInputD(defaults, 'ndv', 'nodata_value', data_type='float', uoms=[UOM('metre')], default=viewshed_consts.st_nodtm, **mm),
+            LiteralInputD(defaults, 'vv', 'visible_value', data_type='float', default=viewshed_defaults['vv'], **mm),
+            LiteralInputD(defaults, 'iv', 'invisible_value', data_type='float', default=viewshed_defaults['iv'], **mm),
+            LiteralInputD(defaults, 'ov', 'out_of_bounds_value', data_type='float', default=viewshed_defaults['ov'], **mm),
+            LiteralInputD(defaults, 'ndv', 'nodata_value', data_type='float', uoms=[UOM('metre')], default=viewshed_defaults['ndv'], **mm),
 
             # advanced parameters
-            LiteralInputD(defaults, 'cc', 'curve_coefficient', data_type='float', default=viewshed_consts.cc_atmospheric_refraction, **mm),
+            LiteralInputD(defaults, 'cc', 'curve_coefficient', data_type='float', default=cc_atmospheric_refraction, **mm),
             LiteralInputD(defaults, 'mode', 'viewshed calc mode', data_type='integer', default=2, **mm),
 
             ComplexInputD(defaults, 'color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
@@ -66,7 +67,7 @@ class ViewShed(Process):
                           min_occurs=0, max_occurs=1, default=None),
 
             # combine calc modes
-            LiteralInputD(defaults, 'o', 'operation 0:Single/1:Sum/2:Unique(todo)', data_type='integer',
+            LiteralInputD(defaults, 'o', 'operation 0:Single(1 raster)/1:Sum (1+ rasters)/2:Unique(1-254 rasters)', data_type='integer',
                           min_occurs=0, max_occurs=1, default=None),
 
             ComplexInputD(defaults, 'fr', 'fake input rasters (for debugging)', supported_formats=[FORMATS.GEOTIFF],

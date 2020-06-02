@@ -11,6 +11,7 @@ from processes import process_helper
 from gdalos.rectangle import GeoRectangle
 from gdalos.calc import gdal_calc, gdal_to_czml
 from backend.formats import czml_format
+from gdalos import gdalos_util
 
 
 class Calc(Process):
@@ -27,14 +28,18 @@ class Calc(Process):
                          min_occurs=1, max_occurs=23, default=None),
             LiteralInputD(defaults, 'a', 'alpha pattern', data_type='string',
                          min_occurs=1, max_occurs=1, default='1*({}>3)'),
+
+            LiteralInputD(defaults, 'c', 'custom calc', data_type='string',
+                          min_occurs=0, max_occurs=1, default=None),
+            LiteralInputD(defaults, 'f', 'function', data_type='string',
+                          min_occurs=0, max_occurs=1, default='sum'),
             LiteralInputD(defaults, 'o', 'operator', data_type='string',
-                          min_occurs=1, max_occurs=1, default='+'),
+                          min_occurs=0, max_occurs=1, default='+'),
+
             LiteralInputD(defaults, 'm', 'extent combine mode', data_type='integer',
                           min_occurs=1, max_occurs=1, default=2),
             LiteralInputD(defaults, 'h', 'hide Nodata', data_type='boolean',
                           min_occurs=0, max_occurs=1, default=True),
-            LiteralInputD(defaults, 'c', 'custom calc', data_type='string',
-                          min_occurs=0, max_occurs=1, default=None),
             ComplexInputD(defaults, 'color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
                          min_occurs=0, max_occurs=1, default=None),
             # ComplexInputD(defaults, 'cutline', 'input vector cutline',
@@ -48,8 +53,7 @@ class Calc(Process):
                              min_occurs=0, max_occurs=1, default=None)
         ]
         outputs = [
-            ComplexOutput('tif', 'result as GeoTIFF', supported_formats=[FORMATS.GEOTIFF]),
-            ComplexOutput('czml', 'result as CZML', supported_formats=[czml_format])
+            ComplexOutput('output', 'result raster', supported_formats=[FORMATS.GEOTIFF, czml_format]),
         ]
 
         super().__init__(
@@ -67,53 +71,57 @@ class Calc(Process):
         )
 
     def _handler(self, request, response: ExecuteResponse):
-        output_czml = request.inputs['output_czml'][0].data
-        output_tif = request.inputs['output_tif'][0].data
-        if output_czml or output_tif:
-            # process_palette = request.inputs['process_palette'][0].data if output_czml else 0
-            # cutline = request.inputs['cutline'][0].file if 'cutline' in request.inputs else None
-            extent = request.inputs['extent'][0].data if 'extent' in request.inputs else None
-            if extent is not None:
-                # I'm not sure why the extent is in format miny, minx, maxy, maxx
-                extent = [float(x) for x in extent]
-                extent = GeoRectangle.from_min_max(extent[1], extent[3], extent[0], extent[2])
+        calc = process_helper.get_request_data(request.inputs, 'c')
+        func = process_helper.get_request_data(request.inputs, 'f')
+        operand = process_helper.get_request_data(request.inputs, 'o')
+
+        if not (calc or func or operand):
+            raise Exception('Please provide one of: calc, func, operand')
+
+        of: str = process_helper.get_request_data(request.inputs, 'of')
+        ext = gdalos_util.get_ext_by_of(of)
+        is_czml = ext == '.czml'
+
+        # process_palette = request.inputs['process_palette'][0].data if output_czml else 0
+        # cutline = process_helper.get_request_data(request.inputs, 'cutline')
+        extent = process_helper.get_request_data(request.inputs, 'extent')
+        if extent is not None:
+            # I'm not sure why the extent is in format miny, minx, maxy, maxx
+            extent = [float(x) for x in extent]
+            extent = GeoRectangle.from_min_max(extent[1], extent[3], extent[0], extent[2])
+        else:
+            extent = request.inputs['m'][0].data
+
+        alpha_pattern = process_helper.get_request_data(request.inputs, 'a')
+        hide_nodata = process_helper.get_request_data(request.inputs, 'h')
+
+        output_filename = tempfile.mktemp(suffix=ext)
+        gdal_out_format = 'MEM' if is_czml else 'GTiff'
+
+        files = []
+        for r in request.inputs['r']:
+            _, src_ds = process_helper.open_ds_from_wps_input(r)
+            files.append(src_ds)
+
+        kwargs = dict()
+        if calc is None:
+            if func:
+                calc, kwargs = gdal_calc.make_calc_with_func(files, alpha_pattern, operand, **kwargs)
             else:
-                extent = request.inputs['m'][0].data
-            operand = request.inputs['o'][0].data if 'o' in request.inputs else None
-            alpha_pattern = request.inputs['a'][0].data if 'a' in request.inputs else None
-            hide_nodata = request.inputs['h'][0].data if 'h' in request.inputs else None
-            calc = request.inputs['c'][0].data if 'c' in request.inputs else None
+                calc, kwargs = gdal_calc.make_calc_with_operand(files, alpha_pattern, func, **kwargs)
+        color_table = process_helper.get_color_table(request.inputs, 'color_palette')
+        dst_ds = gdal_calc.Calc(
+            calc, outfile=output_filename, extent=extent, format=gdal_out_format,
+            color_table=color_table, hideNodata=hide_nodata, return_ds=gdal_out_format == 'MEM', **kwargs)
 
-            czml_output_filename = tempfile.mktemp(suffix=czml_format.extension) if output_czml else None
-            tif_output_filename = tempfile.mktemp(suffix=FORMATS.GEOTIFF.extension) if output_tif else None
+        if output_filename is not None and dst_ds is not None:
+            gdal_to_czml.gdal_to_czml(dst_ds, name=output_filename, out_filename=output_filename)
 
-            gdal_out_format = 'GTiff' if output_tif else 'MEM'
+        dst_ds = None  # close ds
+        for i in range(len(files)):
+            files[i] = None
 
-            files = []
-            for r in request.inputs['r']:
-                _, src_ds = process_helper.open_ds_from_wps_input(r)
-                files.append(src_ds)
-
-            kwargs = dict()
-            if calc is None:
-                calc, kwargs = gdal_calc.make_calc(files, alpha_pattern, operand, **kwargs)
-            color_table = process_helper.get_color_table(request.inputs, 'color_palette')
-            dst_ds = gdal_calc.Calc(
-                calc, outfile=tif_output_filename, extent=extent, format=gdal_out_format,
-                color_table=color_table, hideNodata=hide_nodata, return_ds=gdal_out_format == 'MEM', **kwargs)
-
-            if czml_output_filename is not None and dst_ds is not None:
-                gdal_to_czml.gdal_to_czml(dst_ds, name=czml_output_filename, out_filename=czml_output_filename)
-
-            dst_ds = None  # close ds
-            for i in range(len(files)):
-                files[i] = None
-
-            if output_tif:
-                response.outputs['tif'].output_format = FORMATS.GEOTIFF
-                response.outputs['tif'].file = tif_output_filename
-            if output_czml:
-                response.outputs['czml'].output_format = czml_format
-                response.outputs['czml'].file = czml_output_filename
+        response.outputs['output'].output_format = czml_format if is_czml else FORMATS.GEOTIFF
+        response.outputs['output'].file = output_filename
 
         return response
