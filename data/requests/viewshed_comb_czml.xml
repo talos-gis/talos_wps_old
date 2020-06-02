@@ -82,7 +82,7 @@
 
 		<wps:Input>
             <ows:Identifier>color_palette</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/color_files/comb.txt"/>
+                <wps:Reference xlink:href="file:./data/sample/color_files/viewshed/sum.txt"/>
 		</wps:Input>
 
         <wps:Input>

@@ -11,7 +11,7 @@ from gdalos.viewshed.viewshed_consts import viewshed_defaults, cc_atmospheric_re
 from backend.formats import czml_format
 from gdalos import GeoRectangle
 from gdalos import gdalos_util
-from gdalos.viewshed.viewshed_combine import viewshed_calc
+from gdalos.viewshed.viewshed_combine import viewshed_calc, CalcOperation
 
 
 class ViewShed(Process):
@@ -67,7 +67,7 @@ class ViewShed(Process):
                           min_occurs=0, max_occurs=1, default=None),
 
             # combine calc modes
-            LiteralInputD(defaults, 'o', 'operation 0:Single(1 raster)/1:Sum (1+ rasters)/2:Unique(1-254 rasters)', data_type='integer',
+            LiteralInputD(defaults, 'o', 'operation 0:none(1 raster)/1:sum (1+ rasters)/2:unique(1-254 rasters)/3:sumz', data_type='string',
                           min_occurs=0, max_occurs=1, default=None),
 
             ComplexInputD(defaults, 'fr', 'fake input rasters (for debugging)', supported_formats=[FORMATS.GEOTIFF],
@@ -108,6 +108,15 @@ class ViewShed(Process):
 
         cutline = process_helper.get_request_data(request.inputs, 'cutline', True)
         operation = process_helper.get_request_data(request.inputs, 'o')
+        if not operation:
+            operation = None
+        else:
+            try:
+                i = int(operation)
+                operation = i
+            except ValueError:
+                pass
+            operation = CalcOperation(operation)
         color_palette = process_helper.get_request_data(request.inputs, 'color_palette', True)
 
         output_filename = tempfile.mktemp(suffix=ext)
