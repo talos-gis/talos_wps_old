@@ -7,11 +7,11 @@ from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, Bo
 from pywps.app.Common import Metadata
 from pywps.response.execute import ExecuteResponse
 from processes import process_helper
-from gdalos.viewshed.viewshed_consts import viewshed_defaults, cc_atmospheric_refraction
+from gdalos.viewshed.viewshed_consts import viewshed_defaults, viewshed_atmospheric_refraction
 from backend.formats import czml_format
 from gdalos import GeoRectangle
 from gdalos import gdalos_util
-from gdalos.viewshed.viewshed_combine import viewshed_calc, CalcOperation
+from gdalos.viewshed.viewshed_calc import viewshed_calc, CalcOperation
 
 
 class ViewShed(Process):
@@ -49,7 +49,7 @@ class ViewShed(Process):
             LiteralInputD(defaults, 'ndv', 'nodata_value', data_type='float', uoms=[UOM('metre')], default=viewshed_defaults['ndv'], **mm),
 
             # advanced parameters
-            LiteralInputD(defaults, 'cc', 'curve_coefficient', data_type='float', default=cc_atmospheric_refraction, **mm),
+            LiteralInputD(defaults, 'cc', 'curve_coefficient', data_type='float', default=viewshed_atmospheric_refraction, **mm),
             LiteralInputD(defaults, 'mode', 'viewshed calc mode', data_type='integer', default=2, **mm),
 
             ComplexInputD(defaults, 'color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
@@ -67,7 +67,7 @@ class ViewShed(Process):
                           min_occurs=0, max_occurs=1, default=None),
 
             # combine calc modes
-            LiteralInputD(defaults, 'o', 'operation 0:none(1 raster)/1:sum (1+ rasters)/2:unique(1-254 rasters)/3:sumz', data_type='string',
+            LiteralInputD(defaults, 'o', 'operation viewshed/max/count/count_z/unique', data_type='string',
                           min_occurs=0, max_occurs=1, default=None),
 
             ComplexInputD(defaults, 'fr', 'fake input rasters (for debugging)', supported_formats=[FORMATS.GEOTIFF],
@@ -113,10 +113,19 @@ class ViewShed(Process):
         else:
             try:
                 i = int(operation)
-                operation = i
+                if i == 0:
+                    operation = CalcOperation.viewshed
+                elif i == 1:
+                    operation = CalcOperation.count
+                elif i == 2:
+                    operation = CalcOperation.unique
+                operation = CalcOperation(i)
             except ValueError:
-                pass
-            operation = CalcOperation(operation)
+                try:
+                    operation = CalcOperation[operation]
+                except ValueError:
+                    raise Exception ('unknown operation requested {}'.format(operation))
+
         color_palette = process_helper.get_request_data(request.inputs, 'color_palette', True)
 
         output_filename = tempfile.mktemp(suffix=ext)

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d807ce34-f71c-4132-9f1f-1d35f7a7212f",
+		"_postman_id": "0174043d-6cb5-4051-b236-b48d9daa86d1",
 		"name": "talos_wps",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,7 +15,122 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<wps:Execute service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd\">\n\t<ows:Identifier>viewshed</ows:Identifier>\n\n   <wps:ResponseForm>\n        <wps:RawDataOutput>\n          <ows:Identifier>output</ows:Identifier>\n        </wps:RawDataOutput>\n    </wps:ResponseForm>\n\n\t<wps:DataInputs>\n\n\t\t<wps:Input>\n            <ows:Identifier>of</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>czml</wps:LiteralData>\n            </wps:Data>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.11</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.06</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>oz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>tz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>md</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2000</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n\t\t<wps:Input>\n            <ows:Identifier>color_palette</ows:Identifier>\n                <wps:Reference xlink:href=\"file:./data/sample/color_files/viewshed.txt\"/>\n\t\t</wps:Input>\n\n\t</wps:DataInputs>\n</wps:Execute>\n",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<wps:Execute service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd\">\n\t<ows:Identifier>viewshed</ows:Identifier>\n\n   <wps:ResponseForm>\n        <wps:RawDataOutput>\n          <ows:Identifier>output</ows:Identifier>\n        </wps:RawDataOutput>\n    </wps:ResponseForm>\n\n\t<wps:DataInputs>\n\n\t\t<wps:Input>\n            <ows:Identifier>of</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>czml</wps:LiteralData>\n            </wps:Data>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.11</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.06</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>oz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>tz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>md</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2000</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n\t\t<wps:Input>\n            <ows:Identifier>color_palette</ows:Identifier>\n                <wps:Reference xlink:href=\"file:./data/sample/color_files/viewshed/viewshed.txt\"/>\n\t\t</wps:Input>\n\n\t</wps:DataInputs>\n</wps:Execute>\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{talos_wps}}",
+							"host": [
+								"{{talos_wps}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewshed count",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<wps:Execute service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd\">\n\t<ows:Identifier>viewshed</ows:Identifier>\n\n   <wps:ResponseForm>\n        <wps:RawDataOutput>\n          <ows:Identifier>output</ows:Identifier>\n        </wps:RawDataOutput>\n    </wps:ResponseForm>\n\n\t<wps:DataInputs>\n\n\t\t<wps:Input>\n            <ows:Identifier>of</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>czml</wps:LiteralData>\n            </wps:Data>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.11</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.06</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.111</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.061</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n        <wps:Input>\n            <ows:Identifier>oz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>tz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>md</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2000</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n        <wps:Input>\n            <ows:Identifier>o</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>1</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>m</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>o</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>count</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\t\t<wps:Input>\n            <ows:Identifier>color_palette</ows:Identifier>\n                <wps:Reference xlink:href=\"file:./data/sample/color_files/viewshed/count.txt\"/>\n\t\t</wps:Input>\n\n\t</wps:DataInputs>\n</wps:Execute>\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{talos_wps}}",
+							"host": [
+								"{{talos_wps}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewshed count_z",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<wps:Execute service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd\">\n\t<ows:Identifier>viewshed</ows:Identifier>\n\n   <wps:ResponseForm>\n        <wps:RawDataOutput>\n          <ows:Identifier>output</ows:Identifier>\n        </wps:RawDataOutput>\n    </wps:ResponseForm>\n\n\t<wps:DataInputs>\n\n\t\t<wps:Input>\n            <ows:Identifier>of</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>czml</wps:LiteralData>\n            </wps:Data>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.11</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.06</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.111</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.061</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n        <wps:Input>\n            <ows:Identifier>oz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>tz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>md</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2000</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n        <wps:Input>\n            <ows:Identifier>o</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>1</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>m</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>o</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>count_z</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\t\t<wps:Input>\n            <ows:Identifier>color_palette</ows:Identifier>\n                <wps:Reference xlink:href=\"file:./data/sample/color_files/viewshed/count_z.txt\"/>\n\t\t</wps:Input>\n\n\t</wps:DataInputs>\n</wps:Execute>\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{talos_wps}}",
+							"host": [
+								"{{talos_wps}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewshed max",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<wps:Execute service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd\">\n\t<ows:Identifier>viewshed</ows:Identifier>\n\n   <wps:ResponseForm>\n        <wps:RawDataOutput>\n          <ows:Identifier>output</ows:Identifier>\n        </wps:RawDataOutput>\n    </wps:ResponseForm>\n\n\t<wps:DataInputs>\n\n\t\t<wps:Input>\n            <ows:Identifier>of</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>czml</wps:LiteralData>\n            </wps:Data>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.11</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.06</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.111</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.061</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n        <wps:Input>\n            <ows:Identifier>oz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>tz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>md</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2000</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n        <wps:Input>\n            <ows:Identifier>m</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>o</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>max</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\t\t<wps:Input>\n            <ows:Identifier>color_palette</ows:Identifier>\n                <wps:Reference xlink:href=\"file:./data/sample/color_files/viewshed/viewshed.txt\"/>\n\t\t</wps:Input>\n\n\t</wps:DataInputs>\n</wps:Execute>\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{talos_wps}}",
+							"host": [
+								"{{talos_wps}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewshed unique",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<wps:Execute service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd\">\n\t<ows:Identifier>viewshed</ows:Identifier>\n\n   <wps:ResponseForm>\n        <wps:RawDataOutput>\n          <ows:Identifier>output</ows:Identifier>\n        </wps:RawDataOutput>\n    </wps:ResponseForm>\n\n\t<wps:DataInputs>\n\n\t\t<wps:Input>\n            <ows:Identifier>of</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>czml</wps:LiteralData>\n            </wps:Data>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.11</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.06</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.111</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.061</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n        <wps:Input>\n            <ows:Identifier>oz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>tz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>md</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2000</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n        <wps:Input>\n            <ows:Identifier>m</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>o</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>unique</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\t\t<wps:Input>\n            <ows:Identifier>color_palette</ows:Identifier>\n                <wps:Reference xlink:href=\"file:./data/sample/color_files/viewshed/unique.txt\"/>\n\t\t</wps:Input>\n\n\t</wps:DataInputs>\n</wps:Execute>\n",
+							"options": {
+								"raw": {
+									"language": "xml"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{talos_wps}}",
+							"host": [
+								"{{talos_wps}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "viewshed count cutline",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<wps:Execute service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd\">\n\t<ows:Identifier>viewshed</ows:Identifier>\n\n   <wps:ResponseForm>\n        <wps:RawDataOutput>\n          <ows:Identifier>output</ows:Identifier>\n        </wps:RawDataOutput>\n    </wps:ResponseForm>\n\n\t<wps:DataInputs>\n\n\t\t<wps:Input>\n            <ows:Identifier>of</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>czml</wps:LiteralData>\n            </wps:Data>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.11</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.06</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>oz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>tz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>md</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2000</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        \n        <wps:Input>\n            <ows:Identifier>o</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>count</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\t\t<wps:Input>\n            <ows:Identifier>color_palette</ows:Identifier>\n                <wps:Reference xlink:href=\"file:./data/sample/color_files/viewshed/count.txt\"/>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>cutline</ows:Identifier>\n            <wps:Data>\n                <wps:ComplexData>\n\n                    <ogr:FeatureCollection\n                         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n                         xsi:schemaLocation=\"http://ogr.maptools.org/ comb_poly.xsd\"\n                         xmlns:ogr=\"http://ogr.maptools.org/\"\n                         xmlns:gml=\"http://www.opengis.net/gml\">\n                      <gml:boundedBy>\n                        <gml:Box>\n                          <gml:coord><gml:X>35.09942551535836</gml:X><gml:Y>32.04549480546075</gml:Y></gml:coord>\n                          <gml:coord><gml:X>35.13428943344709</gml:X><gml:Y>32.08511289419796</gml:Y></gml:coord>\n                        </gml:Box>\n                      </gml:boundedBy>\n\n                      <gml:featureMember>\n                        <ogr:comb_poly fid=\"comb_poly.0\">\n                          <ogr:geometryProperty><gml:Polygon srsName=\"EPSG:4326\"><gml:outerBoundaryIs><gml:LinearRing><gml:coordinates>35.0994255153584,32.0752600477816 35.1185110989761,32.085112894198 35.1342894334471,32.0604463276451 35.1003901296928,32.0454948054607 35.0994255153584,32.0752600477816</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs></gml:Polygon></ogr:geometryProperty>\n                        </ogr:comb_poly>\n                      </gml:featureMember>\n                    </ogr:FeatureCollection>\n\n\n                </wps:ComplexData>\n            </wps:Data>\n\t\t</wps:Input>\n\n\t</wps:DataInputs>\n</wps:Execute>\n",
 							"options": {
 								"raw": {
 									"language": "xml"
@@ -38,53 +153,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<wps:Execute service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd\">\n\t<ows:Identifier>viewshed</ows:Identifier>\n\n   <wps:ResponseForm>\n        <wps:RawDataOutput>\n          <ows:Identifier>output</ows:Identifier>\n        </wps:RawDataOutput>\n    </wps:ResponseForm>\n\n\t<wps:DataInputs>\n\n\t\t<wps:Input>\n            <ows:Identifier>of</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>czml</wps:LiteralData>\n            </wps:Data>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.11</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.06</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>oz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>tz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>md</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2000</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n\t\t<wps:Input>\n            <ows:Identifier>color_palette</ows:Identifier>\n                <wps:Reference xlink:href=\"file:./data/sample/color_files/viewshed.txt\"/>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>cutline</ows:Identifier>\n            <wps:Data>\n                <wps:ComplexData>\n\n                    <ogr:FeatureCollection\n                         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n                         xsi:schemaLocation=\"http://ogr.maptools.org/ comb_poly.xsd\"\n                         xmlns:ogr=\"http://ogr.maptools.org/\"\n                         xmlns:gml=\"http://www.opengis.net/gml\">\n                      <gml:boundedBy>\n                        <gml:Box>\n                          <gml:coord><gml:X>35.09942551535836</gml:X><gml:Y>32.04549480546075</gml:Y></gml:coord>\n                          <gml:coord><gml:X>35.13428943344709</gml:X><gml:Y>32.08511289419796</gml:Y></gml:coord>\n                        </gml:Box>\n                      </gml:boundedBy>\n\n                      <gml:featureMember>\n                        <ogr:comb_poly fid=\"comb_poly.0\">\n                          <ogr:geometryProperty><gml:Polygon srsName=\"EPSG:4326\"><gml:outerBoundaryIs><gml:LinearRing><gml:coordinates>35.0994255153584,32.0752600477816 35.1185110989761,32.085112894198 35.1342894334471,32.0604463276451 35.1003901296928,32.0454948054607 35.0994255153584,32.0752600477816</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs></gml:Polygon></ogr:geometryProperty>\n                        </ogr:comb_poly>\n                      </gml:featureMember>\n                    </ogr:FeatureCollection>\n\n\n                </wps:ComplexData>\n            </wps:Data>\n\t\t</wps:Input>\n\n\t</wps:DataInputs>\n</wps:Execute>\n",
-							"options": {
-								"raw": {
-									"language": "xml"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{talos_wps}}",
-							"host": [
-								"{{talos_wps}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "viewshed sum",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<wps:Execute service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd\">\n\t<ows:Identifier>viewshed</ows:Identifier>\n\n   <wps:ResponseForm>\n        <wps:RawDataOutput>\n          <ows:Identifier>output</ows:Identifier>\n        </wps:RawDataOutput>\n    </wps:ResponseForm>\n\n\t<wps:DataInputs>\n\n\t\t<wps:Input>\n            <ows:Identifier>of</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>czml</wps:LiteralData>\n            </wps:Data>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.11</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.06</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.111</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.061</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n        <wps:Input>\n            <ows:Identifier>oz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>tz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>md</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2000</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n        <wps:Input>\n            <ows:Identifier>o</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>1</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>m</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\t\t<wps:Input>\n            <ows:Identifier>color_palette</ows:Identifier>\n                <wps:Reference xlink:href=\"file:./data/sample/color_files/comb.txt\"/>\n\t\t</wps:Input>\n\n\t</wps:DataInputs>\n</wps:Execute>\n",
-							"options": {
-								"raw": {
-									"language": "xml"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{talos_wps}}",
-							"host": [
-								"{{talos_wps}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "viewshed sum cutline",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<wps:Execute service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd\">\n\t<ows:Identifier>viewshed</ows:Identifier>\n\n   <wps:ResponseForm>\n        <wps:RawDataOutput>\n          <ows:Identifier>output</ows:Identifier>\n        </wps:RawDataOutput>\n    </wps:ResponseForm>\n\n\t<wps:DataInputs>\n\n\t\t<wps:Input>\n            <ows:Identifier>of</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>czml</wps:LiteralData>\n            </wps:Data>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.11</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.06</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>oz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>tz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>md</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2000</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n\t\t<wps:Input>\n            <ows:Identifier>color_palette</ows:Identifier>\n                <wps:Reference xlink:href=\"file:./data/sample/color_files/viewshed.txt\"/>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>cutline</ows:Identifier>\n            <wps:Data>\n                <wps:ComplexData>\n\n                    <ogr:FeatureCollection\n                         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n                         xsi:schemaLocation=\"http://ogr.maptools.org/ comb_poly.xsd\"\n                         xmlns:ogr=\"http://ogr.maptools.org/\"\n                         xmlns:gml=\"http://www.opengis.net/gml\">\n                      <gml:boundedBy>\n                        <gml:Box>\n                          <gml:coord><gml:X>35.09942551535836</gml:X><gml:Y>32.04549480546075</gml:Y></gml:coord>\n                          <gml:coord><gml:X>35.13428943344709</gml:X><gml:Y>32.08511289419796</gml:Y></gml:coord>\n                        </gml:Box>\n                      </gml:boundedBy>\n\n                      <gml:featureMember>\n                        <ogr:comb_poly fid=\"comb_poly.0\">\n                          <ogr:geometryProperty><gml:Polygon srsName=\"EPSG:4326\"><gml:outerBoundaryIs><gml:LinearRing><gml:coordinates>35.0994255153584,32.0752600477816 35.1185110989761,32.085112894198 35.1342894334471,32.0604463276451 35.1003901296928,32.0454948054607 35.0994255153584,32.0752600477816</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs></gml:Polygon></ogr:geometryProperty>\n                        </ogr:comb_poly>\n                      </gml:featureMember>\n                    </ogr:FeatureCollection>\n\n\n                </wps:ComplexData>\n            </wps:Data>\n\t\t</wps:Input>\n\n\t</wps:DataInputs>\n</wps:Execute>\n",
+							"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<wps:Execute service=\"WPS\" version=\"1.0.0\" xmlns:wps=\"http://www.opengis.net/wps/1.0.0\" xmlns:ows=\"http://www.opengis.net/ows/1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wps/1.0.0 ../wpsExecute_request.xsd\">\n\t<ows:Identifier>viewshed</ows:Identifier>\n\n   <wps:ResponseForm>\n        <wps:RawDataOutput>\n          <ows:Identifier>output</ows:Identifier>\n        </wps:RawDataOutput>\n    </wps:ResponseForm>\n\n\t<wps:DataInputs>\n\n\t\t<wps:Input>\n            <ows:Identifier>of</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>czml</wps:LiteralData>\n            </wps:Data>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>ox</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>35.11</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n        <wps:Input>\n            <ows:Identifier>oy</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>32.06</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>oz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>tz</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>10</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>md</ows:Identifier>\n            <wps:Data>\n                <wps:LiteralData>2000</wps:LiteralData>\n            </wps:Data>\n        </wps:Input>\n\n\n\t\t<wps:Input>\n            <ows:Identifier>color_palette</ows:Identifier>\n                <wps:Reference xlink:href=\"file:./data/sample/color_files/viewshed/viewshed.txt\"/>\n\t\t</wps:Input>\n\n        <wps:Input>\n            <ows:Identifier>cutline</ows:Identifier>\n            <wps:Data>\n                <wps:ComplexData>\n\n                    <ogr:FeatureCollection\n                         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n                         xsi:schemaLocation=\"http://ogr.maptools.org/ comb_poly.xsd\"\n                         xmlns:ogr=\"http://ogr.maptools.org/\"\n                         xmlns:gml=\"http://www.opengis.net/gml\">\n                      <gml:boundedBy>\n                        <gml:Box>\n                          <gml:coord><gml:X>35.09942551535836</gml:X><gml:Y>32.04549480546075</gml:Y></gml:coord>\n                          <gml:coord><gml:X>35.13428943344709</gml:X><gml:Y>32.08511289419796</gml:Y></gml:coord>\n                        </gml:Box>\n                      </gml:boundedBy>\n\n                      <gml:featureMember>\n                        <ogr:comb_poly fid=\"comb_poly.0\">\n                          <ogr:geometryProperty><gml:Polygon srsName=\"EPSG:4326\"><gml:outerBoundaryIs><gml:LinearRing><gml:coordinates>35.0994255153584,32.0752600477816 35.1185110989761,32.085112894198 35.1342894334471,32.0604463276451 35.1003901296928,32.0454948054607 35.0994255153584,32.0752600477816</gml:coordinates></gml:LinearRing></gml:outerBoundaryIs></gml:Polygon></ogr:geometryProperty>\n                        </ogr:comb_poly>\n                      </gml:featureMember>\n                    </ogr:FeatureCollection>\n\n\n                </wps:ComplexData>\n            </wps:Data>\n\t\t</wps:Input>\n\n\t</wps:DataInputs>\n</wps:Execute>\n",
 							"options": {
 								"raw": {
 									"language": "xml"

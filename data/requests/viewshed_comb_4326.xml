@@ -206,7 +206,7 @@
         <wps:Input>
             <ows:Identifier>o</ows:Identifier>
             <wps:Data>
-                <wps:LiteralData>1</wps:LiteralData>
+                <wps:LiteralData>count</wps:LiteralData>
             </wps:Data>
         </wps:Input>
 
@@ -219,7 +219,7 @@
 
 		<wps:Input>
             <ows:Identifier>color_palette</ows:Identifier>
-                <wps:Reference xlink:href="file:./data/sample/color_files/viewshed/sum.txt"/>
+                <wps:Reference xlink:href="file:./data/sample/color_files/viewshed/count.txt"/>
 		</wps:Input>
 
 <!--        <wps:Input>-->
