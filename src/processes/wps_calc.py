@@ -9,7 +9,7 @@ from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, Bo
 from processes import process_helper
 
 from gdalos.rectangle import GeoRectangle
-from gdalos.calc import gdal_calc, gdal_to_czml
+from gdalos.calc import gdal_calc, gdal_to_czml, gdalos_combine
 from backend.formats import czml_format
 from gdalos import gdalos_util
 
@@ -106,9 +106,9 @@ class Calc(Process):
         kwargs = dict()
         if calc is None:
             if func:
-                calc, kwargs = gdal_calc.make_calc_with_func(files, alpha_pattern, operand, **kwargs)
+                calc, kwargs = gdalos_combine.make_calc_with_func(files, alpha_pattern, func, **kwargs)
             else:
-                calc, kwargs = gdal_calc.make_calc_with_operand(files, alpha_pattern, func, **kwargs)
+                calc, kwargs = gdalos_combine.make_calc_with_operand(files, alpha_pattern, operand, **kwargs)
         color_table = process_helper.get_color_table(request.inputs, 'color_palette')
         dst_ds = gdal_calc.Calc(
             calc, outfile=output_filename, extent=extent, format=gdal_out_format,

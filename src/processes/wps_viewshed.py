@@ -20,6 +20,9 @@ class ViewShed(Process):
 
         defaults = process_defaults(process_id)
         mm = dict(min_occurs=1, max_occurs=1000)
+        mm = dict(min_occurs=1, max_occurs=1000)
+        mmm = dict(data_type='float', uoms=[UOM('metre')], **mm)
+        dmm = dict(data_type='float', uoms=[UOM('degree')], **mm)
         # 254 is the max possible values for unique function. for sum it's not really limited
         inputs = [
             LiteralInputD(defaults, 'of', 'output format (czml, gtiff)', data_type='string',
@@ -31,26 +34,32 @@ class ViewShed(Process):
             LiteralInputD(defaults, 'bi', 'band_index', data_type='positiveInteger', default=1, min_occurs=0, max_occurs=1),
             LiteralInputD(defaults, 'co', 'creation options', data_type='string', min_occurs=0, max_occurs=1),
 
-            LiteralInputD(defaults, 'md', 'maximum_distance (radius)', data_type='float', uoms=[UOM('metre')], **mm),
+            LiteralInputD(defaults, 'md', 'maximum_distance (radius)', **mmm),
 
-            # obeserver x,y in the given CRS
+            # obeserver x,y in the given CRSr
             LiteralInputD(defaults, 'in_crs', 'observer input crs', data_type='string', default=None, min_occurs=0, max_occurs=1),
-            LiteralInputD(defaults, 'ox', 'observer_X', data_type='float', uoms=[UOM('metre')], **mm),
-            LiteralInputD(defaults, 'oy', 'observer_Y', data_type='float', uoms=[UOM('metre')], **mm),
+            LiteralInputD(defaults, 'ox', 'observer_X', **mmm),
+            LiteralInputD(defaults, 'oy', 'observer_Y', **mmm),
 
             # heights relative to terrain
-            LiteralInputD(defaults, 'oz', 'observer altitude relative to terrain', data_type='float', uoms=[UOM('metre')], **mm),
-            LiteralInputD(defaults, 'tz', 'target altitude relative to terrain', data_type='float', uoms=[UOM('metre')], **mm),
+            LiteralInputD(defaults, 'oz', 'observer altitude relative to terrain', **mmm),
+            LiteralInputD(defaults, 'tz', 'target altitude relative to terrain', **mmm),
+
+            # angles
+            LiteralInputD(defaults, 'hd', 'horizontal direction', default=0, **dmm),
+            LiteralInputD(defaults, 'ha', 'horizontal aperture', default=360, **dmm),
+            LiteralInputD(defaults, 've', 'vertical elevation', default=0, **dmm),
+            LiteralInputD(defaults, 'va', 'vertical aperture', default=180, **dmm),
 
             # optional values
-            LiteralInputD(defaults, 'vv', 'visible_value', data_type='float', default=viewshed_defaults['vv'], **mm),
-            LiteralInputD(defaults, 'iv', 'invisible_value', data_type='float', default=viewshed_defaults['iv'], **mm),
-            LiteralInputD(defaults, 'ov', 'out_of_bounds_value', data_type='float', default=viewshed_defaults['ov'], **mm),
-            LiteralInputD(defaults, 'ndv', 'nodata_value', data_type='float', uoms=[UOM('metre')], default=viewshed_defaults['ndv'], **mm),
+            LiteralInputD(defaults, 'vv', 'visible_value', default=viewshed_defaults['vv'], **mmm),
+            LiteralInputD(defaults, 'iv', 'invisible_value', default=viewshed_defaults['iv'], **mmm),
+            LiteralInputD(defaults, 'ov', 'out_of_bounds_value', default=viewshed_defaults['ov'], **mmm),
+            LiteralInputD(defaults, 'ndv', 'nodata_value', default=viewshed_defaults['ndv'], **mmm),
 
             # advanced parameters
-            LiteralInputD(defaults, 'cc', 'curve_coefficient', data_type='float', default=viewshed_atmospheric_refraction, **mm),
-            LiteralInputD(defaults, 'mode', 'viewshed calc mode', data_type='integer', default=2, **mm),
+            LiteralInputD(defaults, 'cc', 'curve_coefficient', default=viewshed_atmospheric_refraction, data_type='float', **mm),
+            LiteralInputD(defaults, 'mode', 'viewshed calc mode', default=2, data_type='integer', **mm),
 
             ComplexInputD(defaults, 'color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
                           min_occurs=0, max_occurs=1, default=None),
