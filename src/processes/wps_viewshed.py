@@ -50,8 +50,8 @@ class ViewShed(Process):
             LiteralInputD(defaults, 'tz', 'target height/altitude/elevation', **mmm),
 
             # https://en.wikipedia.org/wiki/Height_above_ground_level AMSL/AGL
-            LiteralInputD(defaults, 'oza', 'observer height mode AGL(True) / AMSL(False)', default=True, data_type='boolean', **mm),  # todo
-            LiteralInputD(defaults, 'tza', 'target height mode AGL(True) / AMSL(False)', default=True, data_type='boolean', **mm),  # todo
+            LiteralInputD(defaults, 'oag', 'observer height mode AGL(True) / AMSL(False)', default=True, data_type='boolean', **mm),  # todo
+            LiteralInputD(defaults, 'tag', 'target height mode AGL(True) / AMSL(False)', default=True, data_type='boolean', **mm),  # todo
 
             # angles
             LiteralInputD(defaults, 'azimuth', 'horizontal azimuth direction', default=0, **dmm),  # todo
