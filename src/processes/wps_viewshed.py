@@ -65,6 +65,9 @@ class ViewShed(Process):
             LiteralInputD(defaults, 'ov', 'out_of_bounds_value', default=viewshed_defaults['ov'], **mmm),
             LiteralInputD(defaults, 'ndv', 'nodata_value', default=viewshed_defaults['ndv'], **mmm),
 
+            LiteralInputD(defaults, 'vps', 'Use only the given slice of input Viewshed parameter array',
+                          default=None, data_type='string', min_occurs=0, max_occurs=1),
+
             # advanced parameters
             LiteralInputD(defaults, 'alg', 'Viewshed algorithm to use',
                           default=None, data_type='string', **mm0),  # todo
@@ -181,12 +184,14 @@ class ViewShed(Process):
             params = ViewshedParams.__slots__
             arrays_dict = {k: process_helper.get_input_data_array(request.inputs[k]) for k in params}
 
+        vp_slice = process_helper.get_request_data(request.inputs, 'vps')
+
         viewshed_calc(input_ds=input_ds, bi=bi,
                       output_filename=output_filename, co=co, of=of,
                       vp_array=arrays_dict, extent=extent, cutline=cutline, operation=operation,
                       in_coords_crs_pj=in_coords_crs_pj, out_crs=out_crs,
                       color_palette=color_palette,
-                      files=files)
+                      files=files, vp_slice=vp_slice)
 
         response.outputs['output'].output_format = czml_format if is_czml else FORMATS.GEOTIFF
         response.outputs['output'].file = output_filename
