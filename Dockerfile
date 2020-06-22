@@ -8,7 +8,8 @@ RUN apt-get install -y --no-install-recommends python3-distutils python3-pip pyt
 COPY requirements.txt ./
 RUN python3 -m pip install -r requirements.txt
 
-RUN echo this line is here so that docker will rerun the following commands not from cache: #9
+# https://github.com/moby/moby/issues/1996#issuecomment-185872769
+ARG CACHEBUST=1
 
 RUN python3 -m pip install --upgrade gdalos
 # RUN python3 -m pip install --index-url https://test.pypi.org/simple/ --upgrade gdalos
