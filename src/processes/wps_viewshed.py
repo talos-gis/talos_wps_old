@@ -50,9 +50,9 @@ class ViewShed(Process):
             LiteralInputD(defaults, 'oz', 'observer height/altitude/elevation', **mmm),
             LiteralInputD(defaults, 'tz', 'target height/altitude/elevation', **mmm),
 
-            # https://en.wikipedia.org/wiki/Height_above_ground_level AMSL/AGL
-            LiteralInputD(defaults, 'oag', 'observer height mode AGL(True) / AMSL(False)', default=True, data_type='boolean', **mm),  # todo
-            LiteralInputD(defaults, 'tag', 'target height mode AGL(True) / AMSL(False)', default=True, data_type='boolean', **mm),  # todo
+            # https://en.wikipedia.org/wiki/Height_above_ground_level MSL/AGL
+            LiteralInputD(defaults, 'omsl', 'observer height mode MSL(True) / AGL(False)', default=False, data_type='boolean', **mm),
+            LiteralInputD(defaults, 'tmsl', 'target height mode MSL(True) / AGL(False)', default=False, data_type='boolean', **mm),
 
             # angles
             LiteralInputD(defaults, 'azimuth', 'horizontal azimuth direction', default=0, **dmm),  # todo
@@ -70,8 +70,8 @@ class ViewShed(Process):
                           default=None, data_type='string', min_occurs=0, max_occurs=1),
 
             # advanced parameters
-            LiteralInputD(defaults, 'alg', 'Viewshed algorithm to use',
-                          default=None, data_type='string', **mm0),  # todo
+            LiteralInputD(defaults, 'backend', 'Viewshed backend to use',
+                          default=None, data_type='string', **mm0),
             LiteralInputD(defaults, 'refraction_coeff', 'atmospheric refraction correction coefficient',
                           default=atmospheric_refraction_coeff, data_type='float', **mm),  # was: 1-cc
             LiteralInputD(defaults, 'mode', 'viewshed calc mode', default=2, data_type='integer', **mm),
