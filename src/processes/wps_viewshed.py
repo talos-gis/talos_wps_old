@@ -38,8 +38,10 @@ class ViewShed(Process):
 
             LiteralInputD(defaults, 'co', 'creation options', data_type='string', min_occurs=0, max_occurs=1),
 
-            LiteralInputD(defaults, 'min_r', 'Minimum visibility range/radius/distance', default=0, **mmm0),  # todo
-            LiteralInputD(defaults, 'max_r', 'Maximum visibility range/radius/distance', **mmm),  # was: md
+            LiteralInputD(defaults, 'min_r', 'Minimum visibility range/radius/distance', default=0, **mmm),
+            LiteralInputD(defaults, 'max_r', 'Maximum visibility range/radius/distance', **mmm),
+            LiteralInputD(defaults, 'min_r_shave', 'ignore DTM before Minimum range', default=False, data_type='boolean', **mm),
+            LiteralInputD(defaults, 'max_r_slant', 'Use Slant Range as Max Range (instead of ground range)', data_type='boolean', default=True, **mm),
 
             # obeserver x,y in the given CRSr
             LiteralInputD(defaults, 'in_crs', 'observer input crs', data_type='string', default=None, min_occurs=0, max_occurs=1),
@@ -173,6 +175,7 @@ class ViewShed(Process):
 
             in_coords_crs_pj = process_helper.get_request_data(request.inputs, 'in_crs')
             out_crs = process_helper.get_request_data(request.inputs, 'out_crs')
+            backend = process_helper.get_request_data(request.inputs, 'backend')
 
             if 'co' in request.inputs:
                 co = []
@@ -184,11 +187,11 @@ class ViewShed(Process):
                     co.append(creation_option)
 
             params = ViewshedParams.__slots__
-            arrays_dict = {k: process_helper.get_input_data_array(request.inputs[k]) for k in params}
+            arrays_dict = {k: process_helper.get_input_data_array(request.inputs[k]) if k in request.inputs else None for k in params}
 
         vp_slice = process_helper.get_request_data(request.inputs, 'vps')
 
-        viewshed_calc(input_ds=input_ds, bi=bi,
+        viewshed_calc(input_ds=input_ds, input_filename=raster_filename, bi=bi, backend=backend,
                       output_filename=output_filename, co=co, of=of,
                       vp_array=arrays_dict, extent=extent, cutline=cutline, operation=operation,
                       in_coords_crs_pj=in_coords_crs_pj, out_crs=out_crs,
