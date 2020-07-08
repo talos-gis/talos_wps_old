@@ -43,3 +43,6 @@ rm ./logs/pywps-logs.sqlite3
 
 # Sand Castle
 #https://sandcastle.cesium.com/?src=CZML%20Polyline.html&label=CZML
+
+# sleep
+curl "%server%?service=wps&version=1.0.0&request=execute&Identifier=sleep&storeExecuteResponse=true&DataInputs=seconds=2&RawDataOutput=output"
