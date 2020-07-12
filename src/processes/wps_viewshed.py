@@ -49,8 +49,8 @@ class ViewShed(Process):
             LiteralInputD(defaults, 'oy', 'observer Y/latitude', **mmm),
 
             # observer and target height/altitude/elevation
-            LiteralInputD(defaults, 'oz', 'observer height/altitude/elevation', **mmm),
-            LiteralInputD(defaults, 'tz', 'target height/altitude/elevation', **mmm),
+            LiteralInputD(defaults, 'oz', 'observer height/altitude/elevation', **mmm0),
+            LiteralInputD(defaults, 'tz', 'target height/altitude/elevation', **mmm0),
 
             # https://en.wikipedia.org/wiki/Height_above_ground_level MSL/AGL
             LiteralInputD(defaults, 'omsl', 'observer height mode MSL(True) / AGL(False)', default=False, data_type='boolean', **mm),

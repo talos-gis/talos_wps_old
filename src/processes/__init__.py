@@ -28,3 +28,12 @@ processes = [
 
     Buffer(),
 ]
+
+# For the process list on the home page
+
+process_descriptor = {}
+for process in processes:
+    abstract = process.abstract
+    identifier = process.identifier
+    process_descriptor[identifier] = abstract
+
