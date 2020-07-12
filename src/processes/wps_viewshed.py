@@ -78,8 +78,10 @@ class ViewShed(Process):
                           default=atmospheric_refraction_coeff, data_type='float', **mm),  # was: 1-cc
             LiteralInputD(defaults, 'mode', 'viewshed calc mode', default=2, data_type='integer', **mm),
 
+            # color
             ComplexInputD(defaults, 'color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
                           min_occurs=0, max_occurs=1, default=None),
+            LiteralInputD(defaults, 'color_mode', 'color mode', default=0, data_type='integer', **mm),
 
             # output extent definition
             LiteralInputD(defaults, 'extent_c', 'extent combine mode 2:union/3:intersection', data_type='integer',
@@ -153,6 +155,7 @@ class ViewShed(Process):
                     raise Exception ('unknown operation requested {}'.format(operation))
 
         color_palette = process_helper.get_request_data(request.inputs, 'color_palette', True)
+        color_mode = process_helper.get_request_data(request.inputs, 'color_mode')
 
         output_filename = tempfile.mktemp(suffix=ext)
 
@@ -195,7 +198,7 @@ class ViewShed(Process):
                       output_filename=output_filename, co=co, of=of,
                       vp_array=arrays_dict, extent=extent, cutline=cutline, operation=operation,
                       in_coords_crs_pj=in_coords_crs_pj, out_crs=out_crs,
-                      color_palette=color_palette,
+                      color_palette=color_palette, color_mode=color_mode,
                       files=files, vp_slice=vp_slice)
 
         response.outputs['output'].output_format = czml_format if is_czml else FORMATS.GEOTIFF
