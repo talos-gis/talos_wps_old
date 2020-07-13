@@ -57,7 +57,8 @@ def datafile(filename):
     return flask_response(targetfile)
 
 
+# not sure how the static route works. static route doesn't reach this function.
 @main_page.route('/static/' + '<path:filename>')
 def staticfile(filename):
-    targetfile = os.path.join('data', 'static', filename)
+    targetfile = os.path.join('static', filename)
     return flask_response(targetfile)
