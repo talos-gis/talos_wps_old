@@ -13,6 +13,7 @@ from gdalos import GeoRectangle
 from gdalos import gdalos_util
 from gdalos.viewshed.viewshed_calc import viewshed_calc, CalcOperation
 from gdalos.viewshed.viewshed_params import ViewshedParams
+from gdalos.gdalos_color import ColorPalette
 from pywps.inout.literaltypes import LITERAL_DATA_TYPES
 
 
@@ -81,7 +82,7 @@ class ViewShed(Process):
             # color
             ComplexInputD(defaults, 'color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
                           min_occurs=0, max_occurs=1, default=None),
-            LiteralInputD(defaults, 'color_mode', 'color mode', default=0, data_type='integer', **mm),
+            LiteralInputD(defaults, 'discrete_mode', 'color mode', default=0, data_type='string', **mm),
 
             # output extent definition
             LiteralInputD(defaults, 'extent_c', 'extent combine mode 2:union/3:intersection', data_type='integer',
@@ -154,8 +155,8 @@ class ViewShed(Process):
                 except ValueError:
                     raise Exception ('unknown operation requested {}'.format(operation))
 
-        color_palette = process_helper.get_request_data(request.inputs, 'color_palette', True)
-        color_mode = process_helper.get_request_data(request.inputs, 'color_mode')
+        color_palette = ColorPalette.from_string_list(process_helper.get_request_data(request.inputs, 'color_palette', True))
+        discrete_mode = process_helper.get_request_data(request.inputs, 'discrete_mode')
 
         output_filename = tempfile.mktemp(suffix=ext)
 
@@ -198,7 +199,7 @@ class ViewShed(Process):
                       output_filename=output_filename, co=co, of=of,
                       vp_array=arrays_dict, extent=extent, cutline=cutline, operation=operation,
                       in_coords_crs_pj=in_coords_crs_pj, out_crs=out_crs,
-                      color_palette=color_palette, color_mode=color_mode,
+                      color_palette=color_palette, discrete_mode=discrete_mode,
                       files=files, vp_slice=vp_slice)
 
         response.outputs['output'].output_format = czml_format if is_czml else FORMATS.GEOTIFF

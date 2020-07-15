@@ -17,6 +17,7 @@ from gdalos import gdalos_util
 from gdalos.rectangle import GeoRectangle
 from .process_defaults import process_defaults, LiteralInputD, ComplexInputD, BoundingBoxInputD
 from processes import process_helper
+from gdalos.gdalos_color import ColorPalette
 
 
 class GdalDem(Process):
@@ -80,7 +81,9 @@ class GdalDem(Process):
         if output_czml or output_tif:
             process_palette = request.inputs['process_palette'][0].data if output_czml else 0
             cutline = request.inputs['cutline'][0].file if 'cutline' in request.inputs else None
-            color_palette = request.inputs['color_palette'][0].file if 'color_palette' in request.inputs else None
+            # color_palette = request.inputs['color_palette'][0].file if 'color_palette' in request.inputs else None
+            color_palette = ColorPalette.from_string_list(
+                process_helper.get_request_data(request.inputs, 'color_palette', True))
             extent = request.inputs['extent'][0].data if 'extent' in request.inputs else None
             if extent is not None:
                 # I'm not sure why the extent is in format miny, minx, maxy, maxx
