@@ -2,11 +2,11 @@
 # output=simple
 
 import gdal
-from wps.processes import gdal_to_czml
+from gdalos.calc.gdal_to_czml import gdal_to_czml
 
 raster_filename = r'd:\dev\czml\1.tif'
 ds = gdal.Open(raster_filename, gdal.GA_ReadOnly)
-output = gdal_to_czml.gdal_to_czml(ds, name="")
+ds, output = gdal_to_czml.gdal_to_czml(ds, name="")
 del ds
 
 print(output)

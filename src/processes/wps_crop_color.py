@@ -98,18 +98,16 @@ class GdalDem(Process):
             # gdal_out_format = 'MEM' if is_czml else output_format
             gdal_out_format = 'GTiff' if output_tif else 'MEM'
 
-            raster_filename, src_ds = process_helper.open_ds_from_wps_input(request.inputs['r'][0])
+            raster_filename, ds = process_helper.open_ds_from_wps_input(request.inputs['r'][0])
 
-            ds = gdal_dem_color_cutline.czml_gdaldem_crop_and_color(
-                ds=src_ds,
+            gdal_dem_color_cutline.czml_gdaldem_crop_and_color(
+                ds=ds,
                 czml_output_filename=czml_output_filename,
                 out_filename=tif_output_filename,
                 extent=extent, cutline=cutline,
                 color_palette=color_palette,
                 process_palette=process_palette,
                 output_format=gdal_out_format)
-            del ds
-            del src_ds
 
             response.outputs['output'].output_format = czml_format if is_czml else FORMATS.GEOTIFF
             response.outputs['output'].file = output_filename

@@ -82,7 +82,7 @@ class ViewShed(Process):
             # color
             ComplexInputD(defaults, 'color_palette', 'color palette', supported_formats=[FORMATS.TEXT],
                           min_occurs=0, max_occurs=1, default=None),
-            LiteralInputD(defaults, 'discrete_mode', 'color mode', default=0, data_type='string', **mm),
+            LiteralInputD(defaults, 'discrete_mode', 'discrete mode', default='interp', data_type='string', **mm),
 
             # output extent definition
             LiteralInputD(defaults, 'extent_c', 'extent combine mode 2:union/3:intersection', data_type='integer',
