@@ -1,3 +1,4 @@
+import tempfile
 
 from pywps import Process, LiteralInput, \
         ComplexInput, ComplexOutput, Format, FORMATS
@@ -15,7 +16,7 @@ class Buffer(Process):
                   mode=MODE.STRICT),
                   LiteralInput('buffer', 'Buffer size', data_type='float',
                   allowed_values=(0, 1, 10, (10, 10, 100), (100, 100, 1000)))]
-        outputs = [ComplexOutput('output', 'Buffered file',
+        outputs = [ComplexOutput('buff_out', 'Buffered file',
                                  supported_formats=[
                                             Format('application/gml+xml')
                                             ]
@@ -24,7 +25,7 @@ class Buffer(Process):
         super(Buffer, self).__init__(
             self._handler,
             identifier='buffer',
-            version='1.0',
+            version='0.1',
             title="GDAL Buffer process",
             abstract="""The process returns buffers around the input features,
              using the GDAL library""",
@@ -41,15 +42,16 @@ class Buffer(Process):
         inSource = ogr.Open(request.inputs['poly_in'][0].file)
 
         inLayer = inSource.GetLayer()
-        out = inLayer.GetName() + '_buffer'
+        layerName = inLayer.GetName() + '_buffer'
+        out_filename = tempfile.mktemp()
 
         # create output file
         driver = ogr.GetDriverByName('GML')
         outSource = driver.CreateDataSource(
-                                out,
+                                out_filename,
                                 ["XSISCHEMAURI=\
                             http://schemas.opengis.net/gml/2.1.2/feature.xsd"])
-        outLayer = outSource.CreateLayer(out, None, ogr.wkbUnknown)
+        outLayer = outSource.CreateLayer(layerName, None, ogr.wkbUnknown)
 
         # for each feature
         featureCount = inLayer.GetFeatureCount()
@@ -74,7 +76,7 @@ class Buffer(Process):
 
         outSource.Destroy()
 
-        response.outputs['output'].output_format = FORMATS.GML
-        response.outputs['output'].file = out
+        response.outputs['buff_out'].output_format = FORMATS.GML
+        response.outputs['buff_out'].file = out_filename
 
         return response

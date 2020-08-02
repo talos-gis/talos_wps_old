@@ -1,28 +1,36 @@
 import os
+import sys
 import flask
 import pywps
 
-import set_project_root_dir
-set_project_root_dir.set_project_root_dir()  # call this before import processes
+#import set_project_root_dir
+#set_project_root_dir.set_project_root_dir()  # call this before import processes
 
 import processes
 
 # This is, how you start PyWPS instance
-config_files = ['./data/static/config/pywps.cfg']
+# config_file_path = './data/static/config/'
+config_file_path = ''
+config_files = [config_file_path+'pywps.cfg']
 service = pywps.Service(processes=processes.processes, cfgfiles=config_files)
 
 main_page = flask.Blueprint('main_page', __name__, template_folder='templates')
+
+
+@main_page.route('/test')
+def test():
+    return 'hello test!'
+
+
+@main_page.route("/sys_path")
+def sys_path():
+    return str(sys.path)
 
 
 # return 'hello to the WPS server root'
 @main_page.route('/wps', methods=['GET', 'POST'])
 def wps():
     return service
-
-
-@main_page.route('/test')
-def test():
-    return 'hello test!'
 
 
 @main_page.route("/")

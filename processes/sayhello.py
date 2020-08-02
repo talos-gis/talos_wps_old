@@ -12,11 +12,11 @@ class SayHello(Process):
 
         super(SayHello, self).__init__(
             self._handler,
-            identifier=process_id,
+            identifier='say_hello',
             title='Process Say Hello',
             abstract='Returns a literal string output\
              with Hello plus the inputed name',
-            version='1.0.0',
+            version='1.3.3.8',
             inputs=inputs,
             outputs=outputs,
             store_supported=True,
